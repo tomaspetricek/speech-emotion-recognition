@@ -40,6 +40,6 @@ class AudioFormatConverter(object):
             subprocess.run(
                 command,
                 shell=True,  # True when command is a string
-                check=True,  # True when want to stop when error occurs
+                check=True,  # True when we want to stop when error occurs
                 capture_output=True  # True when we want to capture output
             )
