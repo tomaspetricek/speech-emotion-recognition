@@ -3,16 +3,21 @@ from utils import *
 
 
 if __name__ == "__main__":
-    raw_file_paths = get_file_paths(
-        directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
-                  "Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
-        file_extension=FILE_EXTENSION_VAW
+    # raw_file_paths = get_file_paths(
+    #     directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
+    #               "Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
+    #     file_extension=FILE_EXTENSION_VAW
+    # )
+    #
+    # for file_name in raw_file_paths:
+    #     print(file_name)
+    #
+    # print(len(raw_file_paths))
+
+    copytree(
+        source="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
+        destination="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/converted",
     )
-
-    for file_name in raw_file_paths:
-        print(file_name)
-
-    print(len(raw_file_paths))
 
 
     # input_directory_name = "raw"
