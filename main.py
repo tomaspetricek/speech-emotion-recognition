@@ -1,4 +1,4 @@
-from Preprocessing.convertors import AudioFormatConverter
+from preprocessing.convertors import AudioFormatConverter
 
 """
 Clone directory
@@ -27,7 +27,7 @@ if __name__ == "__main__":
         sample_rate=AudioFormatConverter.SAMPLE_RATE_16KHz
     )
 
-    converter.run()
+    converter.convert()
 
 
 
