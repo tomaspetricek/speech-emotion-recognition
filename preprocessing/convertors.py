@@ -15,10 +15,10 @@ class AudioFormatConverter(object):
     COMMAND = "ffmpeg -i {input_file} -ar {sample_rate} -ac {audio_channel} -y {output_file}"
 
     # sample rate options
-    SAMPLE_RATE_16KHz = 16000
+    _16KHz = 16000
 
     # audio channel channel options
-    AUDIO_CHANNEL_MONO = 1
+    MONO = 1
 
     def __init__(self, input_files, output_files, audio_channel, sample_rate):
         self.input_files = input_files

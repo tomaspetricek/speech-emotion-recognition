@@ -4,31 +4,31 @@ from utils import *
 from timeit import default_timer as timer
 
 if __name__ == "__main__":
-    # copytree(
+    # copy_directory_content(
     #     source="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
-    #     destination="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/converted",
+    #     destination="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/test",
     # )
 
     raw_file_paths = get_file_paths(
         directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
                   "Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
-        file_extension=FILE_EXTENSION_VAW
+        file_extensions=[WAV]
     )
 
     # for file_name in raw_file_paths:
     #     print(file_name)
-
+    #
     # print(len(raw_file_paths))
 
     converted_file_paths = get_file_paths(
         directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
                   "Speech_Emotion_Recognition/Datasets/RAVDESS/converted",
-        file_extension=FILE_EXTENSION_VAW
+        file_extensions=[WAV]
     )
 
     # for file_name in converted_file_paths:
     #     print(file_name)
-
+    #
     # print(len(converted_file_paths))
 
     input_files = raw_file_paths
@@ -37,8 +37,8 @@ if __name__ == "__main__":
     converter = AudioFormatConverter(
         input_files=input_files,
         output_files=output_files,
-        audio_channel=AudioFormatConverter.AUDIO_CHANNEL_MONO,
-        sample_rate=AudioFormatConverter.SAMPLE_RATE_16KHz
+        audio_channel=AudioFormatConverter.MONO,
+        sample_rate=AudioFormatConverter._16KHz
     )
 
     start = timer()
