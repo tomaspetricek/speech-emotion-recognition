@@ -1,5 +1,5 @@
-from preprocessing.convertors import AudioFormatConverter
-from utils import *
+from Code.preprocessing.convertors import AudioFormatConverter
+from Code.utils import *
 
 from timeit import default_timer as timer
 
