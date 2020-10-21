@@ -1,17 +1,20 @@
-from Code.preprocessing.convertors import AudioFormatConverter
-from Code.utils import *
-
+from preprocessing.convertors import AudioFormatConverter
+from utils import *
 from timeit import default_timer as timer
 
 if __name__ == "__main__":
+
+    raw_directory_path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/TESS/raw"
+    converted_directory_path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/TESS/converted"
+
+    # # copy directory
     # copy_directory_content(
-    #     source="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
-    #     destination="/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/RAVDESS/test",
+    #     source=raw_directory_path,
+    #     destination=converted_directory_path,
     # )
 
     raw_file_paths = get_file_paths(
-        directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
-                  "Speech_Emotion_Recognition/Datasets/RAVDESS/raw",
+        directory=raw_directory_path,
         file_extensions=[WAV]
     )
 
@@ -21,8 +24,7 @@ if __name__ == "__main__":
     # print(len(raw_file_paths))
 
     converted_file_paths = get_file_paths(
-        directory="/Users/tomaspetricek/TUL/TUL_2020:21/BP/"
-                  "Speech_Emotion_Recognition/Datasets/RAVDESS/converted",
+        directory=converted_directory_path,
         file_extensions=[WAV]
     )
 
@@ -44,5 +46,5 @@ if __name__ == "__main__":
     start = timer()
     converter.convert()
     end = timer()
-    print("time: {:>8.2f}s".format(end - start))    # time:    54.56s
+    print("time: {:>8.2f}s".format(end - start))    # RAVDESS time: 54.56s, SAVEE time: 23.40s, TESS time: 108.75s
 
