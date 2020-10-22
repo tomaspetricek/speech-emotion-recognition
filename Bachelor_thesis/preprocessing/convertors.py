@@ -4,6 +4,7 @@ subprocess tutorial link: https://youtu.be/2Fp1N6dof0Y
 """
 from functools import partial
 
+EXECUTION_SUCCESSFUL = 0
 
 class AudioFormatConverter(object):
     """
@@ -37,9 +38,10 @@ class AudioFormatConverter(object):
             # complete command
             command = self.command(input_file=input_file, output_file=output_file)
             # execute command
-            subprocess.run(
+            execution = subprocess.run(
                 command,
                 shell=True,  # True when command is a string
                 check=True,  # True when we want to stop when error occurs
-                capture_output=True  # True when we want to capture output
+                capture_output=True,  # True when we want to capture output
+                text=True   # get output as a string
             )

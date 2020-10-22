@@ -1,5 +1,6 @@
 from preprocessing.convertors import AudioFormatConverter
 from utils import *
+import subprocess
 
 DATASET_PATH = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/{language}/{name}/{" \
                    "form}"
@@ -45,8 +46,8 @@ class Dataset(object):
 
 if __name__ == "__main__":
 
-    language_ = "english"
-    name_ = "TESS"
+    language_ = "italian"
+    name_ = "EMOVO"
 
     original_dataset = Dataset(
         path=DATASET_PATH.format(
@@ -56,17 +57,23 @@ if __name__ == "__main__":
         )
     )
 
-    samples_ = original_dataset.samples
-    for sample in samples_:
-        print(sample)
+    # # change dataset files permissions
+    # change_permissions(
+    #     files=original_dataset.samples,
+    #     permission=755
+    # )
 
-    print(len(samples_))
+    # samples_ = original_dataset.samples
+    # for sample in samples_:
+    #     print(sample)
+    #
+    # print(len(samples_))
 
-    # test_dataset = original_dataset.clone(
-    #     clone_path=Dataset.DATASET_PATH.format(
+    # converted_dataset = original_dataset.clone(
+    #     clone_path=DATASET_PATH.format(
     #         language=language_,
     #         name=name_,
-    #         form="test"
+    #         form="converted"
     #     )
     # )
 
@@ -77,10 +84,16 @@ if __name__ == "__main__":
     #         form="converted"
     #     )
     # )
+
+    # samples_ = original_dataset.samples
+    # for sample in samples_:
+    #     print(sample)
     #
+    # print(len(samples_))
+
     # converter = AudioFormatConverter(
-    #     input_files=input_files,
-    #     output_files=output_files,
+    #     input_files=original_dataset.samples,
+    #     output_files=converted_dataset.samples,
     #     audio_channel=AudioFormatConverter.MONO,
     #     sample_rate=AudioFormatConverter._16KHz
     # )

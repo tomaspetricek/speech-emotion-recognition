@@ -1,7 +1,9 @@
 import os, shutil
-
+import subprocess
 
 WAV = ".wav"
+
+
 def get_file_paths(directory, file_extensions=None):
     """
     Gets all files with the same file_extension in a directory
@@ -54,3 +56,22 @@ def copy_directory_content(source, destination, symlinks=False, ignore_file_exte
                 if not os.path.exists(destination_) or os.stat(source_).st_mtime - os.stat(destination_).st_mtime > 1:
                     # copy file
                     shutil.copy2(source_, destination_)
+
+def change_permissions(files, permission=755):
+    """
+    Changes files permissions.
+    """
+    COMMAND = "chmod {permission} {file}"
+
+    for file in files:
+        command = COMMAND.format(
+            permission=permission,
+            file=file
+        )
+        subprocess.run(
+            command,
+            shell=True,  # True when command is a string
+            check=True,  # True when we want to stop when error occurs
+            capture_output=True,  # True when we want to capture output
+            text=True  # get output as a string
+        )
