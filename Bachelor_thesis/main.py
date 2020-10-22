@@ -85,12 +85,6 @@ if __name__ == "__main__":
     #     )
     # )
 
-    # samples_ = original_dataset.samples
-    # for sample in samples_:
-    #     print(sample)
-    #
-    # print(len(samples_))
-
     # converter = AudioFormatConverter(
     #     input_files=original_dataset.samples,
     #     output_files=converted_dataset.samples,
