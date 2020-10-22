@@ -28,12 +28,13 @@ class Dataset(object):
     samples = property(get_samples, set_samples)
 
     def clone(self, clone_path):
-
+        # copy dataset content
         copy_directory_content(
             source=self.path,
             destination=clone_path,
         )
 
+        # create dataset
         clone_dataset = Dataset(
             path=clone_path,
             sample_format=self.sample_format
@@ -55,8 +56,11 @@ if __name__ == "__main__":
         )
     )
 
-    for sample in original_dataset.samples:
+    samples_ = original_dataset.samples
+    for sample in samples_:
         print(sample)
+
+    print(len(samples_))
 
     # test_dataset = original_dataset.clone(
     #     clone_path=Dataset.DATASET_PATH.format(
