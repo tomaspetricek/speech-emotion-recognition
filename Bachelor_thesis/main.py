@@ -9,8 +9,8 @@ from utils import change_file_extension
 
 if __name__ == "__main__":
 
-    language_ = "italian"
-    name_ = "EMOVO"
+    language_ = "english"
+    name_ = "RAVDESS"
 
     original_dataset = Dataset(
         path=DATASET_PATH.format(
@@ -20,14 +20,14 @@ if __name__ == "__main__":
         )
     )
 
-    converted_dataset = original_dataset.clone(
-        clone_path=DATASET_PATH.format(
-            language=language_,
-            name=name_,
-            form="mfcc",
-        ),
-        ignore_file_extensions=['.wav']
-    )
+    # converted_dataset = original_dataset.clone(
+    #     clone_path=DATASET_PATH.format(
+    #         language=language_,
+    #         name=name_,
+    #         form="mfcc",
+    #     ),
+    #     ignore_file_extensions=['.wav']
+    # )
 
     input_files = original_dataset.samples
 
