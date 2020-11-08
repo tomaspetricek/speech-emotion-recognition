@@ -1,20 +1,23 @@
-from processing.convertors import AudioFormatConverter
+from processing.convertors import AudioFormatConverter, MFCCConverter
 from classes import Dataset
 from libraries.PyHTK.HTK import HTKFile
 from pprint import pprint
-
-
-DATASET_PATH = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/{language}/{name}/{" \
-                   "form}"
+import numpy as np
+import enums
 
 
 if __name__ == "__main__":
-    htk_file = HTKFile()
-    htk_file.load(filename='/Users/tomaspetricek/TUL/TUL_2020:21/BP/Test/03-01-01-01-01-01-01.mfc')
 
-    print(type(htk_file.data))
-    for data in htk_file.data:
-        pprint(data)
+    input_file = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/03-01-01-01-01-01-01.wav"
+    output_file = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/03-01-01-01-01-01-01.mfc"
+
+    # MFCCConverter(input_files=[input_file], output_files=[output_file]).convert()
+    htk_file = HTKFile()
+    htk_file.load(filename=output_file)
+
+    data = np.array(htk_file.data)
+    print(data.shape)
+    print(data[300])
 
     # language_ = "italian"
     # name_ = "EMOVO"

@@ -3,6 +3,7 @@ import subprocess
 subprocess tutorial link: https://youtu.be/2Fp1N6dof0Y
 """
 from functools import partial
+from enums import MFCC_CONFIG_PATH
 
 EXECUTION_SUCCESSFUL = 0
 
@@ -58,7 +59,7 @@ class MFCCConverter(Converter):
     """
     COMMAND = "HCopy -C {config_file} {input_file} {output_file}"
 
-    def __init__(self, input_files, output_files, config_file):
+    def __init__(self, input_files, output_files, config_file=MFCC_CONFIG_PATH):
         super().__init__(input_files, output_files)
         self.config_file = config_file
         # set command params that are the same for all
