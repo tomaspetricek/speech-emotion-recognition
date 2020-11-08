@@ -4,6 +4,7 @@ from libraries.PyHTK.HTK import HTKFile
 from pprint import pprint
 import numpy as np
 import enums
+from files import TextFile
 
 
 if __name__ == "__main__":
@@ -12,12 +13,40 @@ if __name__ == "__main__":
     output_file = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/03-01-01-01-01-01-01.mfc"
 
     # MFCCConverter(input_files=[input_file], output_files=[output_file]).convert()
+
+    # load HTK file
     htk_file = HTKFile()
     htk_file.load(filename=output_file)
+    # print(htk_file.nSamples)
+    # print(htk_file.sampPeriod)
+    # # print(htk_file.basicKind)
 
-    data = np.array(htk_file.data)
+    # get data
+    data = np.array(htk_file.data).flatten()
     print(data.shape)
-    print(data[300])
+
+    # compare to test file
+    test_filename = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/_mfcc_kontrola/03-01-01-01-01-01-01.mfcc_0_d_a.txt"
+
+    test_file = TextFile(test_filename)
+
+    test_data = test_file.read(skip_n_rows=4)
+    # covert to list of float
+    test_data = list(map(float, test_data))
+    # convert to numpy array
+    test_data = np.array(test_data)
+    print(test_data.shape)
+
+    # check if arrays are totally equal
+    print(np.array_equal(data, test_data))
+
+    # print them out next to each other
+    for data, test_data in zip(data, test_data):
+        print(data, test_data)
+
+    # data = np.array(htk_file.data)
+    # print(data.shape)
+    # print(data[300])
 
     # language_ = "italian"
     # name_ = "EMOVO"
