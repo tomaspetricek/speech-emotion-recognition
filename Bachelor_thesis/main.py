@@ -10,7 +10,7 @@ from utils import change_file_extension
 if __name__ == "__main__":
 
     language_ = "english"
-    name_ = "SAVEE"
+    name_ = "TESS"
 
     original_dataset = Dataset(
         path=DATASET_PATH.format(
