@@ -76,11 +76,16 @@ def change_permissions(files, permission=755):
             text=True  # get output as a string
         )
 
-def change_file_extension(files, extension):
+def change_file_extension(input_files, extension):
     """
     Changes files extension.
     """
-    for file in files:
-        base, ext = os.path.splitext(file)
-        os.rename(file, base + extension)
+    output_files = []
+
+    for input_file in input_files:
+        base, ext = os.path.splitext(input_file)
+        # os.rename(input_file, base + extension)
+        output_files.append(base + extension)
+
+    return output_files
 

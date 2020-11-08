@@ -9,11 +9,6 @@ from utils import change_file_extension
 
 if __name__ == "__main__":
 
-    input_file = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/03-01-01-01-01-01-01.wav"
-    output_file = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Test/03-01-01-01-01-01-01.mfc"
-
-    # MFCCConverter(input_files=[input_file], output_files=[output_file]).convert()
-
     language_ = "italian"
     name_ = "EMOVO"
 
@@ -37,19 +32,21 @@ if __name__ == "__main__":
     # print(converted_dataset.samples)
 
     input_files = original_dataset.samples
-    output_files = change_file_extension(input_files, ".mfcc_0_d_a")
-    print(output_files)
 
-    # converter = AudioFormatConverter(
-    #     input_files=input_files,
-    #     output_files=output_files,
-    #     audio_channel=AudioFormatConverter.MONO,
-    #     sample_rate=AudioFormatConverter._16KHz
-    # )
+    output_files_ = change_file_extension(input_files, ".mfcc_0_d_a")
+    output_files = []
+    for output_file in output_files_:
+        output_files.append(output_file.replace("original", "mfcc"))
 
-    # # start = timer()
-    # converter.convert()
-    # # end = timer()
-    # # print("time: {:>8.2f}s".format(end - start))    # RAVDESS time: 54.56s, SAVEE time: 23.40s, TESS time: 108.75s
+    print(len(input_files))
+    print(len(output_files))
+
+    converter = MFCCConverter(
+        input_files=input_files,
+        output_files=output_files
+    )
+
+    converter.convert()
+
 
 
