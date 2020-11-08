@@ -9,8 +9,8 @@ from utils import change_file_extension
 
 if __name__ == "__main__":
 
-    language_ = "english"
-    name_ = "TESS"
+    language_ = "italian"
+    name_ = "EMOVO"
 
     original_dataset = Dataset(
         path=DATASET_PATH.format(
