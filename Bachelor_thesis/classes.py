@@ -23,17 +23,18 @@ class Dataset(object):
 
     samples = property(get_samples, set_samples)
 
-    def clone(self, clone_path):
+    def clone(self, clone_path, ignore_file_extensions=None):
         # copy dataset content
         copy_directory_content(
             source=self.path,
             destination=clone_path,
+            ignore_file_extensions=ignore_file_extensions
         )
 
         # create dataset
         clone_dataset = Dataset(
             path=clone_path,
-            sample_format=self.sample_format
+            sample_format=self.sample_format,
         )
 
         return clone_dataset

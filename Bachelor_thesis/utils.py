@@ -75,3 +75,12 @@ def change_permissions(files, permission=755):
             capture_output=True,  # True when we want to capture output
             text=True  # get output as a string
         )
+
+def change_file_extension(files, extension):
+    """
+    Changes files extension.
+    """
+    for file in files:
+        base, ext = os.path.splitext(file)
+        os.rename(file, base + extension)
+
