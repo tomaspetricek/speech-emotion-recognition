@@ -8,43 +8,15 @@ from utils import change_file_extension
 
 
 if __name__ == "__main__":
+    path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/RAVDESS/mfcc" \
+           "/Audio_Speech_Actors_01-24/Actor_01/03-01-01-01-01-01-01.mfcc_0_d_a"
 
-    language_ = "english"
-    name_ = "RAVDESS"
+    htk_file = HTKFile(filename=path)
+    htk_file.read()
+    data = np.array(htk_file.data).flatten()
 
-    original_dataset = Dataset(
-        path=DATASET_PATH.format(
-            language=language_,
-            name=name_,
-            form="converted"
-        )
-    )
-
-    # converted_dataset = original_dataset.clone(
-    #     clone_path=DATASET_PATH.format(
-    #         language=language_,
-    #         name=name_,
-    #         form="mfcc",
-    #     ),
-    #     ignore_file_extensions=['.wav']
-    # )
-
-    input_files = original_dataset.samples
-
-    output_files_ = change_file_extension(input_files, ".mfcc_0_d_a")
-    output_files = []
-    for output_file in output_files_:
-        output_files.append(output_file.replace("converted", "mfcc"))
-
-    print(len(input_files))
-    print(len(output_files))
-
-    converter = MFCCConverter(
-        input_files=input_files,
-        output_files=output_files
-    )
-
-    converter.convert()
-
+    print(len(data))
+    for d in data:
+        print(d)
 
 
