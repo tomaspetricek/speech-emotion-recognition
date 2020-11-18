@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/Others/Jan_Hotovec/SpeechToText/.idea/SpeechToText.iml" filepath="$USER_HOME$/Others/Jan_Hotovec/SpeechToText/.idea/SpeechToText.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Speech_Emotion_Recognition.iml" filepath="$PROJECT_DIR$/.idea/Speech_Emotion_Recognition.iml" />
     </modules>
   </component>
