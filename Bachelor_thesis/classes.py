@@ -13,19 +13,18 @@ class Dataset:
     FILE = None
     SAMPLE_FORMAT = ".wav"
 
-    class Sample:
-        FILE_PATH_INDEX = 0
-        DATA_INDEX = 1
-        LABEL_INDEX = 2
-        LENGTH = 3
-
     class Label:
         REGEX = None
         SEPARATOR = None
         LENGTH = None
+        COLUMNS = []
 
     class Data:
-        pass
+        COLUMNS = [
+            "data"
+        ]
+
+    SAMPLE_COLUMNS = None
 
     def __init__(self, path):
         self.path = path
@@ -36,14 +35,13 @@ class Dataset:
         file_paths = None
 
         if value is None:
-            file_paths = get_file_paths(
+            self.file_paths = get_file_paths(
                 directory=self.path,
                 file_extensions=[self.SAMPLE_FORMAT]
             )
 
-        data_all = list()
-        labels = list()
-        for file_path in file_paths:
+        samples = []
+        for file_path in self.file_paths:
 
             data = self.FILE.read(file_path)
 
@@ -52,14 +50,9 @@ class Dataset:
             label = name.split(self.Label.SEPARATOR)
             label = list(map(int, label))
 
-            data_all.append(data)
-            labels.append(label)
+            samples.append([data] + label)
 
-        self._samples = [
-            file_paths,
-            data_all,
-            labels
-        ]
+        self._samples = pd.DataFrame(samples, columns=self.SAMPLE_COLUMNS)
 
     def get_samples(self):
         return self._samples
@@ -101,6 +94,16 @@ class RAVDESS(Dataset):
         ACTOR_INDEX = 6
         LENGTH = 7
 
+        COLUMNS = [
+            "modality",
+            "vocal channel",
+            "emotion",
+            "emotional intensity",
+            "statement",
+            "repetition",
+            "actor"
+        ]
+
         MODALITY_OPTIONS = {
             1: "full - AV",
             2: "video - only",
@@ -141,18 +144,30 @@ class RAVDESS(Dataset):
     class Data(Dataset.Data):
         pass
 
+    SAMPLE_COLUMNS = Data.COLUMNS + Label.COLUMNS
+
 
 if __name__ == "__main__":
     from config import DATASET_PATH
     import time
+    from pprint import pprint
 
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
 
     start = time.time()
     ravdess = RAVDESS(path)
-    print(ravdess.samples[ravdess.Sample.LABEL_INDEX][0][ravdess.Label.EMOTION_INDEX])
-    end = time.time()
-    print(end - start)
+    print(ravdess.samples)
+    # labels = np.array(ravdess.samples[ravdess.Sample.LABEL_INDEX])
+    # print(labels)
+    # emotions = list(labels[:, ravdess.Label.EMOTION_INDEX])
+    # print(emotions)
+    # pprint(list(map(ravdess.Label.EMOTION_OPTIONS.get, emotions)))
+    # end = time.time()
+    # print(end - start)
+
+    print(len(ravdess.samples['data'][0][0]))
+
+
 
 
 
