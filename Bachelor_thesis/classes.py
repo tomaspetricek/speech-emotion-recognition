@@ -1,7 +1,7 @@
 from utils import *
 import re
 import pandas as pd
-
+import numpy as np
 from files import HTKFile
 
 
@@ -19,15 +19,6 @@ class Dataset:
         LABEL_INDEX = 2
         LENGTH = 3
 
-        FILE_PATH_COLUMN = "file_path"
-        DATA_COLUMN = "data"
-        LABEL_COLUMN = "label"
-        COLUMNS = [
-            FILE_PATH_COLUMN,
-            DATA_COLUMN,
-            LABEL_COLUMN
-        ]
-
     class Label:
         REGEX = None
         SEPARATOR = None
@@ -41,7 +32,7 @@ class Dataset:
         self.samples = None
 
     def set_samples(self, value):
-        samples = list()
+
         file_paths = None
 
         if value is None:
@@ -50,6 +41,8 @@ class Dataset:
                 file_extensions=[self.SAMPLE_FORMAT]
             )
 
+        data_all = list()
+        labels = list()
         for file_path in file_paths:
 
             data = self.FILE.read(file_path)
@@ -59,14 +52,14 @@ class Dataset:
             label = name.split(self.Label.SEPARATOR)
             label = list(map(int, label))
 
-            sample = [None] * self.Sample.LENGTH
-            sample[self.Sample.FILE_PATH_INDEX] = file_path
-            sample[self.Sample.DATA_INDEX] = data
-            sample[self.Sample.LABEL_INDEX] = label
+            data_all.append(data)
+            labels.append(label)
 
-            samples.append(sample)
-
-        self._samples = pd.DataFrame(samples, columns=self.Sample.COLUMNS)
+        self._samples = [
+            file_paths,
+            data_all,
+            labels
+        ]
 
     def get_samples(self):
         return self._samples
@@ -151,12 +144,18 @@ class RAVDESS(Dataset):
 
 if __name__ == "__main__":
     from config import DATASET_PATH
+    import time
 
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+
+    start = time.time()
     ravdess = RAVDESS(path)
-    samples = ravdess.samples
-    labels = samples[ravdess.Sample.LABEL_COLUMN]
-    for label in labels:
-        print(ravdess.Label.EMOTION_OPTIONS[label[ravdess.Label.EMOTION_INDEX]])
+    print(ravdess.samples[ravdess.Sample.LABEL_INDEX][0][ravdess.Label.EMOTION_INDEX])
+    end = time.time()
+    print(end - start)
+
+
+
+
 
 
