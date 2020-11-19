@@ -26,29 +26,36 @@ class Dataset:
 
     def __init__(self, path):
         self.path = path
+        self.file_paths = None
         self.samples = None
 
-    def set_samples(self, value):
-
-        self.file_paths = None
+    def set_file_paths(self, value):
+        self._file_paths = None
 
         if value is None:
-            self.file_paths = get_file_paths(
+            self._file_paths = get_file_paths(
                 directory=self.path,
                 file_extensions=[self.SAMPLE_FORMAT]
             )
 
+    def get_file_paths(self):
+        return self._file_paths
+
+    def set_samples(self, value):
         samples = []
-        for file_path in self.file_paths:
+        for file_path in self._file_paths:
+            data = []
+            if self.DATA_COLUMNS:
+                data = [self.FILE.read(file_path)]
 
-            data = self.FILE.read(file_path)
+            label = []
+            if self.LABEL_COLUMNS:
+                filename = os.path.basename(file_path)
+                name, ext = os.path.splitext(filename)
+                label = name.split(self.LABEL_SEPARATOR)
+                label = list(map(int, label))
 
-            filename = os.path.basename(file_path)
-            name, ext = os.path.splitext(filename)
-            label = name.split(self.LABEL_SEPARATOR)
-            label = list(map(int, label))
-
-            samples.append([data] + label)
+            samples.append(data + label)
 
         self._samples = pd.DataFrame(samples, columns=self.SAMPLE_COLUMNS)
 
@@ -56,6 +63,7 @@ class Dataset:
         return self._samples
 
     samples = property(get_samples, set_samples)
+    file_paths = property(get_file_paths, set_file_paths)
 
     def clone(self, clone_path, ignore_file_extensions=None):
         # copy dataset content
@@ -76,6 +84,7 @@ class Dataset:
 class MFCC(Dataset):
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     FILE = HTKFile()
+    SAMPLE_COLUMNS = Dataset.DATA_COLUMNS
 
 class RAVDESS(Dataset):
     LABEL_SEPARATOR = "-"
@@ -129,6 +138,8 @@ class RAVDESS(Dataset):
         2: "2 nd repetition",
     }
 
+    SAMPLE_COLUMNS = LABEL_COLUMNS
+
 
 class RAVDESS_MFCC(RAVDESS, MFCC):
     DATA_COLUMNS = Dataset.DATA_COLUMNS
@@ -145,7 +156,7 @@ if __name__ == "__main__":
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
 
     start = time.time()
-    ravdess = RAVDESS_MFCC(path)
+    ravdess = MFCC(path)
     print(ravdess.samples)
     # labels = np.array(ravdess.samples[ravdess.Sample.LABEL_INDEX])
     # print(labels)
@@ -155,8 +166,8 @@ if __name__ == "__main__":
     # end = time.time()
     # print(end - start)
 
-    print(len(ravdess.samples['data'][0][0]))
-    print(ravdess.VOCAL_CHANNEL_OPTIONS)
+    # print(len(ravdess.samples['data'][0][0]))
+    # print(ravdess.VOCAL_CHANNEL_OPTIONS)
 
 
 
