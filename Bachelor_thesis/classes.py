@@ -13,16 +13,13 @@ class Dataset:
     FILE = None
     SAMPLE_FORMAT = ".wav"
 
-    class Label:
-        REGEX = None
-        SEPARATOR = None
-        LENGTH = None
-        COLUMNS = []
+    LABEL_REGEX = None
+    LABEL_SEPARATOR = None
+    LABEL_COLUMNS = None
 
-    class Data:
-        COLUMNS = [
-            "data"
-        ]
+    DATA_COLUMNS = [
+        "data"
+    ]
 
     SAMPLE_COLUMNS = None
 
@@ -32,7 +29,7 @@ class Dataset:
 
     def set_samples(self, value):
 
-        file_paths = None
+        self.file_paths = None
 
         if value is None:
             self.file_paths = get_file_paths(
@@ -47,7 +44,7 @@ class Dataset:
 
             filename = os.path.basename(file_path)
             name, ext = os.path.splitext(filename)
-            label = name.split(self.Label.SEPARATOR)
+            label = name.split(self.LABEL_SEPARATOR)
             label = list(map(int, label))
 
             samples.append([data] + label)
@@ -81,70 +78,60 @@ class RAVDESS(Dataset):
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     FILE = HTKFile()
 
-    class Label(Dataset.Label):
-        SEPARATOR = "-"
-        REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-'
-                           r'(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
-        MODALITY_INDEX = 0
-        VOCAL_CHANNEL_INDEX = 1
-        EMOTION_INDEX = 2
-        EMOTIONAL_INTENSITY_INDEX = 3
-        STATEMENT_INDEX = 4
-        REPETITION_INDEX = 5
-        ACTOR_INDEX = 6
-        LENGTH = 7
+    LABEL_SEPARATOR = "-"
+    LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-'
+                       r'(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
 
-        COLUMNS = [
-            "modality",
-            "vocal channel",
-            "emotion",
-            "emotional intensity",
-            "statement",
-            "repetition",
-            "actor"
-        ]
+    LABEL_COLUMNS = [
+        "modality",
+        "vocal channel",
+        "emotion",
+        "emotional intensity",
+        "statement",
+        "repetition",
+        "actor"
+    ]
 
-        MODALITY_OPTIONS = {
-            1: "full - AV",
-            2: "video - only",
-            3: "audio - only",
-        }
+    MODALITY_OPTIONS = {
+        1: "full - AV",
+        2: "video - only",
+        3: "audio - only",
+    }
 
-        VOCAL_CHANNEL_OPTIONS = {
-            1: "speech",
-            2: "song",
-        }
+    VOCAL_CHANNEL_OPTIONS = {
+        1: "speech",
+        2: "song",
+    }
 
-        EMOTION_OPTIONS = {
-            1: "neutral",
-            2: "calm",
-            3: "happy",
-            4: "sad",
-            5: "angry",
-            6: "fearful",
-            7: "disgust",
-            8: "surprised",
-        }
+    EMOTION_OPTIONS = {
+        1: "neutral",
+        2: "calm",
+        3: "happy",
+        4: "sad",
+        5: "angry",
+        6: "fearful",
+        7: "disgust",
+        8: "surprised",
+    }
 
-        EMOTIONAL_INTENSITY_OPTIONS = {
-            1: "normal",
-            2: "strong",
-        }
+    EMOTIONAL_INTENSITY_OPTIONS = {
+        1: "normal",
+        2: "strong",
+    }
 
-        STATEMENT_OPTIONS = {
-            1: "Kids are talking by the door",
-            2: "Dogs are sitting by the door",
-        }
+    STATEMENT_OPTIONS = {
+        1: "Kids are talking by the door",
+        2: "Dogs are sitting by the door",
+    }
 
-        REPETITION_OPTIONS = {
-            1: "1 st repetition",
-            2: "2 nd repetition",
-        }
+    REPETITION_OPTIONS = {
+        1: "1 st repetition",
+        2: "2 nd repetition",
+    }
 
-    class Data(Dataset.Data):
-        pass
+    DATA_COLUMNS = Dataset.DATA_COLUMNS
 
-    SAMPLE_COLUMNS = Data.COLUMNS + Label.COLUMNS
+    SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
 
 
 if __name__ == "__main__":
