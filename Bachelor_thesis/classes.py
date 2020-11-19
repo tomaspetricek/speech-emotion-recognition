@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from files import HTKFile
 
+# TODO - move file_paths to setter and getter from set_samples
 
 class Dataset:
     """
@@ -11,7 +12,7 @@ class Dataset:
     """
 
     FILE = None
-    SAMPLE_FORMAT = ".wav"
+    SAMPLE_FORMAT = None
 
     LABEL_REGEX = None
     LABEL_SEPARATOR = None
@@ -72,15 +73,14 @@ class Dataset:
 
         return clone_dataset
 
-
-class RAVDESS(Dataset):
-
+class MFCC(Dataset):
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     FILE = HTKFile()
 
+class RAVDESS(Dataset):
     LABEL_SEPARATOR = "-"
     LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-'
-                       r'(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
+                             r'(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
 
     LABEL_COLUMNS = [
         "modality",
@@ -129,7 +129,10 @@ class RAVDESS(Dataset):
         2: "2 nd repetition",
     }
 
+
+class RAVDESS_MFCC(RAVDESS, MFCC):
     DATA_COLUMNS = Dataset.DATA_COLUMNS
+    LABEL_COLUMNS = RAVDESS.LABEL_COLUMNS
 
     SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
 
@@ -142,7 +145,7 @@ if __name__ == "__main__":
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
 
     start = time.time()
-    ravdess = RAVDESS(path)
+    ravdess = RAVDESS_MFCC(path)
     print(ravdess.samples)
     # labels = np.array(ravdess.samples[ravdess.Sample.LABEL_INDEX])
     # print(labels)
@@ -153,6 +156,7 @@ if __name__ == "__main__":
     # print(end - start)
 
     print(len(ravdess.samples['data'][0][0]))
+    print(ravdess.VOCAL_CHANNEL_OPTIONS)
 
 
 
