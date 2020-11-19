@@ -1,4 +1,6 @@
 from libraries.PyHTK.HTK import HTKFile as PyHTKFile
+from scipy.io import wavfile
+
 
 class File:
 
@@ -40,3 +42,12 @@ class HTKFile(File):
         self.data = htk_file.data
         return self.data
 
+class WAVFile(File):
+
+    def __init__(self):
+        self.data = None
+        self.sample_rate = None
+
+    def read(self, file_path):
+        self.sample_rate, self.data = wavfile.read(file_path)
+        return self.sample_rate, self.data

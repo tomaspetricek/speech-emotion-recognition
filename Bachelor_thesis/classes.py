@@ -2,9 +2,8 @@ from utils import *
 import re
 import pandas as pd
 import numpy as np
-from files import HTKFile
+from files import HTKFile, WAVFile
 
-# TODO - move file_paths to setter and getter from set_samples
 
 class Dataset:
     """
@@ -46,7 +45,11 @@ class Dataset:
         for file_path in self._file_paths:
             data = []
             if self.DATA_COLUMNS:
-                data = [self.FILE.read(file_path)]
+                result = self.FILE.read(file_path)
+                if type(result) is tuple:
+                    data = [*result]
+                else:
+                    data = [result]
 
             label = []
             if self.LABEL_COLUMNS:
@@ -84,7 +87,24 @@ class Dataset:
 class MFCC(Dataset):
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     FILE = HTKFile()
+
+    """
+    https://www.sciencedirect.com/topics/computer-science/cepstral-coefficient
+    """
+
     SAMPLE_COLUMNS = Dataset.DATA_COLUMNS
+
+
+class WAV(Dataset):
+    SAMPLE_FORMAT = ".wav"
+    FILE = WAVFile()
+
+    DATA_COLUMNS = [
+        "sample rate",
+        "data"
+    ]
+
+    SAMPLE_COLUMNS = DATA_COLUMNS
 
 class RAVDESS(Dataset):
     LABEL_SEPARATOR = "-"
@@ -142,7 +162,14 @@ class RAVDESS(Dataset):
 
 
 class RAVDESS_MFCC(RAVDESS, MFCC):
-    DATA_COLUMNS = Dataset.DATA_COLUMNS
+    DATA_COLUMNS = MFCC.DATA_COLUMNS
+    LABEL_COLUMNS = RAVDESS.LABEL_COLUMNS
+
+    SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
+
+
+class RAVDESS_WAV(RAVDESS, WAV):
+    DATA_COLUMNS = WAV.DATA_COLUMNS
     LABEL_COLUMNS = RAVDESS.LABEL_COLUMNS
 
     SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
@@ -153,11 +180,15 @@ if __name__ == "__main__":
     import time
     from pprint import pprint
 
+    path = DATASET_PATH.format(language="english", name="RAVDESS", form="converted")
+
+    ravdess_wav = RAVDESS_WAV(path)
+    print(ravdess_wav.samples)
+
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
 
-    start = time.time()
-    ravdess = MFCC(path)
-    print(ravdess.samples)
+    ravdess_mfcc = RAVDESS_MFCC(path)
+    print(ravdess_mfcc.samples)
     # labels = np.array(ravdess.samples[ravdess.Sample.LABEL_INDEX])
     # print(labels)
     # emotions = list(labels[:, ravdess.Label.EMOTION_INDEX])
