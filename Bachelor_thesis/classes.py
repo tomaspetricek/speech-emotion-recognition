@@ -1,117 +1,60 @@
 from utils import *
-import re
 import pandas as pd
 import numpy as np
 from files import HTKFile, WAVFile
 
-
-class Dataset:
-    """
-    Represents a dataset.
-    """
-
+class Data:
     FILE = None
-    SAMPLE_FORMAT = None
-
-    LABEL_REGEX = None
-    LABEL_SEPARATOR = None
-    LABEL_COLUMNS = None
-
-    DATA_COLUMNS = [
+    COLUMNS = [
         "data"
     ]
 
-    SAMPLE_COLUMNS = None
+    def parse(self, file_path):
+        pass
 
-    def __init__(self, path):
-        self.path = path
-        self.file_paths = None
-        self.samples = None
-
-    def set_file_paths(self, value):
-        self._file_paths = None
-
-        if value is None:
-            self._file_paths = get_file_paths(
-                directory=self.path,
-                file_extensions=[self.SAMPLE_FORMAT]
-            )
-
-    def get_file_paths(self):
-        return self._file_paths
-
-    def set_samples(self, value):
-        samples = []
-        for file_path in self._file_paths:
-            data = []
-            if self.DATA_COLUMNS:
-                result = self.FILE.read(file_path)
-                if type(result) is tuple:
-                    data = [*result]
-                else:
-                    data = [result]
-
-            label = []
-            if self.LABEL_COLUMNS:
-                filename = os.path.basename(file_path)
-                name, ext = os.path.splitext(filename)
-                label = name.split(self.LABEL_SEPARATOR)
-                label = list(map(int, label))
-
-            samples.append(data + label)
-
-        self._samples = pd.DataFrame(samples, columns=self.SAMPLE_COLUMNS)
-
-    def get_samples(self):
-        return self._samples
-
-    samples = property(get_samples, set_samples)
-    file_paths = property(get_file_paths, set_file_paths)
-
-    def clone(self, clone_path, ignore_file_extensions=None):
-        # copy dataset content
-        copy_directory_content(
-            source=self.path,
-            destination=clone_path,
-            ignore_file_extensions=ignore_file_extensions
-        )
-
-        # create dataset
-        clone_dataset = Dataset(
-            path=clone_path,
-            sample_format=self.SAMPLE_FORMAT,
-        )
-
-        return clone_dataset
-
-class MFCC(Dataset):
-    SAMPLE_FORMAT = ".mfcc_0_d_a"
+class MFCCData(Data):
     FILE = HTKFile()
+    SAMPLE_FORMAT = ".mfcc_0_d_a"
+    COLUMNS = [
+        "coefficients",
+        "frame",
+    ]
 
-    """
-    https://www.sciencedirect.com/topics/computer-science/cepstral-coefficient
-    """
+    def parse(self, file_path):
+        results = self.FILE.read(file_path)
+        data = []
+        for index, result in enumerate(results):
+            data.append([result, index + 1])
 
-    SAMPLE_COLUMNS = Dataset.DATA_COLUMNS
+        return data
 
-
-class WAV(Dataset):
+class WAVData(Data):
     SAMPLE_FORMAT = ".wav"
     FILE = WAVFile()
 
-    DATA_COLUMNS = [
+    COLUMNS = [
         "sample rate",
         "data"
     ]
 
-    SAMPLE_COLUMNS = DATA_COLUMNS
+    def parse(self, file_path):
+        sample_rate, data = self.FILE.read(file_path)
+        return [sample_rate, data]
 
-class RAVDESS(Dataset):
-    LABEL_SEPARATOR = "-"
-    LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-'
-                             r'(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
+class Label:
+    COLUMNS = []
+    SEPARATOR = None
 
-    LABEL_COLUMNS = [
+    def parse(self, file_path):
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        label = name.split(self.SEPARATOR)
+        return list(map(int, label))
+
+class RAVDESSLabel(Label):
+    SEPARATOR = "-"
+
+    COLUMNS = [
         "modality",
         "vocal channel",
         "emotion",
@@ -158,50 +101,93 @@ class RAVDESS(Dataset):
         2: "2 nd repetition",
     }
 
-    SAMPLE_COLUMNS = LABEL_COLUMNS
+class Dataset:
+    """
+    Represents a dataset.
+    """
+    def __init__(self, path, data, label):
+        self.path = path
+        self.data = data
+        self.label = label
+        self.data_columns = []
+        self.label_columns = []
+        self.sample_columns = None
+        self.file_paths = None
+        self.samples = None
 
+    def set_sample_columns(self, value):
+        if self.data:
+            self.data_columns = self.data.COLUMNS
 
-class RAVDESS_MFCC(RAVDESS, MFCC):
-    DATA_COLUMNS = MFCC.DATA_COLUMNS
-    LABEL_COLUMNS = RAVDESS.LABEL_COLUMNS
+        if self.label:
+            self.label_columns = self.label.COLUMNS
 
-    SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
+        self._sample_columns = self.data_columns + self.label_columns
 
+    def get_sample_columns(self):
+        return self._sample_columns
 
-class RAVDESS_WAV(RAVDESS, WAV):
-    DATA_COLUMNS = WAV.DATA_COLUMNS
-    LABEL_COLUMNS = RAVDESS.LABEL_COLUMNS
+    def set_file_paths(self, value):
+        self._file_paths = None
 
-    SAMPLE_COLUMNS = DATA_COLUMNS + LABEL_COLUMNS
+        if value is None:
+            self._file_paths = get_file_paths(
+                directory=self.path,
+                file_extensions=[self.data.SAMPLE_FORMAT]
+            )
+
+    def get_file_paths(self):
+        return self._file_paths
+
+    def set_samples(self, value):
+        samples = []
+        for file_path in self._file_paths:
+            data = []
+            if self.data_columns:
+                data = self.data.parse(file_path)
+
+            label = []
+            if self.label_columns:
+                label = self.label.parse(file_path)
+
+            # check if 2D nested list
+            if all(isinstance(i, list) for i in data):
+                for d in data:
+                    samples.append(d + label)
+            else:
+                samples.append(data + label)
+
+        self._samples = pd.DataFrame(samples, columns=self._sample_columns)
+
+    def get_samples(self):
+        return self._samples
+
+    sample_columns = property(get_sample_columns, set_sample_columns)
+    file_paths = property(get_file_paths, set_file_paths)
+    samples = property(get_samples, set_samples)
+
+    def clone(self, clone_path, ignore_file_extensions=None):
+        # copy dataset content
+        copy_directory_content(
+            source=self.path,
+            destination=clone_path,
+            ignore_file_extensions=ignore_file_extensions
+        )
+
+        # create dataset
+        clone_dataset = Dataset(
+            path=clone_path,
+        )
+
+        return clone_dataset
 
 
 if __name__ == "__main__":
     from config import DATASET_PATH
-    import time
-    from pprint import pprint
-
-    path = DATASET_PATH.format(language="english", name="RAVDESS", form="converted")
-
-    ravdess_wav = RAVDESS_WAV(path)
-    print(ravdess_wav.samples)
 
     path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
 
-    ravdess_mfcc = RAVDESS_MFCC(path)
-    print(ravdess_mfcc.samples)
-    # labels = np.array(ravdess.samples[ravdess.Sample.LABEL_INDEX])
-    # print(labels)
-    # emotions = list(labels[:, ravdess.Label.EMOTION_INDEX])
-    # print(emotions)
-    # pprint(list(map(ravdess.Label.EMOTION_OPTIONS.get, emotions)))
-    # end = time.time()
-    # print(end - start)
-
-    # print(len(ravdess.samples['data'][0][0]))
-    # print(ravdess.VOCAL_CHANNEL_OPTIONS)
-
-
-
+    ravdess_mfcc = Dataset(path, MFCCData(), RAVDESSLabel())
 
 
 
