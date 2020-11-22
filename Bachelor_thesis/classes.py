@@ -1,7 +1,6 @@
-from os_utils import Directory
 import pandas as pd
 import numpy as np
-from files import HTKFile, WAVFile
+from files import HTKFile, WAVFile, Directory
 import re
 import os
 
@@ -16,7 +15,7 @@ class Data:
         pass
 
 class MFCCData(Data):
-    FILE = HTKFile()
+    FILE = HTKFile
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     COLUMNS = [
         "coefficients",
@@ -24,7 +23,7 @@ class MFCCData(Data):
     ]
 
     def load(self, file_path):
-        results = self.FILE.read(file_path)
+        results = self.FILE(file_path).read()
         data = []
         for index, result in enumerate(results):
             data.append([result, index + 1])
@@ -33,7 +32,7 @@ class MFCCData(Data):
 
 class WAVData(Data):
     SAMPLE_FORMAT = ".wav"
-    FILE = WAVFile()
+    FILE = WAVFile
 
     COLUMNS = [
         "sample rate",
@@ -41,7 +40,7 @@ class WAVData(Data):
     ]
 
     def load(self, file_path):
-        sample_rate, data = self.FILE.read(file_path)
+        sample_rate, data = self.FILE(file_path).read()
         return [sample_rate, data]
 
 class Label:
