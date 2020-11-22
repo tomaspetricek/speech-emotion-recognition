@@ -1,8 +1,6 @@
 import os, shutil
 import subprocess
 
-WAV = ".wav"
-
 class Directory:
 
     def __init__(self, path):
@@ -60,6 +58,15 @@ class Directory:
                     # copy file
                     shutil.copy2(source_, destination_)
 
+    def copy_structure(self, destination_dir):
+        """
+        Copies directory inner structure (directories only).
+        """
+        def ignore_files(directory, files):
+            return [f for f in files if os.path.isfile(os.path.join(directory, f))]
+
+        shutil.copytree(self.path, destination_dir, ignore=ignore_files)
+
 
 class File:
     def __init__(self, path):
@@ -91,4 +98,6 @@ class File:
         # os.rename(input_file, base + extension)
         output_file = base + new_extension
         return output_file
+
+
 

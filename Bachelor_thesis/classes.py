@@ -12,7 +12,7 @@ class Data:
         "data"
     ]
 
-    def parse(self, file_path):
+    def load(self, file_path):
         pass
 
 class MFCCData(Data):
@@ -23,7 +23,7 @@ class MFCCData(Data):
         "frame",
     ]
 
-    def parse(self, file_path):
+    def load(self, file_path):
         results = self.FILE.read(file_path)
         data = []
         for index, result in enumerate(results):
@@ -40,7 +40,7 @@ class WAVData(Data):
         "data"
     ]
 
-    def parse(self, file_path):
+    def load(self, file_path):
         sample_rate, data = self.FILE.read(file_path)
         return [sample_rate, data]
 
@@ -204,7 +204,7 @@ class Dataset(Directory):
         for file_path in self._file_paths:
             data = []
             if self.data_columns:
-                data = self.data.parse(file_path)
+                data = self.data.load(file_path)
 
             label = []
             if self.label_columns:
@@ -226,14 +226,21 @@ class Dataset(Directory):
     samples = property(get_samples, set_samples)
 
 
-if __name__ == "__main__":
-    # path_emovo = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/italian/EMOVO/mfcc/f1/dis-f1-b1.mfcc_0_d_a"
-    #
-    # print(EMOVOLabel().parse(path_emovo))
-    #
-    # path_tess = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/TESS/mfcc/OAF_angry/OAF_back_angry.mfcc_0_d_a"
-    #
-    # print(TESSLabel().parse(path_tess))
+# if __name__ == "__main__":
+#     # path_emovo = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/italian/EMOVO/mfcc/f1/dis-f1-b1.mfcc_0_d_a"
+#     #
+#     # print(EMOVOLabel().parse(path_emovo))
+#     #
+#     # path_tess = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/TESS/mfcc/OAF_angry/OAF_back_angry.mfcc_0_d_a"
+#     #
+#     # print(TESSLabel().parse(path_tess))
+#
+#     from config import DATASET_PATH
+#     ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+#
+#     ravdess_mfcc = Dataset(ravdess_path, MFCCData(), RAVDESSLabel())
+#
+#     ravdess_mfcc.copy_structure("/Users/tomaspetricek/Desktop/RAVDESS")
 
 
 
