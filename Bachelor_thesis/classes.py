@@ -2,6 +2,8 @@ from utils import *
 import pandas as pd
 import numpy as np
 from files import HTKFile, WAVFile
+import re
+
 
 class Data:
     FILE = None
@@ -46,10 +48,7 @@ class Label:
     SEPARATOR = None
 
     def parse(self, file_path):
-        filename = os.path.basename(file_path)
-        name, ext = os.path.splitext(filename)
-        label = name.split(self.SEPARATOR)
-        return list(map(int, label))
+        pass
 
 class RAVDESSLabel(Label):
     SEPARATOR = "-"
@@ -61,7 +60,7 @@ class RAVDESSLabel(Label):
         "emotional intensity",
         "statement",
         "repetition",
-        "actor"
+        "speaker"
     ]
 
     MODALITY_OPTIONS = {
@@ -100,6 +99,79 @@ class RAVDESSLabel(Label):
         1: "1 st repetition",
         2: "2 nd repetition",
     }
+
+    def parse(self, file_path):
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        label = name.split(self.SEPARATOR)
+        return list(map(int, label))
+
+class SAVEELabel(Label):
+    SEPARATOR = None
+    COLUMNS = [
+        "speaker",
+        "emotion",
+        "statement",
+    ]
+
+    EMOTION_OPTIONS = {
+        "a": "anger",
+        "d": "disgust",
+        "f": "fear",
+        "h": "happiness",
+        "n": "neutral",
+        "sa": "sadness",
+        "su": "surprise",
+    }
+
+    _REGEX = re.compile(r"(?P<emotion>[A-Za-z]+)(?P<statement>\d+)")
+
+    def parse(self, file_path):
+        path = os.path.normpath(file_path)
+        path_separated = path.split(os.sep)
+        speaker, filename = tuple(path_separated[-2:])
+        name, ext = os.path.splitext(filename)
+        result = self._REGEX.match(name)
+        groups = result.groupdict()
+        return [speaker, groups["emotion"], groups["statement"]]
+
+class TESSLabel(Label):
+    SEPARATOR = "_"
+    COLUMNS = [
+        "speaker",
+        "statement",
+        "emotion",
+    ]
+
+    def parse(self, file_path):
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        label = name.split(self.SEPARATOR)
+        return label
+
+class EMOVOLabel(Label):
+    SEPARATOR = "-"
+    COLUMNS = [
+        "emotion",
+        "speaker",
+        "sentence type",
+    ]
+
+    EMOTIONS_OPTIONS = {
+        "dis": "disgust",
+        "gio": "joy",
+        "pau": "fear",
+        "rab": "anger",
+        "sor": "surprise",
+        "tri": "sadness",
+        "neu": "neutral",
+    }
+
+    def parse(self, file_path):
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        label = name.split(self.SEPARATOR)
+        return label
 
 class Dataset:
     """
@@ -183,11 +255,15 @@ class Dataset:
 
 
 if __name__ == "__main__":
-    from config import DATASET_PATH
+    path_emovo = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/italian/EMOVO/mfcc/f1/dis-f1-b1.mfcc_0_d_a"
 
-    path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    print(EMOVOLabel().parse(path_emovo))
 
-    ravdess_mfcc = Dataset(path, MFCCData(), RAVDESSLabel())
+    path_tess = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/TESS/mfcc/OAF_angry/OAF_back_angry.mfcc_0_d_a"
+
+    print(TESSLabel().parse(path_tess))
+
+
 
 
 
