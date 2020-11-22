@@ -1,8 +1,9 @@
-from utils import *
+from os_utils import Directory
 import pandas as pd
 import numpy as np
 from files import HTKFile, WAVFile
 import re
+import os
 
 
 class Data:
@@ -173,18 +174,17 @@ class EMOVOLabel(Label):
         label = name.split(self.SEPARATOR)
         return label
 
-class Dataset:
+class Dataset(Directory):
     """
     Represents a dataset.
     """
     def __init__(self, path, data, label):
-        self.path = path
+        super().__init__(path)
         self.data = data
         self.label = label
         self.data_columns = []
         self.label_columns = []
         self.sample_columns = None
-        self.file_paths = None
         self.samples = None
 
     def set_sample_columns(self, value):
@@ -198,18 +198,6 @@ class Dataset:
 
     def get_sample_columns(self):
         return self._sample_columns
-
-    def set_file_paths(self, value):
-        self._file_paths = None
-
-        if value is None:
-            self._file_paths = get_file_paths(
-                directory=self.path,
-                file_extensions=[self.data.SAMPLE_FORMAT]
-            )
-
-    def get_file_paths(self):
-        return self._file_paths
 
     def set_samples(self, value):
         samples = []
@@ -235,33 +223,17 @@ class Dataset:
         return self._samples
 
     sample_columns = property(get_sample_columns, set_sample_columns)
-    file_paths = property(get_file_paths, set_file_paths)
     samples = property(get_samples, set_samples)
-
-    def clone(self, clone_path, ignore_file_extensions=None):
-        # copy dataset content
-        copy_directory_content(
-            source=self.path,
-            destination=clone_path,
-            ignore_file_extensions=ignore_file_extensions
-        )
-
-        # create dataset
-        clone_dataset = Dataset(
-            path=clone_path,
-        )
-
-        return clone_dataset
 
 
 if __name__ == "__main__":
-    path_emovo = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/italian/EMOVO/mfcc/f1/dis-f1-b1.mfcc_0_d_a"
-
-    print(EMOVOLabel().parse(path_emovo))
-
-    path_tess = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/TESS/mfcc/OAF_angry/OAF_back_angry.mfcc_0_d_a"
-
-    print(TESSLabel().parse(path_tess))
+    # path_emovo = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/italian/EMOVO/mfcc/f1/dis-f1-b1.mfcc_0_d_a"
+    #
+    # print(EMOVOLabel().parse(path_emovo))
+    #
+    # path_tess = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/TESS/mfcc/OAF_angry/OAF_back_angry.mfcc_0_d_a"
+    #
+    # print(TESSLabel().parse(path_tess))
 
 
 

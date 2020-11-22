@@ -4,7 +4,7 @@ from pprint import pprint
 import numpy as np
 from enums import DATASET_PATH
 from files import TextFile, HTKFile
-from utils import change_file_extension
+from os_utils import change_file_extension
 import re
 
 if __name__ == "__main__":
