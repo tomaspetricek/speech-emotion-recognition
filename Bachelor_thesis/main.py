@@ -1,11 +1,11 @@
-from processing.convertors import AudioFormatConverter, MFCCConverter
-from classes import Dataset
-from pprint import pprint
-import numpy as np
-from enums import DATASET_PATH
-from files import TextFile, HTKFile
-from os_utils import change_file_extension
-import re
+# from processing.convertors import AudioFormatConverter, MFCCConverter
+# from classes import Dataset
+# from pprint import pprint
+# import numpy as np
+# from enums import DATASET_PATH
+# from files import TextFile, HTKFile
+# from os_utils import change_file_extension
+# import re
 
 if __name__ == "__main__":
     # path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/RAVDESS/mfcc" \
@@ -19,19 +19,46 @@ if __name__ == "__main__":
     # for d in data:
     #     print(d)
 
-    test = "03-01-01-01-01-01-01"
-    "modality"
-    "vocal_channel"
-    "emotion"
-    "emotional_intensity"
-    "statement"
-    "repetition"
-    "actor"
+    # test = "03-01-01-01-01-01-01"
+    # "modality"
+    # "vocal_channel"
+    # "emotion"
+    # "emotional_intensity"
+    # "statement"
+    # "repetition"
+    # "actor"
+    #
+    # RAVDESS_LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
+    #
+    # match = RAVDESS_LABEL_REGEX.match(test)
+    # print(match.groupdict())
+    # print(list(map(int, match.groups())))
 
-    RAVDESS_LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
+    data = [
+        [
+            [1, 2],
+            [3, 4]
+        ],
+        [
+            [5, 6],
+            [7, 8]
+        ],
+        [
+            [9, 10],
+            [11, 12]
+        ]
+    ]
+    print(data)
 
-    match = RAVDESS_LABEL_REGEX.match(test)
-    print(match.groupdict())
-    print(list(map(int, match.groups())))
+    from pprint import pprint
+    import numpy as np
+    array = np.array(data)
+    shape = array.shape
+    print(array)
+    print(shape)
+
+    print(array.reshape(-1, 2))
+
+
 
 
