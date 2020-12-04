@@ -208,13 +208,13 @@ class TESSLabel(Label):  # TODO Correct labeling Pleasant_surprise
     ]
 
     EMOTIONS_OPTIONS = {
-        "Fear": "",
-        "Pleasant_surprise": "",
+        "fear": "",
+        "ps": "",
         "angry": "",
         "disgust": "",
         "happy": "",
         "neutral": "",
-        "Sad": "",
+        "sad": "",
     }
 
     def parse(self, file_path):
@@ -228,13 +228,13 @@ class TESSUnifiedLabel(TESSLabel):
     EMOTION_OPTIONS = EMOTION_OPTIONS
 
     EMOTION_CONVERSION = {
-        "Fear": FEAR,
-        "Pleasant_surprise": SURPRISE,
+        "fear": FEAR,
+        "ps": SURPRISE,
         "angry": ANGER,
         "disgust": DISGUST,
         "happy": HAPPINESS,
         "neutral": NEUTRAL,
-        "Sad": SADNESS,
+        "sad": SADNESS,
     }
 
     def parse(self, file_path):
