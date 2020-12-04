@@ -213,6 +213,7 @@ class TESSLabel(Label):  # TODO Correct labeling Pleasant_surprise
         "disgust": "",
         "happy": "",
         "neutral": "",
+        "Sad": "",
     }
 
     def parse(self, file_path):
@@ -232,6 +233,7 @@ class TESSUnifiedLabel(TESSLabel):
         "disgust": DISGUST,
         "happy": HAPPINESS,
         "neutral": NEUTRAL,
+        "Sad": SADNESS,
     }
 
     def parse(self, file_path):
