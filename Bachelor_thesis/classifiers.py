@@ -4,6 +4,8 @@ import torch.nn.functional as F
 
 
 class ClassifierModule(nn.Module):
+
+    # ASI NEPOUZIVAT TENTO PŘÍKLAD. PODÍVAT SE NA JINÝ.
     """
     Source: https://colab.research.google.com/github/skorch-dev/skorch/blob/master/notebooks/Basic_Usage.ipynb#scrollTo=N_sDVyu-gASJ
     """

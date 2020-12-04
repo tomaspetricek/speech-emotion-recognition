@@ -11,7 +11,6 @@ SADNESS = 3
 HAPPINESS = 4
 DISGUST = 5
 SURPRISE = 6
-CALM = 7
 
 EMOTION_OPTIONS = {
     NEUTRAL: "neutral",
@@ -21,7 +20,6 @@ EMOTION_OPTIONS = {
     HAPPINESS: "happiness",
     DISGUST: "disgust",
     SURPRISE: "surprise",
-    CALM: "calm"
 }
 
 
@@ -136,7 +134,7 @@ class RAVDESSUnifiedLabel(RAVDESSLabel):
 
     EMOTION_CONVERSION = {
         1: NEUTRAL,
-        2: CALM,
+        2: NEUTRAL,  # CALM to NEUTRAL
         3: HAPPINESS,
         4: SADNESS,
         5: ANGER,
