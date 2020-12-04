@@ -14,17 +14,6 @@ HAPPINESS = 4
 DISGUST = 5
 SURPRISE = 6
 
-EMOTION_OPTIONS = {
-    NEUTRAL: "neutral",
-    ANGER: "anger",
-    FEAR: "fear",
-    SADNESS: "sadness",
-    HAPPINESS: "happiness",
-    DISGUST: "disgust",
-    SURPRISE: "surprise",
-}
-
-
 class Data:
     FILE = None
     COLUMNS = [
@@ -72,6 +61,24 @@ class Label:
 
     def parse(self, file_path):
         pass
+
+class UnifiedLabel(Label):
+
+    COLUMNS = [
+        "emotion"
+    ]
+
+    EMOTION_OPTIONS = {
+        NEUTRAL: "neutral",
+        ANGER: "anger",
+        FEAR: "fear",
+        SADNESS: "sadness",
+        HAPPINESS: "happiness",
+        DISGUST: "disgust",
+        SURPRISE: "surprise",
+    }
+
+    EMOTION_CONVERSION = None
 
 
 class RAVDESSLabel(Label):
@@ -131,9 +138,7 @@ class RAVDESSLabel(Label):
         return list(map(int, label))
 
 
-class RAVDESSUnifiedLabel(RAVDESSLabel):
-    EMOTION_OPTIONS = EMOTION_OPTIONS
-
+class RAVDESSUnifiedLabel(UnifiedLabel):
     EMOTION_CONVERSION = {
         1: NEUTRAL,
         2: NEUTRAL,  # CALM to NEUTRAL
@@ -146,9 +151,9 @@ class RAVDESSUnifiedLabel(RAVDESSLabel):
     }
 
     def parse(self, file_path):
-        label = super().parse(file_path)
-        label[2] = self.EMOTION_CONVERSION[label[2]]
-        return label
+        label = RAVDESSLabel().parse(file_path)
+        emotion = label[2]
+        return [self.EMOTION_CONVERSION[emotion]]
 
 
 class SAVEELabel(Label):
@@ -181,9 +186,7 @@ class SAVEELabel(Label):
         return [speaker, groups["emotion"], groups["statement"]]
 
 
-class SAVEEUnifiedLabel(SAVEELabel):
-    EMOTION_OPTIONS = EMOTION_OPTIONS
-
+class SAVEEUnifiedLabel(UnifiedLabel):
     EMOTION_CONVERSION = {
         "a": ANGER,
         "d": DISGUST,
@@ -195,9 +198,9 @@ class SAVEEUnifiedLabel(SAVEELabel):
     }
 
     def parse(self, file_path):
-        label = super().parse(file_path)
-        label[1] = self.EMOTION_CONVERSION[label[1]]
-        return label
+        label = SAVEELabel().parse(file_path)
+        emotion = label[1]
+        return [self.EMOTION_CONVERSION[emotion]]
 
 
 class TESSLabel(Label):  # TODO Correct labeling Pleasant_surprise
@@ -225,9 +228,7 @@ class TESSLabel(Label):  # TODO Correct labeling Pleasant_surprise
         return label
 
 
-class TESSUnifiedLabel(TESSLabel):
-    EMOTION_OPTIONS = EMOTION_OPTIONS
-
+class TESSUnifiedLabel(UnifiedLabel):
     EMOTION_CONVERSION = {
         "fear": FEAR,
         "ps": SURPRISE,
@@ -239,9 +240,9 @@ class TESSUnifiedLabel(TESSLabel):
     }
 
     def parse(self, file_path):
-        label = super().parse(file_path)
-        label[2] = self.EMOTION_CONVERSION[label[2]]
-        return label
+        label = TESSLabel().parse(file_path)
+        emotion = label[2]
+        return [self.EMOTION_CONVERSION[emotion]]
 
 
 class EMOVOLabel(Label):
@@ -269,9 +270,7 @@ class EMOVOLabel(Label):
         return label
 
 
-class EMOVOUnifiedLabel(EMOVOLabel):
-    EMOTION_OPTIONS = EMOTION_OPTIONS
-
+class EMOVOUnifiedLabel(UnifiedLabel):
     EMOTION_CONVERSION = {
         "dis": DISGUST,
         "gio": HAPPINESS,
@@ -283,9 +282,9 @@ class EMOVOUnifiedLabel(EMOVOLabel):
     }
 
     def parse(self, file_path):
-        label = super().parse(file_path)
-        label[0] = self.EMOTION_CONVERSION[label[0]]
-        return label
+        label = EMOVOLabel().parse(file_path)
+        emotion = label[0]
+        return [self.EMOTION_CONVERSION[emotion]]
 
 
 class Dataset(Directory):
@@ -339,6 +338,10 @@ class Dataset(Directory):
 
     sample_columns = property(get_sample_columns, set_sample_columns)
     samples = property(get_samples, set_samples)
+
+    def combine(self, label, *datasets):
+        for dataset in datasets:
+            self._samples = pd.concat([self._samples, dataset.data])
 
 
 if __name__ == "__main__":
