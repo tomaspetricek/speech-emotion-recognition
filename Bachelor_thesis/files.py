@@ -1,4 +1,4 @@
-from libraries.PyHTK.HTK import HTKFile as PyHTKFile
+from .libraries.PyHTK.HTK import HTKFile as PyHTKFile
 from scipy.io import wavfile
 import os, shutil
 import subprocess
