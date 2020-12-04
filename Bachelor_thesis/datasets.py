@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 
-from .files import HTKFile, WAVFile, Directory
+from files import HTKFile, WAVFile, Directory
+# from .files import HTKFile, WAVFile, Directory for pytest
 import re
 import os
 
