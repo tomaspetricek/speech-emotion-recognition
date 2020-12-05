@@ -341,7 +341,8 @@ class Dataset(Directory):
 
     def combine(self, label, *datasets):
         for dataset in datasets:
-            self._samples = pd.concat([self._samples, dataset.data])
+            self._samples = pd.concat([self._samples, dataset.samples])
+            self._file_paths += dataset.file_paths
 
 
 if __name__ == "__main__":
