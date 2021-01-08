@@ -28,7 +28,7 @@ import torch
 
 class Sequential(nn.Sequential):
 
-    def _train(self, train_loader, optimizer, criterion):
+    def _train(self, train_loader, optimizer, criterion, device):
         # set model to training mode
         self.train()
 
@@ -37,6 +37,9 @@ class Sequential(nn.Sequential):
         n_samples = len(train_loader.dataset)
 
         for X, y in train_loader:
+            # move data to device
+            X, y = X.to(device), y.to(device)
+
             # zero the parameter gradients
             optimizer.zero_grad()
 
@@ -60,7 +63,7 @@ class Sequential(nn.Sequential):
 
         return loss_, accuracy
 
-    def _eval(self, val_loader, criterion):
+    def _eval(self, val_loader, criterion, device):
         # set module to evaluation mode
         self.eval()
 
@@ -70,6 +73,9 @@ class Sequential(nn.Sequential):
 
         with torch.no_grad():
             for X, y in val_loader:
+                # move data to device
+                X, y = X.to(device), y.to(device)
+
                 # forward propagation
                 y_pred = self(X)
 
@@ -85,19 +91,23 @@ class Sequential(nn.Sequential):
 
         return loss_, accuracy
 
-    def fit(self, train_loader, val_loader, criterion, optimizer, n_epochs=10):
+    def fit(self, train_loader, val_loader, criterion, optimizer, device, n_epochs=10):
         """
         Inspiration:
         https://nodata.science/no-fit-comparing-high-level-learning-interfaces-for-pytorch.html
         """
+
+        # move model to device
+        self.to(device)
+
         for epoch in range(n_epochs):
             print(f"Epoch {epoch + 1}/{n_epochs}")
 
             # train model
-            train_loss, train_accuracy = self._train(train_loader, optimizer, criterion)
+            train_loss, train_accuracy = self._train(train_loader, optimizer, criterion, device)
 
             # evaluate model
-            val_loss, val_accuracy = self._eval(val_loader, criterion)
+            val_loss, val_accuracy = self._eval(val_loader, criterion, device)
 
             # shows stats
             print(
