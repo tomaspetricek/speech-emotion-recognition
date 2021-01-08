@@ -1,14 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
@@ -90,7 +86,7 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
 
     # set device
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print(device)
+    print("Runs on device: {}".format(device))
 
     # add margin
     X_margined = np.array(add_margin(X, index_picker))
@@ -132,6 +128,7 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
         hidden_sizes=hidden_sizes,
         output_size=n_classes
     )
+    print("Neural Network Architecture:")
     print(net)
 
     criterion = nn.CrossEntropyLoss()
@@ -143,7 +140,7 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
 
 if __name__ == "__main__":
     learn(
-        index_picker=IndexPicker(25, 25),
+        index_picker=IndexPicker(25, 25),   # 25, 25
         hidden_sizes=[128, 128, 128],
         batch_size=512,
         learning_rate=0.0001,
