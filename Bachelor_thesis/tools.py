@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.base import TransformerMixin, BaseEstimator
 
 
 def add_margin(samples, index_picker):
@@ -28,3 +29,16 @@ class IndexPicker:
         from_index = index - self.left_margin
         to_index = index + self.right_margin
         return list(range(from_index, to_index + 1))
+
+
+class Scaler(BaseEstimator, TransformerMixin):
+
+    def __init__(self, scaler):
+        self.scaler = scaler
+
+    def fit(self, X, y=None):
+        self.scaler.fit(X.reshape(-1, 1))
+        return self
+
+    def transform(self, X):
+        return self.scaler.transform(X.reshape(-1, 1)).reshape(X.shape)
