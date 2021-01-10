@@ -50,12 +50,12 @@ def load_dataset():
     return X, y
 
 
-def prepare_torch_dataset(batch_size, X, y):
+def prepare_torch_dataset(batch_size, X, y, pin_memory):
     tensor_x = torch.Tensor(X)
     tensor_y = torch.Tensor(y).type(torch.LongTensor)
 
     dataset = TensorDataset(tensor_x, tensor_y)
-    dataset_loader = DataLoader(dataset, batch_size=batch_size)
+    dataset_loader = DataLoader(dataset, batch_size=batch_size, pin_memory=pin_memory)
     return dataset, dataset_loader
 
 
@@ -91,6 +91,9 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
     # show cuda info
     if device.type == 'cuda':
         print(torch.cuda.get_device_name(0))
+        pin_memory = True
+    else:
+        pin_memory = False
 
     # add margin
     X_margined = np.array(add_margin(X, index_picker))
@@ -117,11 +120,11 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
     )
 
     # prepare torch datasets
-    trainset, train_loader = prepare_torch_dataset(batch_size, X_train, y_train)
+    trainset, train_loader = prepare_torch_dataset(batch_size, X_train, y_train, pin_memory)
 
-    valset, val_loader = prepare_torch_dataset(batch_size, X_valid, y_valid)
+    valset, val_loader = prepare_torch_dataset(batch_size, X_valid, y_valid, pin_memory)
 
-    testset, test_loader = prepare_torch_dataset(batch_size, X_test, y_test)
+    testset, test_loader = prepare_torch_dataset(batch_size, X_test, y_test, pin_memory)
 
     # get number of features
     n_features = X_train.shape[1]
