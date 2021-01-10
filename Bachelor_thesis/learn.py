@@ -85,8 +85,14 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
     n_classes = len(np.unique(y))
 
     # set device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Runs on device: {}".format(device))
+
+    if device.type == 'cuda':
+        print(torch.cuda.get_device_name(0))
+        print('Memory Usage:')
+        print('Allocated:', round(torch.cuda.memory_allocated(0) / 1024 ** 3, 1), 'GB')
+        print('Cached:   ', round(torch.cuda.memory_reserved(0) / 1024 ** 3, 1), 'GB')
 
     # add margin
     X_margined = np.array(add_margin(X, index_picker))
@@ -140,9 +146,9 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
 
 if __name__ == "__main__":
     learn(
-        index_picker=IndexPicker(25, 25),   # 25, 25
+        index_picker=IndexPicker(1, 1),   # 25, 25
         hidden_sizes=[128, 128, 128],
         batch_size=512,
         learning_rate=0.0001,
-        n_epochs=30
+        n_epochs=5
     )
