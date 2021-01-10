@@ -40,9 +40,6 @@ class Sequential(nn.Sequential):
             # move data to device
             X, y = X.to(device), y.to(device)
 
-            print("X is on cuda {}:".format(X.is_cuda))
-            print("y is on cuda {}:".format(X.is_cuda))
-
             # zero the parameter gradients
             optimizer.zero_grad()
 
@@ -102,9 +99,6 @@ class Sequential(nn.Sequential):
 
         # move model to device
         self.to(device)
-
-        # check if model on cuda
-        print("Model on cuda: {}".format(next(self.parameters()).is_cuda))
 
         for epoch in range(n_epochs):
             print(f"Epoch {epoch + 1}/{n_epochs}")
