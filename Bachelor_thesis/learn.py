@@ -18,7 +18,13 @@ from tools import add_margin, IndexPicker
 from classifiers import Sequential
 
 
-def load_dataset():
+def load_data():
+    """
+    Load in datasets and returns X and y as numpy arrays.
+    """
+    X_column = "coefficients"
+    y_column = "emotion"
+
     # load ravdess
     ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
     ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
@@ -43,20 +49,80 @@ def load_dataset():
     samples = dataset.samples
 
     # convert to numpy array
-    X = np.array(list(samples['coefficients']))
+    X = np.array(list(samples[X_column]))
 
-    y = np.array(list(samples['emotion']))
+    y = np.array(list(samples[y_column]))
 
     return X, y
 
 
-def prepare_torch_dataset(batch_size, X, y, pin_memory):
+def prepare_data(X, index_picker):
+    """
+    Adds margin and reshapes it so that each row represents one sample.
+    """
+    # add margin
+    X_margined = np.array(add_margin(X, index_picker))
+
+    # reshape
+    n_samples, window_length, n_features = X_margined.shape
+    X_reshaped = np.array(np.reshape(X_margined, (n_samples, -1)))
+
+    return X_reshaped
+
+
+def split_data(X, y):
+    """
+    Splits th data into train. validation and test set.
+    """
+    # split data
+    X_train_full, X_test, y_train_full, y_test = train_test_split(
+        X,
+        y,
+        stratify=y,
+        test_size=0.05,
+        random_state=42
+    )
+
+    X_train, X_valid, y_train, y_valid = train_test_split(
+        X_train_full,
+        y_train_full,
+        stratify=y_train_full,
+        test_size=0.05,
+        random_state=42
+    )
+
+    return X_train, y_train, X_valid, y_valid, X_test, y_test
+
+
+def load_prepared_data(data_files):
+    """
+    Loads prepared data.
+    """
+    X_train = np.load(data_files['X_train'])
+
+    y_train = np.load(data_files['y_train'])
+
+    X_valid = np.load(data_files['X_valid'])
+
+    y_valid = np.load(data_files['y_valid'])
+
+    X_test = np.load(data_files['X_test'])
+
+    y_test = np.load(data_files['y_test'])
+
+    return X_train, y_train, X_valid, y_valid, X_test, y_test
+
+
+def prepare_torch_data_loader(X, y, batch_size, pin_memory):
+    """
+    Turns numpy samples and labels into DataLoader.
+    """
     tensor_x = torch.Tensor(X)
     tensor_y = torch.Tensor(y).type(torch.LongTensor)
 
     dataset = TensorDataset(tensor_x, tensor_y)
     dataset_loader = DataLoader(dataset, batch_size=batch_size, pin_memory=pin_memory)
-    return dataset, dataset_loader
+    return dataset_loader
 
 
 def create_model(input_size, hidden_sizes, output_size):
@@ -77,54 +143,35 @@ def create_model(input_size, hidden_sizes, output_size):
     return Sequential(*layers)
 
 
-def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
-    # load datasets
-    X, y = load_dataset()
-
-    # get number of classes
-    n_classes = len(np.unique(y))
-
+def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs, data_files):
     # set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Runs on device: {}".format(device))
 
-    # show cuda info
+    # check if device is cuda
     if device.type == 'cuda':
-        print(torch.cuda.get_device_name(0))
         pin_memory = True
     else:
         pin_memory = False
 
-    # add margin
-    X_margined = np.array(add_margin(X, index_picker))
+    if data_files:
+        X_train, y_train, X_valid, y_valid, X_test, y_test = load_prepared_data(data_files)
+    else:
+        X, y = load_data()
 
-    # reshape
-    n_samples, window_length, n_features = X_margined.shape
-    X_reshaped = np.array(np.reshape(X_margined, (n_samples, -1)))
+        X = prepare_data(X, index_picker)
 
-    # split data
-    X_train_full, X_test, y_train_full, y_test = train_test_split(
-        X_reshaped,
-        y,
-        stratify=y,
-        test_size=0.05,
-        random_state=42
-    )
+        X_train, y_train, X_valid, y_valid, X_test, y_test = split_data(X, y)
 
-    X_train, X_valid, y_train, y_valid = train_test_split(
-        X_train_full,
-        y_train_full,
-        stratify=y_train_full,
-        test_size=0.05,
-        random_state=42
-    )
+    # prepare torch dataloaders
+    train_loader = prepare_torch_data_loader(X_train, y_train, batch_size, pin_memory)
 
-    # prepare torch datasets
-    trainset, train_loader = prepare_torch_dataset(batch_size, X_train, y_train, pin_memory)
+    val_loader = prepare_torch_data_loader(X_valid, y_valid, batch_size, pin_memory)
 
-    valset, val_loader = prepare_torch_dataset(batch_size, X_valid, y_valid, pin_memory)
+    test_loader = prepare_torch_data_loader(X_test, y_test, batch_size, pin_memory)
 
-    testset, test_loader = prepare_torch_dataset(batch_size, X_test, y_test, pin_memory)
+    # get number of classes
+    n_classes = len(np.unique(y_train))
 
     # get number of features
     n_features = X_train.shape[1]
@@ -146,10 +193,38 @@ def learn(index_picker, hidden_sizes, batch_size, learning_rate, n_epochs):
 
 
 if __name__ == "__main__":
+    files = dict(
+        X_train="X_train.npy",
+        y_train="y_train.npy",
+        X_valid="X_valid.npy",
+        y_valid="y_valid.npy",
+        X_test="X_test.npy",
+        y_test="y_test.npy"
+    )
+
     learn(
-        index_picker=IndexPicker(1, 1),   # 25, 25
+        index_picker=IndexPicker(25, 25),   # 25, 25
         hidden_sizes=[128, 128, 128],
         batch_size=512,
         learning_rate=0.0001,
-        n_epochs=5
+        n_epochs=30,
+        data_files=files
     )
+
+    # X, y = load_data()
+    #
+    # X = prepare_data(X, IndexPicker(25, 25))
+    #
+    # X_train, y_train, X_valid, y_valid, X_test, y_test = split_data(X, y)
+    #
+    # np.save('X_train.npy', X_train)
+    #
+    # np.save('y_train.npy', y_train)
+    #
+    # np.save('X_valid.npy', X_valid)
+    #
+    # np.save('y_valid.npy', y_valid)
+    #
+    # np.save('X_test.npy', X_test)
+    #
+    # np.save('y_test.npy', y_test)
