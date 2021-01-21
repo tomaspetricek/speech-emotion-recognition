@@ -79,7 +79,7 @@ class File:
     def read(self):
         pass
 
-    def write(self):
+    def write(self, data):
         pass
 
     def change_permissions(self, permission=755):
@@ -109,27 +109,6 @@ class File:
         output_file = base + new_extension
         return output_file
 
-class TextFile(File):
-
-    def __init__(self, path, encoding="utf-8"):
-        super().__init__(path)
-        self.encoding = encoding
-        self.data = None
-
-    def read_rows(self, skip_n_rows=0):
-        self.data = []
-
-        try:
-            with open(self.path, "r", encoding=self.encoding) as file:
-                for row_n, line in enumerate(file):
-                    if row_n + 1 > skip_n_rows:
-                        self.data.append(line.strip())
-
-        except FileNotFoundError as error:
-            print(error)
-
-        return self.data
-
 
 class HTKFile(File):
 
@@ -153,3 +132,58 @@ class WAVFile(File):
     def read(self):
         self.sample_rate, self.data = wavfile.read(self.path)
         return self.sample_rate, self.data
+
+class TextFile(File):
+    """
+    Represents text file.
+    """
+
+    def __init__(self, path, encoding="utf-8"):
+        super().__init__(path)
+        self.encoding = encoding
+        self.data = None
+
+    def read(self):
+        self.data = None
+
+        try:
+            with open(self.path, "r", encoding=self.encoding) as text_file:
+                self.data = text_file.read()
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+        return self.data
+
+    def read_lines(self):
+        """
+        Reads data in lines.
+        """
+        lines = []
+
+        try:
+            with open(self.path, mode="r", encoding=self.encoding) as text_file:
+                for line in text_file:
+                    lines.append(line.strip())
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+        return lines
+
+    def write(self, data):
+        try:
+            with open(self.path, "w", encoding=self.encoding) as text_file:
+                text_file.write(data)
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+    def write_lines(self, lines):
+        """
+        Writes data into a file line by line.
+        """
+        try:
+            with open(self.path, "w", encoding=self.encoding) as text_file:
+                for line in lines:
+                    # save line
+                    text_file.write(line + "\n")
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
