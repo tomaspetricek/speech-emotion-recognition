@@ -44,7 +44,7 @@ class Sequential(nn.Sequential):
             optimizer.zero_grad()
 
             # forward propagation
-            y_pred = self(X)
+            y_pred = self(X.float())
 
             loss = criterion(y_pred, y)
 
@@ -77,7 +77,7 @@ class Sequential(nn.Sequential):
                 X, y = X.to(device), y.to(device)
 
                 # forward propagation
-                y_pred = self(X)
+                y_pred = self(X.float())
 
                 loss = criterion(y_pred, y)
 

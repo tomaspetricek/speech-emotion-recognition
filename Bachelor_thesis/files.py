@@ -187,3 +187,30 @@ class TextFile(File):
                     text_file.write(line + "\n")
         except Exception:
             raise FileNotFoundError("Could not find file.")
+
+
+class DatasetInfoFile(TextFile):
+    def read(self):
+        self.data = None
+
+        try:
+            with open(self.path, "r", encoding=self.encoding) as text_file:
+                n_chunks = int(text_file.readline())
+
+                chunk_sizes = []
+                for _ in range(n_chunks):
+                    chunk_sizes.append(int(text_file.readline().strip()))
+
+                samples_filenames = []
+                for _ in range(n_chunks):
+                    samples_filenames.append(text_file.readline().strip())
+
+                labels_filenames = []
+                for _ in range(n_chunks):
+                    labels_filenames.append(text_file.readline().strip())
+
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+        return chunk_sizes, samples_filenames, labels_filenames
+

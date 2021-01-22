@@ -12,6 +12,7 @@ from datasets import (Dataset, RAVDESSLabel, TESSLabel,
 
 from tools import add_margin, IndexPicker
 from files import TextFile
+import pandas as pd
 
 
 class Preparer:
@@ -96,47 +97,97 @@ class Preparer:
 
     @staticmethod
     def save_data(X, y, dir):
-        annotations = []
-        for index in range(len(y)):
-            sample = torch.from_numpy(X[index])
-            label = y[index]
+        X = pd.DataFrame(X)
+        y = pd.DataFrame(y)
 
-            basename = "{}_{}.pt".format(index + 1, label)
-            path = os.path.join(dir, basename)
-            torch.save(sample, path)
+        samples_path = os.path.join(dir, "samples.csv")
+        X.to_csv(samples_path, index=False)
 
-        annotations_path = os.path.join(dir, "annotations.txt")
-        TextFile(path=annotations_path).write_lines(annotations)
+        labels_path = os.path.join(dir, "labels.csv")
+        y.to_csv(labels_path, index=False)
+
+    @staticmethod
+    def save_data_numpy(X, y, dir):
+        samples_path = os.path.join(dir, "samples.npy")
+        np.save(samples_path, X)
+
+        labels_path = os.path.join(dir, "labels.npy")
+        np.save(labels_path, y)
+
+    @staticmethod
+    def save_data_numpy_split(X, y, directory, chunk_size=10**8):
+        n_chunks = round(X.shape[0] * X.shape[1] / chunk_size)
+        chunk_sizes = []
+        samples_filenames = []
+        labels_filenames = []
+
+        if n_chunks == 0:
+            n_chunks = 1
+
+        for index, samples in enumerate(np.array_split(X, n_chunks)):
+            filename = "samples_{}.npy".format(index)
+            samples_path = os.path.join(directory, filename)
+            np.save(samples_path, samples)
+
+            chunk_sizes.append(samples.shape[0])
+            samples_filenames.append(filename)
+
+        for index, labels in enumerate(np.array_split(y, n_chunks)):
+            filename = "labels_{}.npy".format(index)
+            labels_path = os.path.join(directory, filename)
+            np.save(labels_path, labels)
+
+            labels_filenames.append(filename)
+
+        info_path = os.path.join(directory, "info.txt")
+        info = [n_chunks] + chunk_sizes
+        info_str = list(map(str, info)) + samples_filenames + labels_filenames
+        TextFile(path=info_path).write_lines(info_str)
 
     def __call__(self, result_dir):
         self.load_data()
 
         self.transform_data()
 
+        n_classes = len(np.unique(self.y))
+        n_features = self.X.shape[1]
+        n_samples = self.X.shape[0]
+
+        # save dataset info
+        info_path = os.path.join(result_dir, "info.txt")
+        info = [
+            n_features,
+            n_classes,
+            n_samples,
+        ]
+
+        info_str = list(map(str, info))
+        TextFile(path=info_path).write_lines(info_str)
+
         X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
 
         train_dir = os.path.join(result_dir, "train")
         os.mkdir(train_dir)
-        self.save_data(X_train, y_train, train_dir)
+        self.save_data_numpy_split(X_train, y_train, train_dir)
 
         val_dir = os.path.join(result_dir, "val")
         os.mkdir(val_dir)
-        self.save_data(X_valid, y_valid, val_dir)
+        self.save_data_numpy_split(X_valid, y_valid, val_dir)
 
         test_dir = os.path.join(result_dir, "test")
         os.mkdir(test_dir)
-        self.save_data(X_test, y_test, test_dir)
+        self.save_data_numpy_split(X_test, y_test, test_dir)
 
 
 if __name__ == "__main__":
     preperer = Preparer(
         datasets=None,
-        index_picker=IndexPicker(1, 1),
+        index_picker=IndexPicker(10, 10),
         test_size=0.05,
         val_size=0.05
     )
 
-    result_dir = "prepared_data/fullset"
+    result_dir = "prepared_data/fullset_npy_split"
     os.mkdir(result_dir)
     preperer(result_dir)
 
