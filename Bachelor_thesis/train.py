@@ -85,24 +85,6 @@ if __name__ == "__main__":
 
     dataset_dir = "prepared_data/fullset_npy_split"
 
-    # train_dir = os.path.join(dataset_dir, "train")
-    # train_samples_path = os.path.join(train_dir, "samples.npy")
-    # train_labels_path = os.path.join(train_dir, "labels.npy")
-    #
-    # train_dataset = NumpyDataset(train_samples_path, train_labels_path)
-    #
-    # val_dir = os.path.join(dataset_dir, "val")
-    # val_samples_path = os.path.join(val_dir, "samples.npy")
-    # val_labels_path = os.path.join(val_dir, "labels.npy")
-    #
-    # val_dataset = NumpyDataset(val_samples_path, val_labels_path)
-    #
-    # test_dir = os.path.join(dataset_dir, "test")
-    # test_samples_path = os.path.join(test_dir, "samples.npy")
-    # test_labels_path = os.path.join(test_dir, "labels.npy")
-    #
-    # test_dataset = NumpyDataset(test_samples_path, test_labels_path)
-
     info_path = os.path.join(dataset_dir, "info.txt")
     info = TextFile(info_path).read_lines()
 
