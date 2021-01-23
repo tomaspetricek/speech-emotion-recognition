@@ -6,7 +6,7 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 
 from classifiers import Sequential
-from pytorch_datasets import CustomDataset, DaskDataset, NumpyDataset, NumpySplitDataset
+from pytorch_datasets import NumpyDataset, NumpySplitDataset
 from files import TextFile, DatasetInfoFile
 
 
@@ -70,12 +70,12 @@ def prepare_dataset(directory):
 
     samples_paths = []
     for samples_filename in samples_filenames:
-        samples_path = os.path.join(train_dir, samples_filename)
+        samples_path = os.path.join(directory, samples_filename)
         samples_paths.append(samples_path)
 
     labels_paths = []
     for labels_filename in labels_filenames:
-        label_path = os.path.join(train_dir, labels_filename)
+        label_path = os.path.join(directory, labels_filename)
         labels_paths.append(label_path)
 
     return NumpySplitDataset(samples_paths, labels_paths, chunk_sizes)
@@ -84,49 +84,6 @@ def prepare_dataset(directory):
 if __name__ == "__main__":
 
     dataset_dir = "prepared_data/fullset_npy_split"
-
-    # train_dir = os.path.join(dataset_dir, "train")
-    # annotations_path = os.path.join(train_dir, "annotations.txt")
-    #
-    # train_dataset = CustomDataset(
-    #     root_dir=train_dir,
-    #     annotations_path=annotations_path,
-    # )
-    #
-    # val_dir = os.path.join(dataset_dir, "val")
-    # annotations_path = os.path.join(val_dir, "annotations.txt")
-    # val_dataset = CustomDataset(
-    #     root_dir=val_dir,
-    #     annotations_path=annotations_path,
-    # )
-    #
-    # test_dir = os.path.join(dataset_dir, "test")
-    # annotations_path = os.path.join(test_dir, "annotations.txt")
-    # test_dataset = CustomDataset(
-    #     root_dir=test_dir,
-    #     annotations_path=annotations_path,
-    # )
-
-    # train_dir = os.path.join(dataset_dir, "train")
-    # train_samples_csv = os.path.join(train_dir, "samples.csv")
-    # train_labels_csv = os.path.join(train_dir, "labels.csv")
-    #
-    # train_dataset = DaskDataset(train_samples_csv, train_labels_csv)
-    #
-    # val_dir = os.path.join(dataset_dir, "val")
-    # val_samples_csv = os.path.join(val_dir, "samples.csv")
-    # val_labels_csv = os.path.join(val_dir, "labels.csv")
-    #
-    # val_dataset = DaskDataset(val_samples_csv, val_labels_csv)
-    #
-    # test_dir = os.path.join(dataset_dir, "test")
-    # test_samples_csv = os.path.join(test_dir, "samples.csv")
-    # test_labels_csv = os.path.join(test_dir, "labels.csv")
-    #
-    # test_dataset = DaskDataset(test_samples_csv, test_labels_csv)
-    #
-    # info_path = os.path.join(dataset_dir, "info.txt")
-    # info = TextFile(info_path).read_lines()
 
     # train_dir = os.path.join(dataset_dir, "train")
     # train_samples_path = os.path.join(train_dir, "samples.npy")
