@@ -1,5 +1,7 @@
 import numpy as np
 import os
+import logging
+import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,6 +10,63 @@ from torch.utils.data import TensorDataset, DataLoader
 from classifiers import Sequential
 from pytorch_datasets import NumpyDataset, NumpySplitDataset
 from files import DatasetInfoFile, SetInfoFile
+
+ENABLE_LOGGING = True
+
+
+# if ENABLE_LOGGING:
+#     logging.basicConfig(level=logging.INFO, format='%(message)s')
+#     logger = logging.getLogger()
+#     logger.addHandler(logging.FileHandler('logging/train.log', 'w'))
+#     sys.stdout.write = logger.info
+
+
+class StreamToLogger(object):
+    """
+    Fake file-like stream object that redirects writes to a logger instance.
+    Source: https://stackoverflow.com/questions/11124093/redirect-python-print-output-to-logger
+    """
+
+    def __init__(self, logger, log_level=logging.INFO):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ''
+
+    def write(self, buf):
+        temp_linebuf = self.linebuf + buf
+        self.linebuf = ''
+        for line in temp_linebuf.splitlines(True):
+            # From the io.TextIOWrapper docs:
+            #   On output, if newline is None, any '\n' characters written
+            #   are translated to the system default line separator.
+            # By default sys.stdout.write() expects '\n' newlines and then
+            # translates them so this is still cross platform.
+            if line[-1] == '\n':
+                self.logger.log(self.log_level, line.rstrip())
+            else:
+                self.linebuf += line
+
+    def flush(self):
+        if self.linebuf != '':
+            self.logger.log(self.log_level, self.linebuf.rstrip())
+        self.linebuf = ''
+
+
+if ENABLE_LOGGING:
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(message)s',
+        filename="logging/train.log",
+        filemode='w'
+    )
+
+    stdout_logger = logging.getLogger('STDOUT')
+    sl = StreamToLogger(stdout_logger, logging.INFO)
+    sys.stdout = sl
+
+    stderr_logger = logging.getLogger('STDERR')
+    sl = StreamToLogger(stderr_logger, logging.ERROR)
+    sys.stderr = sl
 
 
 def create_model(input_size, hidden_sizes, output_size):
@@ -64,6 +123,7 @@ class Trainer:
         # fit model
         self.model.fit(train_loader, val_loader, criterion, optimizer, device, n_epochs)
 
+
 def prepare_dataset(directory):
     info_path = os.path.join(directory, "info.txt")
     chunk_sizes, samples_filenames, labels_filenames = SetInfoFile(info_path).read()
@@ -82,7 +142,6 @@ def prepare_dataset(directory):
 
 
 if __name__ == "__main__":
-
     dataset_dir = "prepared_data/fullset_npy_split"
 
     info_path = os.path.join(dataset_dir, "info.txt")
@@ -110,5 +169,4 @@ if __name__ == "__main__":
         test_dataset=test_dataset
     )
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30)
-
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=5)
