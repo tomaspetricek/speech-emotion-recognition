@@ -1,58 +1,6 @@
-import os
 import torch
 from torch.utils.data import Dataset
-import re
-import dask.dataframe as dd
 import numpy as np
-import pandas as pd
-
-from files import TextFile
-
-
-class CustomDataset(Dataset):
-    """
-    Inspired by: https://stanford.edu/~shervine/blog/pytorch-how-to-generate-data-parallel
-    """
-    _SAMPLE_NAME = re.compile(r"(?P<ID>\d+)_(?P<label>\d+)")
-
-    def __init__(self, root_dir, annotations_path):
-        self.root_dir = root_dir
-        self.annotations = TextFile(annotations_path).read_lines()
-
-    def __len__(self):
-        return len(self.annotations)
-
-    def _get_sample_label(self, sample_basename):
-        name = os.path.splitext(sample_basename)[0]
-        result = self._SAMPLE_NAME.match(name)
-        groups = result.groupdict()
-        return groups["label"]
-
-    def __getitem__(self, index):
-        sample_basename = self.annotations[index]
-
-        label = int(self._get_sample_label(sample_basename))
-
-        sample_full_path = os.path.join(self.root_dir, sample_basename)
-
-        sample = torch.load(sample_full_path)
-
-        return sample, label
-
-
-class DaskDataset(Dataset):
-
-    def __init__(self, samples_csv_path, labels_csv_path):
-        self.samples = dd.read_csv(samples_csv_path)
-        self.labels = dd.read_csv(labels_csv_path)
-
-    def __len__(self):
-        return len(self.samples)
-
-    def __getitem__(self, index):
-        sample = torch.tensor(np.array(self.samples.loc[index]))
-        label = torch.tensor(np.array(self.labels.loc[index]))
-        return sample, label
 
 
 class NumpyDataset(Dataset):
@@ -104,8 +52,8 @@ class NumpySplitDataset(Dataset):
 
             previous_index = transition_index
 
-    def __getitem__(self, index):   # TODO Fix access to any element
-        # check if chuck changed
+    def __getitem__(self, index):
+        # check if chunk changed
         chunk = self._pick_chunk(index)
         if self.chunk != chunk:
             self.chunk = chunk
