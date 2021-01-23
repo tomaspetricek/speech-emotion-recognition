@@ -1,6 +1,6 @@
-import numpy as np
-import torch
 import os
+import numpy as np
+import pandas as pd
 
 from sklearn.model_selection import train_test_split
 
@@ -12,7 +12,6 @@ from datasets import (Dataset, RAVDESSLabel, TESSLabel,
 
 from tools import add_margin, IndexPicker
 from files import TextFile
-import pandas as pd
 
 
 class Preparer:
@@ -116,6 +115,8 @@ class Preparer:
 
     @staticmethod
     def save_data_numpy_split(X, y, directory, chunk_size=10**8):
+        os.mkdir(directory)
+
         n_chunks = round(X.shape[0] * X.shape[1] / chunk_size)
         chunk_sizes = []
         samples_filenames = []
@@ -167,22 +168,19 @@ class Preparer:
         X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
 
         train_dir = os.path.join(result_dir, "train")
-        os.mkdir(train_dir)
         self.save_data_numpy_split(X_train, y_train, train_dir)
 
         val_dir = os.path.join(result_dir, "val")
-        os.mkdir(val_dir)
         self.save_data_numpy_split(X_valid, y_valid, val_dir)
 
         test_dir = os.path.join(result_dir, "test")
-        os.mkdir(test_dir)
         self.save_data_numpy_split(X_test, y_test, test_dir)
 
 
 if __name__ == "__main__":
     preperer = Preparer(
         datasets=None,
-        index_picker=IndexPicker(10, 10),
+        index_picker=IndexPicker(25, 25),
         test_size=0.05,
         val_size=0.05
     )
