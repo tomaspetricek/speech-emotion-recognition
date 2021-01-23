@@ -11,16 +11,17 @@ from datasets import (Dataset, RAVDESSLabel, TESSLabel,
                       EMOVOUnifiedLabel)
 
 from tools import add_margin, IndexPicker
-from files import TextFile
+from files import DatasetInfoFile, SetInfoFile
 
 
 class Preparer:
 
-    def __init__(self, datasets, index_picker, test_size, val_size):
+    def __init__(self, datasets, index_picker, test_size, val_size, chunk_size):
         self.datasets = datasets
         self.index_picker = index_picker
         self.val_size = val_size
         self.test_size = test_size
+        self.chunk_size = chunk_size
         self.X = self. y = None
 
     def load_data(self):    # TODO Make it universal
@@ -95,36 +96,26 @@ class Preparer:
         return X_train, y_train, X_valid, y_valid, X_test, y_test
 
     @staticmethod
-    def save_data(X, y, dir):
-        X = pd.DataFrame(X)
-        y = pd.DataFrame(y)
+    def _get_n_chunks(chunk_size, data_size):
+        if chunk_size:
+            n_chunks = round(data_size / chunk_size)
 
-        samples_path = os.path.join(dir, "samples.csv")
-        X.to_csv(samples_path, index=False)
+            if n_chunks == 0:
+                n_chunks = 1
+        else:
+            n_chunks = 1
 
-        labels_path = os.path.join(dir, "labels.csv")
-        y.to_csv(labels_path, index=False)
+        return n_chunks
 
-    @staticmethod
-    def save_data_numpy(X, y, dir):
-        samples_path = os.path.join(dir, "samples.npy")
-        np.save(samples_path, X)
-
-        labels_path = os.path.join(dir, "labels.npy")
-        np.save(labels_path, y)
-
-    @staticmethod
-    def save_data_numpy_split(X, y, directory, chunk_size=10**8):
+    def chunk_and_save_set(self, X, y, directory):
         os.mkdir(directory)
 
-        n_chunks = round(X.shape[0] * X.shape[1] / chunk_size)
+        data_size = X.shape[0] * X.shape[1]
+        n_chunks = self._get_n_chunks(self.chunk_size, data_size)
+
         chunk_sizes = []
         samples_filenames = []
         labels_filenames = []
-
-        if n_chunks == 0:
-            n_chunks = 1
-
         for index, samples in enumerate(np.array_split(X, n_chunks)):
             filename = "samples_{}.npy".format(index)
             samples_path = os.path.join(directory, filename)
@@ -141,40 +132,31 @@ class Preparer:
             labels_filenames.append(filename)
 
         info_path = os.path.join(directory, "info.txt")
-        info = [n_chunks] + chunk_sizes
-        info_str = list(map(str, info)) + samples_filenames + labels_filenames
-        TextFile(path=info_path).write_lines(info_str)
+        SetInfoFile(path=info_path).write(n_chunks, chunk_sizes, samples_filenames, labels_filenames)
 
     def __call__(self, result_dir):
         self.load_data()
 
         self.transform_data()
 
+        # save dataset info
         n_classes = len(np.unique(self.y))
         n_features = self.X.shape[1]
         n_samples = self.X.shape[0]
 
-        # save dataset info
         info_path = os.path.join(result_dir, "info.txt")
-        info = [
-            n_features,
-            n_classes,
-            n_samples,
-        ]
-
-        info_str = list(map(str, info))
-        TextFile(path=info_path).write_lines(info_str)
+        DatasetInfoFile(path=info_path).write(n_features, n_classes, n_samples)
 
         X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
 
         train_dir = os.path.join(result_dir, "train")
-        self.save_data_numpy_split(X_train, y_train, train_dir)
+        self.chunk_and_save_set(X_train, y_train, train_dir)
 
         val_dir = os.path.join(result_dir, "val")
-        self.save_data_numpy_split(X_valid, y_valid, val_dir)
+        self.chunk_and_save_set(X_valid, y_valid, val_dir)
 
         test_dir = os.path.join(result_dir, "test")
-        self.save_data_numpy_split(X_test, y_test, test_dir)
+        self.chunk_and_save_set(X_test, y_test, test_dir)
 
 
 if __name__ == "__main__":
@@ -182,10 +164,12 @@ if __name__ == "__main__":
         datasets=None,
         index_picker=IndexPicker(25, 25),
         test_size=0.05,
-        val_size=0.05
+        val_size=0.05,
+        chunk_size=None
     )
 
-    result_dir = "prepared_data/fullset_npy_split"
+    # chunk_size =10**8
+    result_dir = "prepared_data/fullset_npy_2"
     os.mkdir(result_dir)
     preperer(result_dir)
 

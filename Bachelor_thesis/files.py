@@ -188,8 +188,39 @@ class TextFile(File):
         except Exception:
             raise FileNotFoundError("Could not find file.")
 
-
 class DatasetInfoFile(File):
+    def __init__(self, path, encoding="utf-8"):
+        super().__init__(path)
+        self.encoding = encoding
+        self.n_classes = None
+        self.n_features = None
+        self.n_samples = None
+
+    def read(self):
+
+        try:
+            with open(self.path, "r", encoding=self.encoding) as text_file:
+                self.n_features = int(text_file.readline().strip())
+                self.n_classes = int(text_file.readline().strip())
+                self.n_samples = int(text_file.readline().strip())
+
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+        return self.n_features, self.n_classes, self.n_samples
+
+    def write(self, n_features, n_classes, n_samples):
+        try:
+            with open(self.path, "w", encoding=self.encoding) as text_file:
+                text_file.write(str(n_features) + "\n")
+                text_file.write(str(n_classes) + "\n")
+                text_file.write(str(n_samples) + "\n")
+
+        except Exception:
+            raise FileNotFoundError("Could not find file.")
+
+
+class SetInfoFile(File):
 
     def __init__(self, path, encoding="utf-8"):
         super().__init__(path)
@@ -221,3 +252,19 @@ class DatasetInfoFile(File):
 
         return self.chunk_sizes, self.samples_filenames, self.labels_filenames
 
+    def write(self, n_chunks, chunk_sizes, samples_filenames, labels_filenames):
+        try:
+            with open(self.path, "w", encoding=self.encoding) as text_file:
+                text_file.write(str(n_chunks) + "\n")
+
+                for chunk_size in chunk_sizes:
+                    text_file.write(str(chunk_size) + "\n")
+
+                for samples_filename in samples_filenames:
+                    text_file.write(samples_filename + "\n")
+
+                for labels_filename in labels_filenames:
+                    text_file.write(labels_filename + "\n")
+
+        except Exception:
+            raise FileNotFoundError("Could not find file.")

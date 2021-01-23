@@ -7,7 +7,7 @@ from torch.utils.data import TensorDataset, DataLoader
 
 from classifiers import Sequential
 from pytorch_datasets import NumpyDataset, NumpySplitDataset
-from files import TextFile, DatasetInfoFile
+from files import DatasetInfoFile, SetInfoFile
 
 
 def create_model(input_size, hidden_sizes, output_size):
@@ -66,7 +66,7 @@ class Trainer:
 
 def prepare_dataset(directory):
     info_path = os.path.join(directory, "info.txt")
-    chunk_sizes, samples_filenames, labels_filenames = DatasetInfoFile(info_path).read()
+    chunk_sizes, samples_filenames, labels_filenames = SetInfoFile(info_path).read()
 
     samples_paths = []
     for samples_filename in samples_filenames:
@@ -86,11 +86,7 @@ if __name__ == "__main__":
     dataset_dir = "prepared_data/fullset_npy_split"
 
     info_path = os.path.join(dataset_dir, "info.txt")
-    info = TextFile(info_path).read_lines()
-
-    n_features = int(info[0])
-    n_classes = int(info[1])
-    n_samples = int(info[2])
+    n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
     train_dataset = prepare_dataset(train_dir)
