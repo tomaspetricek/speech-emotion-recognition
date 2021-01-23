@@ -11,6 +11,7 @@ from classifiers import Sequential
 from pytorch_datasets import NumpyDataset, NumpySplitDataset
 from files import DatasetInfoFile, SetInfoFile
 
+
 ENABLE_LOGGING = True
 
 
@@ -18,7 +19,7 @@ if ENABLE_LOGGING:
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     logger = logging.getLogger('STDOUT')
     handler = logging.FileHandler('logging/train.log', 'w')
-    handler.terminator = ""
+    logging.StreamHandler.terminator = ""
     logger.addHandler(handler)
     sys.stdout.write = logger.info
 
