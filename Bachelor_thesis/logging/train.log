@@ -10,7 +10,3 @@ Sequential(
   (6): Linear(in_features=128, out_features=7, bias=True)
 )
 Epoch 1/5
-train_loss: 1.218 - train_accuracy: 0.543  - val_loss: 1.048 - val_accuracy: 0.605
-Epoch 2/5
-train_loss: 0.973 - train_accuracy: 0.636  - val_loss: 0.939 - val_accuracy: 0.647
-Epoch 3/5
