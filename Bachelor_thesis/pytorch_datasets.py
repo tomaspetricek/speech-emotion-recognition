@@ -4,16 +4,58 @@ import numpy as np
 
 
 class NumpyDataset(Dataset):
-    def __init__(self, samples_path, labels_path):
-        self.samples = np.load(samples_path)
-        self.labels = np.load(labels_path)
+    def __init__(self, sample_lengths, sample_path, label_path, index_picker):
+        self.n_samples = len(sample_lengths)
+        self.samples_indices = sample_lengths
+        self.samples = np.load(sample_path)
+        self.n_frames = self.samples.shape[0]
+        self.labels = np.load(label_path)
+        self.index_picker = index_picker
+
+    def set_samples_indices(self, sample_lengths):
+        self._samples_indices = []
+        base = 0
+        for sample_length in sample_lengths:
+            first_index = base
+            last_index = base + sample_length
+            sample_indices = range(first_index, last_index)
+            self._samples_indices.append(sample_indices)
+            base += sample_length
+
+    def get_samples_indices(self):
+        return self._samples_indices
+
+    samples_indices = property(get_samples_indices, set_samples_indices)
 
     def __len__(self):
-        return len(self.samples)
+        return self.n_samples
+
+    def add_margin(self, frame_indices):
+        sample_indices = []
+        for frame_index in frame_indices:
+            frame_margined_indices = self.index_picker.pick(frame_index)
+
+            for index, frame_margined_index in enumerate(frame_margined_indices):
+                if frame_margined_index < 0:
+                    frame_margined_indices[index] = 0
+                elif frame_margined_index > self.n_frames - 1:
+                    frame_margined_indices[index] = self.n_frames - 1
+
+            sample_indices.append(frame_margined_indices)
+
+        sample = np.take(self.samples, sample_indices, axis=0)
+
+        # reshape
+        n_frames, window_length, n_features = sample.shape
+        sample = np.array(np.reshape(sample, (n_frames, -1)))
+        return sample
 
     def __getitem__(self, index):
-        sample = torch.tensor(self.samples[index])
-        label = torch.tensor(self.labels[index])
+        frame_indices = self._samples_indices[index]
+
+        # add margin
+        sample = self.add_margin(frame_indices)
+        label = torch.from_numpy(self.labels[index])
         return sample, label
 
 

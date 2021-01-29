@@ -29,16 +29,10 @@ class MFCCData(Data):
     SAMPLE_FORMAT = ".mfcc_0_d_a"
     COLUMNS = [
         "coefficients",
-        "frame",
     ]
 
     def load(self, file_path):
-        results = self.FILE(file_path).read()
-        data = []
-        for index, result in enumerate(results):
-            data.append([result, index + 1])
-
-        return data
+        return self.FILE(file_path).read()
 
 
 class WAVData(Data):
@@ -296,52 +290,38 @@ class Dataset(Directory):
         super().__init__(path)
         self.data = data
         self.label = label
-        self.data_columns = []
-        self.label_columns = []
-        self.sample_columns = None
         self.samples = None
-
-    def set_sample_columns(self, value):
-        if self.data:
-            self.data_columns = self.data.COLUMNS
-
-        if self.label:
-            self.label_columns = self.label.COLUMNS
-
-        self._sample_columns = self.data_columns + self.label_columns
-
-    def get_sample_columns(self):
-        return self._sample_columns
+        self.labels = None
 
     def set_samples(self, value):
-        samples = []
+        self._samples = []
+        SAMPLE_INDEX = 0
+
         for file_path in self._file_paths:
-            data = []
-            if self.data_columns:
-                data = self.data.load(file_path)
-
-            label = []
-            if self.label_columns:
-                label = self.label.parse(file_path)
-
-            # check if 2D nested list
-            if all(isinstance(i, list) for i in data):
-                for d in data:
-                    samples.append(d + label)
-            else:
-                samples.append(data + label)
-
-        self._samples = pd.DataFrame(samples, columns=self._sample_columns)
+            sample = self.data.load(file_path)
+            sample = np.array(sample)
+            self._samples.append(sample)
 
     def get_samples(self):
         return self._samples
 
-    sample_columns = property(get_sample_columns, set_sample_columns)
-    samples = property(get_samples, set_samples)
+    def set_labels(self, value):
+        self._labels = []
 
-    def combine(self, label, *datasets):
+        for file_path in self._file_paths:
+            label = self.label.parse(file_path)
+            self._labels.append(label)
+
+    def get_labels(self):
+        return self._labels
+
+    samples = property(get_samples, set_samples)
+    labels = property(get_labels, set_labels)
+
+    def combine(self, *datasets):
         for dataset in datasets:
-            self._samples = pd.concat([self._samples, dataset.samples])
+            self._samples += dataset.samples
+            self._labels += dataset.labels
             self._file_paths += dataset.file_paths
 
 

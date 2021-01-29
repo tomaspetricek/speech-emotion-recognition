@@ -225,46 +225,41 @@ class SetInfoFile(File):
     def __init__(self, path, encoding="utf-8"):
         super().__init__(path)
         self.encoding = encoding
-        self.chunk_sizes = None
-        self.samples_filenames = None
-        self.labels_filenames = None
+        self.n_samples = None
+        self.samples_lengths = None
+        self.sample_filename = None
+        self.label_filename = None
 
     def read(self):
 
         try:
             with open(self.path, "r", encoding=self.encoding) as text_file:
-                n_chunks = int(text_file.readline())
+                self.n_samples = int(text_file.readline())
 
-                self.chunk_sizes = []
-                for _ in range(n_chunks):
-                    self.chunk_sizes.append(int(text_file.readline().strip()))
+                self.samples_lengths = []
+                for _ in range(self.n_samples):
+                    self.samples_lengths.append(int(text_file.readline().strip()))
 
-                self.samples_filenames = []
-                for _ in range(n_chunks):
-                    self.samples_filenames.append(text_file.readline().strip())
+                self.sample_filename = text_file.readline().strip()
 
-                self.labels_filenames = []
-                for _ in range(n_chunks):
-                    self.labels_filenames.append(text_file.readline().strip())
+                self.label_filename = text_file.readline().strip()
 
         except Exception:
             raise FileNotFoundError("Could not find file.")
 
-        return self.chunk_sizes, self.samples_filenames, self.labels_filenames
+        return self.n_samples, self.samples_lengths, self.sample_filename, self.label_filename
 
-    def write(self, n_chunks, chunk_sizes, samples_filenames, labels_filenames):
+    def write(self, n_samples, samples_lengths, sample_filename, label_filename):
         try:
             with open(self.path, "w", encoding=self.encoding) as text_file:
-                text_file.write(str(n_chunks) + "\n")
+                text_file.write(str(n_samples) + "\n")
 
-                for chunk_size in chunk_sizes:
-                    text_file.write(str(chunk_size) + "\n")
+                for sample_length in samples_lengths:
+                    text_file.write(str(sample_length) + "\n")
 
-                for samples_filename in samples_filenames:
-                    text_file.write(samples_filename + "\n")
+                text_file.write(sample_filename + "\n")
 
-                for labels_filename in labels_filenames:
-                    text_file.write(labels_filename + "\n")
+                text_file.write(label_filename + "\n")
 
         except Exception:
             raise FileNotFoundError("Could not find file.")

@@ -10,7 +10,7 @@ from torch.utils.data import TensorDataset, DataLoader
 from classifiers import Sequential
 from pytorch_datasets import NumpyDataset, NumpySplitDataset
 from files import DatasetInfoFile, SetInfoFile
-
+from tools import IndexPicker
 
 ENABLE_LOGGING = True
 
@@ -79,40 +79,37 @@ class Trainer:
         self.model.fit(train_loader, val_loader, criterion, optimizer, device, n_epochs)
 
 
-def prepare_dataset(directory):
+def prepare_dataset(directory, index_picker):
     info_path = os.path.join(directory, "info.txt")
-    chunk_sizes, samples_filenames, labels_filenames = SetInfoFile(info_path).read()
+    _, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
 
-    samples_paths = []
-    for samples_filename in samples_filenames:
-        samples_path = os.path.join(directory, samples_filename)
-        samples_paths.append(samples_path)
+    sample_path = os.path.join(directory, sample_filename)
 
-    labels_paths = []
-    for labels_filename in labels_filenames:
-        label_path = os.path.join(directory, labels_filename)
-        labels_paths.append(label_path)
+    label_path = os.path.join(directory, label_filename)
 
-    return NumpySplitDataset(samples_paths, labels_paths, chunk_sizes)
+    return NumpyDataset(sample_lengths, sample_path, label_path, index_picker)
 
 
 if __name__ == "__main__":
-    dataset_dir = "prepared_data/fullset_npy_split"
+    dataset_dir = "prepared_data/fullset_npy_3"
+
+    index_picker = IndexPicker(25, 25)
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir)
+    train_dataset = prepare_dataset(train_dir, index_picker)
 
     val_dir = os.path.join(dataset_dir, "val")
-    val_dataset = prepare_dataset(val_dir)
+    val_dataset = prepare_dataset(val_dir, index_picker)
 
     test_dir = os.path.join(dataset_dir, "test")
-    test_dataset = prepare_dataset(test_dir)
+    test_dataset = prepare_dataset(test_dir, index_picker)
 
+    input_size = n_features * (index_picker.left_margin + 1 + index_picker.right_margin)
     model = create_model(
-        input_size=n_features,
+        input_size=input_size,
         hidden_sizes=[128, 128, 128],
         output_size=n_classes
     )
