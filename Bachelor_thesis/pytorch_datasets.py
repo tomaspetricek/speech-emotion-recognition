@@ -30,20 +30,21 @@ class NumpyDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
-    def add_margin(self, frame_indices):
-        sample_indices = []
-        for frame_index in frame_indices:
-            frame_margined_indices = self.index_picker.pick(frame_index)
+    def add_margin(self, sample_indices):
+        sample_margined_indices = []
 
-            for index, frame_margined_index in enumerate(frame_margined_indices):
-                if frame_margined_index < 0:
-                    frame_margined_indices[index] = 0
-                elif frame_margined_index > self.n_frames - 1:
-                    frame_margined_indices[index] = self.n_frames - 1
+        for sample_index in sample_indices:
+            frame_indices = self.index_picker.pick(sample_index)
 
-            sample_indices.append(frame_margined_indices)
+            for index, frame_index in enumerate(frame_indices):
+                if frame_index < 0:
+                    frame_indices[index] = 0
+                elif frame_index > self.n_frames - 1:
+                    frame_indices[index] = self.n_frames - 1
 
-        sample = np.take(self.samples, sample_indices, axis=0)
+            sample_margined_indices.append(frame_indices)
+
+        sample = np.take(self.samples, sample_margined_indices, axis=0)
 
         # reshape
         n_frames, window_length, n_features = sample.shape
@@ -51,11 +52,11 @@ class NumpyDataset(Dataset):
         return sample
 
     def __getitem__(self, index):
-        frame_indices = self._samples_indices[index]
+        sample_indices = self._samples_indices[index]
 
         # add margin
-        sample = self.add_margin(frame_indices)
-        label = torch.from_numpy(self.labels[index])
+        sample = self.add_margin(sample_indices)
+        label = torch.from_numpy(self.labels[index]) * sample.shape[0]
         return sample, label
 
 

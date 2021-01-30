@@ -81,7 +81,7 @@ class Preparer:
 
         return X_train, y_train, X_valid, y_valid, X_test, y_test
 
-    def chunk_and_save_set(self, X, y, directory):
+    def save_set(self, X, y, directory):
         os.mkdir(directory)
 
         n_samples = len(X)
@@ -117,13 +117,13 @@ class Preparer:
         X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
 
         train_dir = os.path.join(result_dir, "train")
-        self.chunk_and_save_set(X_train, y_train, train_dir)
+        self.save_set(X_train, y_train, train_dir)
 
         val_dir = os.path.join(result_dir, "val")
-        self.chunk_and_save_set(X_valid, y_valid, val_dir)
+        self.save_set(X_valid, y_valid, val_dir)
 
         test_dir = os.path.join(result_dir, "test")
-        self.chunk_and_save_set(X_test, y_test, test_dir)
+        self.save_set(X_test, y_test, test_dir)
 
 
 if __name__ == "__main__":
