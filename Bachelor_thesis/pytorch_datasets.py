@@ -1,7 +1,6 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
-import random
 
 
 class NumpyDataset(Dataset):
@@ -108,7 +107,12 @@ class NumpySampleDataset(NumpyDataset):
 
         # add margin
         sample = self.add_margin(sample_indices)
-        label = torch.from_numpy(self.labels[sample_index]) * sample.shape[0]
+
+        sample = torch.from_numpy(sample)
+
+        label = int(self.labels[sample_index])
+        label = [label] * sample.shape[0]
+        label = torch.tensor(label)
         return sample, label
 
 

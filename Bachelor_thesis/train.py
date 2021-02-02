@@ -89,10 +89,10 @@ class Trainer:
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         # fit model
-        self.model.fit(train_loader, val_loader, criterion, optimizer, device, n_epochs)
+        self.model.fit(train_loader, val_dataset, test_dataset, criterion, optimizer, device, n_epochs)
 
 
-def prepare_dataset(directory, index_picker):
+def prepare_dataset(directory, dataset_class, index_picker):
     info_path = os.path.join(directory, "info.txt")
     n_samples, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
 
@@ -100,7 +100,7 @@ def prepare_dataset(directory, index_picker):
 
     label_path = os.path.join(directory, label_filename)
 
-    return NumpyFrameDataset(n_samples, sample_lengths, sample_path, label_path, index_picker)
+    return dataset_class(n_samples, sample_lengths, sample_path, label_path, index_picker)
 
 
 if __name__ == "__main__":
@@ -112,13 +112,13 @@ if __name__ == "__main__":
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, index_picker)
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, index_picker)
 
     val_dir = os.path.join(dataset_dir, "val")
-    val_dataset = prepare_dataset(val_dir, index_picker)
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, index_picker)
 
     test_dir = os.path.join(dataset_dir, "test")
-    test_dataset = prepare_dataset(test_dir, index_picker)
+    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, index_picker)
 
     input_size = n_features * (index_picker.left_margin + 1 + index_picker.right_margin)
     model = create_model(
@@ -134,4 +134,4 @@ if __name__ == "__main__":
         test_dataset=test_dataset
     )
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=150)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30)
