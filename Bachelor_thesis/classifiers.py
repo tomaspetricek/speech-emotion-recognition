@@ -2,28 +2,6 @@ from torch import nn
 import torch
 
 
-# class Classifier(nn.Module):
-#     def __init__(self):
-#         super().__init__()
-#
-#         n_input_neurons = 784
-#         n_hidden_neurons = [300, 100]
-#         n_output_neurons = 10
-#
-#         self.hidden_layer = nn.Linear(n_input_neurons, n_hidden_neurons)
-#         self.output_layer = nn.Linear(n_hidden_neurons, n_output_neurons)
-#
-#         self.sigmoid = nn.Sigmoid()
-#         self.softmax = nn.Softmax(dim=1)
-#
-#     def forward(self, X):
-#         X = self.hidden_layer(X)
-#         X = self.sigmoid(X)
-#         X = self.output_layer(X)
-#         X = self.softmax(X)
-#         return X
-
-
 class Sequential(nn.Sequential):
 
     def _train(self, train_loader, optimizer, criterion, device):
