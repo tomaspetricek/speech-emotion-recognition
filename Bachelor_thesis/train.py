@@ -5,10 +5,10 @@ import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import TensorDataset, DataLoader
+from torch.utils.data import DataLoader
 
 from classifiers import Sequential
-from pytorch_datasets import NumpyDataset, NumpySplitDataset
+from pytorch_datasets import NumpySampleDataset, NumpyFrameDataset
 from files import DatasetInfoFile, SetInfoFile
 from tools import IndexPicker
 
@@ -63,11 +63,24 @@ class Trainer:
             pin_memory = False
 
         # prepare torch dataloaders
-        train_loader = DataLoader(self.train_dataset, batch_size=batch_size, pin_memory=pin_memory)
+        train_loader = DataLoader(
+            self.train_dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            pin_memory=pin_memory
+        )
 
-        val_loader = DataLoader(self.val_dataset, batch_size=batch_size, pin_memory=pin_memory)
+        val_loader = DataLoader(
+            self.val_dataset,
+            batch_size=batch_size,
+            pin_memory=pin_memory
+        )
 
-        test_loader = DataLoader(self.test_dataset, batch_size=batch_size, pin_memory=pin_memory)
+        test_loader = DataLoader(
+            self.test_dataset,
+            batch_size=batch_size,
+            pin_memory=pin_memory
+        )
 
         print("Neural Network Architecture:")
         print(self.model)
@@ -81,13 +94,13 @@ class Trainer:
 
 def prepare_dataset(directory, index_picker):
     info_path = os.path.join(directory, "info.txt")
-    _, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
+    n_samples, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
 
     sample_path = os.path.join(directory, sample_filename)
 
     label_path = os.path.join(directory, label_filename)
 
-    return NumpyDataset(sample_lengths, sample_path, label_path, index_picker)
+    return NumpyFrameDataset(n_samples, sample_lengths, sample_path, label_path, index_picker)
 
 
 if __name__ == "__main__":
@@ -121,4 +134,4 @@ if __name__ == "__main__":
         test_dataset=test_dataset
     )
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=5)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=150)

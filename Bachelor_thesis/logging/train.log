@@ -9,4 +9,14 @@ Sequential(
   (5): ReLU()
   (6): Linear(in_features=128, out_features=7, bias=True)
 )
-Epoch 1/5
+Epoch 1/150
+train_loss: 1.714 - train_accuracy: 0.318  - val_loss: 1.574 - val_accuracy: 0.395
+Epoch 2/150
+train_loss: 1.477 - train_accuracy: 0.435  - val_loss: 1.452 - val_accuracy: 0.440
+Epoch 3/150
+train_loss: 1.369 - train_accuracy: 0.478  - val_loss: 1.391 - val_accuracy: 0.466
+Epoch 4/150
+train_loss: 1.303 - train_accuracy: 0.503  - val_loss: 1.347 - val_accuracy: 0.485
+Epoch 5/150
+train_loss: 1.255 - train_accuracy: 0.521  - val_loss: 1.312 - val_accuracy: 0.497
+Epoch 6/150

@@ -38,6 +38,8 @@ class Sequential(nn.Sequential):
             # move data to device
             X, y = X.to(device), y.to(device)
 
+            y = y.flatten()
+
             # zero the parameter gradients
             optimizer.zero_grad()
 
@@ -73,6 +75,8 @@ class Sequential(nn.Sequential):
             for X, y in val_loader:
                 # move data to device
                 X, y = X.to(device), y.to(device)
+
+                y = y.flatten()
 
                 # forward propagation
                 y_pred = self(X.float())
