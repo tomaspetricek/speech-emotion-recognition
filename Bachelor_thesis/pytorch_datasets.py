@@ -71,24 +71,23 @@ class NumpyDataset(Dataset):
 
     samples_indices = property(get_samples_indices, set_samples_indices)
 
-    def add_margin(self, first_index, last_index):
-        frames_indices = range(first_index, last_index + 1)
-        frames_margined_indices = []
+    def add_margin(self, first_frame_index, last_frame_index):
+        frames_indices = range(first_frame_index, last_frame_index + 1)
+        n_features = self.samples.shape[1]
+        n_margined_features = n_features * (self.left_margin + 1 + self.right_margin)
+        n_frames = last_frame_index - first_frame_index + 1
+        frames_margined = np.zeros(shape=(n_frames, n_margined_features))
 
         # add margin
         for frame_index in frames_indices:
             first_index = frame_index - self.left_margin
             last_index = frame_index + self.right_margin
-            frame_margined_indices = list(range(first_index, last_index + 1))
 
-            frames_margined_indices.append(frame_margined_indices)
+            index = frame_index - first_frame_index
+            frame_margined = self._samples[first_index:last_index + 1]
+            frames_margined[index] = frame_margined.flatten()
 
-        sample = np.take(self._samples, frames_margined_indices, axis=0)
-
-        # reshape
-        n_frames, window_length, n_features = sample.shape
-        sample = np.array(np.reshape(sample, (n_frames, -1)))
-        return sample
+        return frames_margined
 
     def _get_sample(self, index):
         pass
