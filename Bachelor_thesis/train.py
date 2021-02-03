@@ -70,18 +70,6 @@ class Trainer:
             pin_memory=pin_memory
         )
 
-        val_loader = DataLoader(
-            self.val_dataset,
-            batch_size=batch_size,
-            pin_memory=pin_memory
-        )
-
-        test_loader = DataLoader(
-            self.test_dataset,
-            batch_size=batch_size,
-            pin_memory=pin_memory
-        )
-
         print("Neural Network Architecture:")
         print(self.model)
 
@@ -89,10 +77,10 @@ class Trainer:
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         # fit model
-        self.model.fit(train_loader, val_dataset, test_dataset, criterion, optimizer, device, n_epochs)
+        self.model.fit(train_loader, self.val_dataset, self.test_dataset, criterion, optimizer, device, n_epochs)
 
 
-def prepare_dataset(directory, dataset_class, index_picker):
+def prepare_dataset(directory, dataset_class, left_margin, right_margin):
     info_path = os.path.join(directory, "info.txt")
     n_samples, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
 
@@ -100,27 +88,28 @@ def prepare_dataset(directory, dataset_class, index_picker):
 
     label_path = os.path.join(directory, label_filename)
 
-    return dataset_class(n_samples, sample_lengths, sample_path, label_path, index_picker)
+    return dataset_class(n_samples, sample_lengths, sample_path, label_path, left_margin, right_margin)
 
 
-if __name__ == "__main__":
+def main():
     dataset_dir = "prepared_data/fullset_npy_3"
 
-    index_picker = IndexPicker(25, 25)
+    left_margin = right_margin = 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, index_picker)
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin)
+    print("Train dataset prepared.")
 
     val_dir = os.path.join(dataset_dir, "val")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, index_picker)
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin)
 
     test_dir = os.path.join(dataset_dir, "test")
-    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, index_picker)
+    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
 
-    input_size = n_features * (index_picker.left_margin + 1 + index_picker.right_margin)
+    input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
         hidden_sizes=[128, 128, 128],
@@ -135,3 +124,7 @@ if __name__ == "__main__":
     )
 
     trainer(batch_size=512, learning_rate=0.0001, n_epochs=30)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,77 +1,100 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 import numpy as np
 
 
 class NumpyDataset(Dataset):
-    def __init__(self, n_samples, samples_lengths, samples_path, labels_path, index_picker):
+    def __init__(self, n_samples, samples_lengths, samples_path, labels_path, left_margin, right_margin):
         self.n_samples = n_samples
-        self.last_indices = samples_lengths
+        self.left_margin = left_margin
+        self.right_margin = right_margin
+        self.sample_lengths = samples_lengths
+        self.n_frames = None    # set in set_samples
         self.samples = samples_path
-        self.n_frames = self.samples.shape[0]
-        self.labels = np.load(labels_path)
-        self.index_picker = index_picker
+        self.labels = labels_path
+        self.samples_indices = None
 
     def set_samples(self, samples_path):
         self._samples = np.load(samples_path)
+        self.n_frames = self._samples.shape[0]
+
+        # add margins
+        first_sample = list(self._samples[0])
+        left_sample_margin = self.left_margin * [first_sample]
+        left_sample_margin = np.array(left_sample_margin)
+        
+        last_sample = list(self._samples[-1])
+        right_sample_margin = self.right_margin * [last_sample]
+        right_sample_margin = np.array(right_sample_margin)
+        self._samples = np.concatenate((left_sample_margin, self._samples, right_sample_margin), axis=0)
 
     def get_samples(self):
         return self._samples
 
     samples = property(get_samples, set_samples)
 
-    def set_last_indices(self, sample_lengths):
-        self._last_indices = []
-        base = 0
-        for sample_length in sample_lengths:
-            last_index = base + sample_length - 1
-            self._last_indices.append(last_index)
-            base += sample_length
+    def set_labels(self, labels_path):
+        labels = np.load(labels_path)
 
-    def get_last_indices(self):
-        return self._last_indices
+        self._labels = []
+        for index, sample_length in enumerate(self.sample_lengths):
+            self._labels += [labels[index]] * sample_length
 
-    last_indices = property(get_last_indices, set_last_indices)
+        # add margins
+        first_label = labels[0]
+        left_label_margin = self.left_margin * [first_label]
 
-    def _get_sample_index(self, frame_index):
-        previous_index = -1
-        for sample_index, last_index in enumerate(self._last_indices):
-            if previous_index < frame_index <= last_index:
-                return sample_index
+        last_label = labels[-1]
+        right_label_margin = self.right_margin * [last_label]
 
-            previous_index = last_index
+        self._labels = left_label_margin + self._labels + right_label_margin
 
-    def _get_sample_indices(self, sample_index):
-        if sample_index - 1 < 0:
-            first_index = 0
-        else:
-            first_index = sample_index + 1
+        # convert to numpy array
+        self._labels = np.array(self._labels)
 
-        last_index = self._last_indices[sample_index]
+    def get_labels(self):
+        return self._labels
 
-        return range(first_index, last_index + 1)
+    labels = property(get_labels, set_labels)
 
-    def add_margin(self, sample_indices):
-        sample_margined_indices = []
+    def set_samples_indices(self, value):
+        self._samples_indices = []
+        first_index = self.left_margin
 
-        # check edges
-        for sample_index in sample_indices:
-            frame_indices = self.index_picker.pick(sample_index)
+        for sample_length in self.sample_lengths:
+            last_index = first_index + sample_length - 1
+            self._samples_indices.append((first_index, last_index))
+            first_index = last_index + 1
 
-            for index, frame_index in enumerate(frame_indices):
-                if frame_index < 0:
-                    frame_indices[index] = 0
-                elif frame_index > self.n_frames - 1:
-                    frame_indices[index] = self.n_frames - 1
+    def get_samples_indices(self):
+        return self._samples_indices
 
-            sample_margined_indices.append(frame_indices)
+    samples_indices = property(get_samples_indices, set_samples_indices)
 
-        sample = np.take(self.samples, sample_margined_indices, axis=0)
+    def add_margin(self, first_index, last_index):
+        frames_indices = range(first_index, last_index + 1)
+        frames_margined_indices = []
+
+        # add margin
+        for frame_index in frames_indices:
+            first_index = frame_index - self.left_margin
+            last_index = frame_index + self.right_margin
+            frame_margined_indices = list(range(first_index, last_index + 1))
+
+            frames_margined_indices.append(frame_margined_indices)
+
+        sample = np.take(self._samples, frames_margined_indices, axis=0)
 
         # reshape
         n_frames, window_length, n_features = sample.shape
         sample = np.array(np.reshape(sample, (n_frames, -1)))
         return sample
+
+    def _get_sample(self, index):
+        pass
+
+    def _get_label(self, index):
+        pass
 
     def __len__(self):
         pass
@@ -82,37 +105,49 @@ class NumpyDataset(Dataset):
 
 class NumpyFrameDataset(NumpyDataset):
 
+    def _get_sample(self, frame_index):
+        # add margin
+        first_index = last_index = frame_index
+        sample = self.add_margin(first_index, last_index)
+        sample = sample.flatten()
+        sample = torch.tensor(sample)
+        return sample
+
+    def _get_label(self, frame_index):
+        label = self._labels[frame_index]
+        label = torch.tensor(label)
+        return label
+
     def __len__(self):
         return self.n_frames
 
     def __getitem__(self, frame_index):
-        sample_index = self._get_sample_index(frame_index)
-
-        # add margin
-        sample = self.add_margin([frame_index])
-        sample = sample.flatten()
-        sample = torch.tensor(sample)
-
-        label = self.labels[sample_index]
-        label = torch.tensor(label)
+        frame_index = frame_index + self.left_margin
+        sample = self._get_sample(frame_index)
+        label = self._get_label(frame_index)
         return sample, label
 
 class NumpySampleDataset(NumpyDataset):
+
+    def _get_sample(self, sample_index):
+        # add margin
+        first_index, last_index = self._samples_indices[sample_index]
+        sample = self.add_margin(first_index, last_index)
+        sample = torch.tensor(sample)
+        return sample
+
+    def _get_label(self, sample_index):
+        first_index, last_index = self._samples_indices[sample_index]
+        label = self._labels[first_index:last_index + 1]
+        label = torch.tensor(label)
+        return label
 
     def __len__(self):
         return self.n_samples
 
     def __getitem__(self, sample_index):
-        sample_indices = self._get_sample_indices(sample_index)
-
-        # add margin
-        sample = self.add_margin(sample_indices)
-
-        sample = torch.from_numpy(sample)
-
-        label = int(self.labels[sample_index])
-        label = [label] * sample.shape[0]
-        label = torch.tensor(label)
+        sample = self._get_sample(sample_index)
+        label = self._get_label(sample_index)
         return sample, label
 
 

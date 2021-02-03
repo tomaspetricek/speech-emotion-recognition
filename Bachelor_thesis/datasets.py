@@ -295,7 +295,6 @@ class Dataset(Directory):
 
     def set_samples(self, value):
         self._samples = []
-        SAMPLE_INDEX = 0
 
         for file_path in self._file_paths:
             sample = self.data.load(file_path)

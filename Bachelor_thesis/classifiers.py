@@ -67,15 +67,16 @@ class Sequential(nn.Sequential):
 
                 loss = criterion(y_pred, y)
 
-                # statistics
-                _, y_pred_label = torch.max(y_pred, 1)
+                # calc mean label
+                y_mean = torch.mean(y_pred, 0)
+                _, pred_class = torch.max(y_mean, 0)
 
-                mode_class, _ = torch.mode(y_pred_label)    # mode - highest count
                 correct_class = y[0]
 
-                correct += (mode_class == correct_class).sum().item()
+                if pred_class == correct_class:
+                    correct += 1
 
-                running_loss += loss.item() * X.shape[0]
+                running_loss += loss.item()
 
         loss_ = running_loss / n_samples
         accuracy = correct / n_samples

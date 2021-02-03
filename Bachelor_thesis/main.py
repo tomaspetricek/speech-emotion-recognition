@@ -1,63 +1,36 @@
 # from processing.convertors import AudioFormatConverter, MFCCConverter
 # from classes import Dataset
 # from pprint import pprint
-# import numpy as np
+import numpy as np
 # from enums import DATASET_PATH
 # from files import TextFile, HTKFile
 # from os_utils import change_file_extension
 # import re
 
+def get_n_samples(path):
+    dataset = np.load(path)
+    return dataset.shape[0]
+
+
 if __name__ == "__main__":
-    # path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/english/RAVDESS/mfcc" \
-    #        "/Audio_Speech_Actors_01-24/Actor_01/03-01-01-01-01-01-01.mfcc_0_d_a"
-    #
-    # htk_file = HTKFile(filename=path)
-    # htk_file.read()
-    # data = np.array(htk_file.data).flatten()
-    #
-    # print(len(data))
-    # for d in data:
-    #     print(d)
+    train_path = "prepared_data/fullset_npy_2/train/samples_0.npy"
+    test_path = "prepared_data/fullset_npy_2/test/samples_0.npy"
+    val_path = "prepared_data/fullset_npy_2/val/samples_0.npy"
 
-    # test = "03-01-01-01-01-01-01"
-    # "modality"
-    # "vocal_channel"
-    # "emotion"
-    # "emotional_intensity"
-    # "statement"
-    # "repetition"
-    # "actor"
-    #
-    # RAVDESS_LABEL_REGEX = re.compile(r'(?P<modality>\d+)-(?P<vocal_channel>\d+)-(?P<emotion>\d+)-(?P<emotional_intensity>\d+)-(?P<statement>\d+)-(?P<repetition>\d+)-(?P<actor>\d+)')
-    #
-    # match = RAVDESS_LABEL_REGEX.match(test)
-    # print(match.groupdict())
-    # print(list(map(int, match.groups())))
+    n_test_samples = get_n_samples(test_path)
+    print(n_test_samples)
+    n_train_samples = get_n_samples(train_path)
+    print(n_train_samples)
+    n_val_samples = get_n_samples(val_path)
+    print(n_val_samples)
+    total_n_samples = n_test_samples + n_train_samples + n_val_samples
 
-    data = [
-        [
-            [1, 2],
-            [3, 4]
-        ],
-        [
-            [5, 6],
-            [7, 8]
-        ],
-        [
-            [9, 10],
-            [11, 12]
-        ]
-    ]
-    print(data)
+    print(total_n_samples)
 
-    from pprint import pprint
-    import numpy as np
-    array = np.array(data)
-    shape = array.shape
-    print(array)
-    print(shape)
 
-    print(array.reshape(-1, 2))
+
+
+
 
 
 

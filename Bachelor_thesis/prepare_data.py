@@ -133,8 +133,7 @@ if __name__ == "__main__":
         val_size=0.05,
     )
 
-    # chunk_size =10**8
-    result_dir = "prepared_data/fullset_npy_3"
+    result_dir = "prepared_data/fullset_npy_4"
     os.mkdir(result_dir)
     preperer(result_dir)
 
