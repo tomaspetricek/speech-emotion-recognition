@@ -3,7 +3,7 @@ import subprocess
 subprocess tutorial link: https://youtu.be/2Fp1N6dof0Y
 """
 from functools import partial
-from enums import MFCC_CONFIG_PATH
+from config import MFCC_CONFIG_PATH
 
 EXECUTION_SUCCESSFUL = 0
 
