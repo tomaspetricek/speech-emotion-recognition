@@ -7,15 +7,15 @@ from config import DATASET_PATH
 from datasets import (Dataset, RAVDESSLabel, TESSLabel,
                       EMOVOLabel, SAVEELabel, MFCCData, WAVData,
                       RAVDESSUnifiedLabel, TESSUnifiedLabel, SAVEEUnifiedLabel,
-                      EMOVOUnifiedLabel)
+                      EMOVOUnifiedLabel, CallCentersUnifiedLabel)
 
 from files import DatasetInfoFile, SetInfoFile
 
 
 class Preparer:
 
-    def __init__(self, datasets, test_size, val_size):
-        self.datasets = datasets
+    def __init__(self, dataset, test_size, val_size):
+        self.dataset = dataset
         self.val_size = val_size
         self.test_size = test_size
         self.X = self. y = None
@@ -24,32 +24,10 @@ class Preparer:
         """
         Load in datasets and returns X and y as numpy arrays.
         """
-        X_column = "coefficients"
-        y_column = "emotion"
-
-        # load ravdess
-        ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
-        ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
-
-        # load tess
-        tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
-        tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
-
-        # load savee
-        savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
-        savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
-
-        # load emovo
-        emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
-        emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
-
-        # combine datasets
-        ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified, emovo_mfcc_unified)
-        dataset = ravdess_mfcc_unified
 
         # get samples
-        samples = dataset.samples
-        labels = dataset.labels
+        samples = self.dataset.samples
+        labels = self.dataset.labels
 
         # convert to numpy array
         self.X = samples
@@ -114,26 +92,54 @@ class Preparer:
         info_path = os.path.join(result_dir, "info.txt")
         DatasetInfoFile(path=info_path).write(n_features, n_classes, n_samples)
 
-        X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
+        if self.test_size and self.val_size:
+            X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
 
-        train_dir = os.path.join(result_dir, "train")
-        self.save_set(X_train, y_train, train_dir)
+            train_dir = os.path.join(result_dir, "train")
+            self.save_set(X_train, y_train, train_dir)
 
-        val_dir = os.path.join(result_dir, "val")
-        self.save_set(X_valid, y_valid, val_dir)
+            val_dir = os.path.join(result_dir, "val")
+            self.save_set(X_valid, y_valid, val_dir)
 
-        test_dir = os.path.join(result_dir, "test")
-        self.save_set(X_test, y_test, test_dir)
+            test_dir = os.path.join(result_dir, "test")
+            self.save_set(X_test, y_test, test_dir)
+        else:
+            whole_dir = os.path.join(result_dir, "whole")
+            self.save_set(self.X, self.y, whole_dir)
 
 
 if __name__ == "__main__":
+    # # load ravdess
+    # ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    # ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
+    #
+    # # load tess
+    # tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
+    # tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
+    #
+    # # load savee
+    # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
+    # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
+    #
+    # # load emovo
+    # emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
+    # emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
+    #
+    # # combine datasets
+    # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified, emovo_mfcc_unified)
+    # dataset = ravdess_mfcc_unified
+
+    call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
+
+    call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
+
     preperer = Preparer(
-        datasets=None,
-        test_size=0.05,
-        val_size=0.05,
+        dataset=call_center_unified,
+        test_size=None,
+        val_size=None,
     )
 
-    result_dir = "prepared_data/fullset_npy_4"
+    result_dir = "prepared_data/call_centers_npy"
     os.mkdir(result_dir)
     preperer(result_dir)
 

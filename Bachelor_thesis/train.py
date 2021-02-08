@@ -101,12 +101,14 @@ def main():
 
     train_dir = os.path.join(dataset_dir, "train")
     train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin)
-    print("Train dataset prepared.")
 
     val_dir = os.path.join(dataset_dir, "val")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin)
 
-    test_dir = os.path.join(dataset_dir, "test")
+    # test_dir = os.path.join(dataset_dir, "test")
+    # test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
+
+    test_dir = "prepared_data/call_centers_npy/whole"
     test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
 
     input_size = n_features * (left_margin + 1 + right_margin)

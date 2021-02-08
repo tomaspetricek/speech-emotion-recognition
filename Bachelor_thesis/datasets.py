@@ -281,6 +281,17 @@ class EMOVOUnifiedLabel(UnifiedLabel):
         return [self.EMOTION_CONVERSION[emotion]]
 
 
+class CallCentersUnifiedLabel(UnifiedLabel):
+
+    SEPARATOR = "_"
+
+    def parse(self, file_path):
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        label = name.split(self.SEPARATOR)
+        emotion = label[1]
+        return int(emotion)
+
 class Dataset(Directory):
     """
     Represents a dataset.
