@@ -18,7 +18,7 @@ class NumpyDataset(Dataset):
         self._samples = np.load(samples_path)
         self.n_frames = self._samples.shape[0]
 
-        # add margins
+        # add boundaries - copy of last frame at each end
         first_sample = list(self._samples[0])
         left_sample_margin = self.left_margin * [first_sample]
         left_sample_margin = np.array(left_sample_margin)
