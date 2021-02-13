@@ -34,30 +34,22 @@ class Preparer:
 
         self.y = labels
 
-    def split_data(self):
+    def split_data(self, X, y, test_size):
         """
         Splits th data into train. validation and test set.
         """
         random_state = 42
 
         # split data
-        X_train_full, X_test, y_train_full, y_test = train_test_split(
-            self.X,
-            self.y,
-            stratify=self.y,
-            test_size=self.test_size,
+        X_train, X_test, y_train, y_test = train_test_split(
+            X,
+            y,
+            stratify=y,
+            test_size=test_size,
             random_state=random_state
         )
 
-        X_train, X_valid, y_train, y_valid = train_test_split(
-            X_train_full,
-            y_train_full,
-            stratify=y_train_full,
-            test_size=self.val_size,
-            random_state=random_state
-        )
-
-        return X_train, y_train, X_valid, y_valid, X_test, y_test
+        return X_train, y_train, X_test, y_test
 
     def save_set(self, X, y, directory):
         os.mkdir(directory)
@@ -92,54 +84,61 @@ class Preparer:
         info_path = os.path.join(result_dir, "info.txt")
         DatasetInfoFile(path=info_path).write(n_features, n_classes, n_samples)
 
-        if self.test_size and self.val_size:
-            X_train, y_train, X_valid, y_valid, X_test, y_test = self.split_data()
-
-            train_dir = os.path.join(result_dir, "train")
-            self.save_set(X_train, y_train, train_dir)
-
-            val_dir = os.path.join(result_dir, "val")
-            self.save_set(X_valid, y_valid, val_dir)
+        if self.test_size:
+            X_train_full, y_train_full, X_test, y_test = self.split_data(self.X, self.y, self.test_size)
 
             test_dir = os.path.join(result_dir, "test")
             self.save_set(X_test, y_test, test_dir)
+
+            train_dir = os.path.join(result_dir, "train")
+
+            if self.val_size:
+                X_train, y_train, X_val, y_val = self.split_data(X_train_full, y_train_full, self.val_size)
+
+                val_dir = os.path.join(result_dir, "val")
+                self.save_set(X_val, y_val, val_dir)
+
+                self.save_set(X_train, y_train, train_dir)
+            else:
+                self.save_set(X_train_full, y_train_full, train_dir)
+
         else:
             whole_dir = os.path.join(result_dir, "whole")
             self.save_set(self.X, self.y, whole_dir)
 
 
 if __name__ == "__main__":
-    # # load ravdess
-    # ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
-    # ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
-    #
-    # # load tess
-    # tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
-    # tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
-    #
-    # # load savee
-    # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
-    # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
-    #
-    # # load emovo
-    # emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
-    # emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
-    #
-    # # combine datasets
-    # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified, emovo_mfcc_unified)
-    # dataset = ravdess_mfcc_unified
+    # load ravdess
+    ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
 
-    call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
+    # load tess
+    tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
+    tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
 
-    call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
+    # load savee
+    savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
+    savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
+
+    # load emovo
+    emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
+    emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
+
+    # combine datasets
+    ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified, emovo_mfcc_unified)
+    dataset = ravdess_mfcc_unified
+
+    #call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
+
+    #call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
 
     preperer = Preparer(
-        dataset=call_center_unified,
-        test_size=None,
+        dataset=dataset,
+        test_size=0.2,
         val_size=None,
     )
 
-    result_dir = "prepared_data/call_centers_npy"
+    result_dir = "prepared_data/fullset_npy_80_20"
     os.mkdir(result_dir)
     preperer(result_dir)
 
