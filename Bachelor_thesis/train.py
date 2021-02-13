@@ -70,7 +70,7 @@ class Trainer:
         self.val_dataset = val_dataset
         self.test_dataset = test_dataset
 
-    def __call__(self, batch_size, learning_rate, n_epochs, result_path=None):
+    def __call__(self, batch_size, learning_rate, n_epochs, result_dir=None):
 
         # set device
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -101,14 +101,15 @@ class Trainer:
                                  n_epochs)
 
         # save results
-        if result_path:
-            self._save_results(result_path)
+        if result_dir:
+            self._save_results(result_dir)
 
         # show results
         self._show_results(history)
 
-    def _save_results(self, result_path):
-        torch.save(self.model, result_path)
+    def _save_results(self, result_dir):
+        model_path = os.path.join(result_dir, "model.pt")
+        torch.save(self.model, model_path)
 
     def _show_results(self, history):
         plot_history(history)
@@ -159,7 +160,10 @@ def main():
         test_dataset=test_dataset
     )
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=5, result_path="models/pytorch/model.pt")
+    result_dir = "models/pytorch/experiment_01"
+    os.mkdir(result_dir)
+
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=2, result_dir=result_dir)
 
 
 if __name__ == "__main__":

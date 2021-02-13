@@ -13,11 +13,15 @@ from os import walk
 import os
 
 from files import HTKFile
+import torch
 
 
 if __name__ == "__main__":
-    file_path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/czech/CallCenters/mfcc/001_1.mfcc_0_d_a"
-    data = HTKFile(file_path).read()
+    # file_path = "/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Datasets/czech/CallCenters/mfcc/001_1.mfcc_0_d_a"
+    # data = HTKFile(file_path).read()
+
+    model = torch.load("models/pytorch/experiment_01/model.pt")
+    print(model)
 
 
 
