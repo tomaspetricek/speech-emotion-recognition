@@ -1,6 +1,7 @@
 from torch import nn
 import torch
 import numpy as np
+from collections import defaultdict
 
 
 class Sequential(nn.Sequential):
@@ -36,7 +37,9 @@ class Sequential(nn.Sequential):
             # statistics
             _, y_pred_label = torch.max(y_pred, 1)
             correct += (y_pred_label == y).sum().item()
-            running_loss += loss.item() * X.shape[0]
+
+            batch_size = X.shape[0]
+            running_loss += loss.item() * batch_size
 
         loss_ = running_loss / n_samples
         accuracy = correct / n_samples
@@ -53,6 +56,7 @@ class Sequential(nn.Sequential):
         correct = 0
         running_loss = 0.0
         n_samples = len(val_dataset)
+        n_frames = val_dataset.n_frames
 
         with torch.no_grad():
             for X, y in val_dataset:
@@ -76,9 +80,10 @@ class Sequential(nn.Sequential):
                 if pred_class == correct_class:
                     correct += 1
 
-                running_loss += loss.item()
+                n_frames_sample = X.shape[0]
+                running_loss += loss.item() * n_frames_sample
 
-        loss_ = running_loss / n_samples
+        loss_ = running_loss / n_frames
         accuracy = correct / n_samples
 
         return loss_, accuracy
@@ -91,18 +96,25 @@ class Sequential(nn.Sequential):
 
         # move model to device
         self.to(device)
+        history = defaultdict(list)
 
         for epoch in range(n_epochs):
             print(f"Epoch {epoch + 1}/{n_epochs}")
 
             # train model
             train_loss, train_accuracy = self._train(train_loader, optimizer, criterion, device)
+            history["train_loss"].append(train_loss)
+            history["train_accuracy"].append(train_accuracy)
 
             # evaluate model
             val_loss, val_accuracy = self._eval(val_dataset, criterion, device)
+            history["val_loss"].append(val_loss)
+            history["val_accuracy"].append(val_accuracy)
 
             # test model
             test_loss, test_accuracy = self._eval(test_dataset, criterion, device)
+            history["test_loss"].append(test_loss)
+            history["test_accuracy"].append(test_accuracy)
 
             # shows stats
             print(
@@ -113,7 +125,4 @@ class Sequential(nn.Sequential):
 
         print('Finished Training')
 
-
-
-
-
+        return dict(history)
