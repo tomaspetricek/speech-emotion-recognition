@@ -12,37 +12,8 @@ from classifiers import Sequential
 from pytorch_datasets import NumpySampleDataset, NumpyFrameDataset
 from files import DatasetInfoFile, SetInfoFile
 
-ENABLE_LOGGING = True
+MODEL_DIR = "models/pytorch"
 
-
-if ENABLE_LOGGING:
-    logging.basicConfig(level=logging.INFO, format='%(message)s')
-    logger = logging.getLogger('STDOUT')
-    handler = logging.FileHandler('logging/train.log', 'w')
-    logging.StreamHandler.terminator = ""
-    logger.addHandler(handler)
-    sys.stdout.write = logger.info
-
-def plot_history(history):
-    # plot accuracy
-    plt.plot(history['train_accuracy'])
-    plt.plot(history['val_accuracy'])
-    plt.plot(history['test_accuracy'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val', 'test'], loc='upper left')
-    plt.show()
-
-    # plot loss
-    plt.plot(history['train_loss'])
-    plt.plot(history['val_loss'])
-    plt.plot(history['test_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val', 'test'], loc='upper left')
-    plt.show()
 
 def create_model(input_size, hidden_sizes, output_size):
     input_layer = [
@@ -64,6 +35,8 @@ def create_model(input_size, hidden_sizes, output_size):
 
 class Trainer:
 
+    PLOT_DPI = 200
+
     def __init__(self, model, train_dataset, val_dataset, test_dataset):
         self.model = model
         self.train_dataset = train_dataset
@@ -71,6 +44,8 @@ class Trainer:
         self.test_dataset = test_dataset
 
     def __call__(self, batch_size, learning_rate, n_epochs, result_dir=None):
+        if result_dir:
+            self._set_logging(result_dir)
 
         # set device
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -100,19 +75,61 @@ class Trainer:
         history = self.model.fit(train_loader, self.val_dataset, self.test_dataset, criterion, optimizer, device,
                                  n_epochs)
 
+        # get plots
+        accuracy_plot = self._get_accuracy_plot(history)
+        loss_plot = self._get_loss_plot(history)
+
         # save results
         if result_dir:
-            self._save_results(result_dir)
+            self._save_results(result_dir, accuracy_plot, loss_plot)
 
         # show results
-        self._show_results(history)
+        accuracy_plot.show()
+        loss_plot.show()
 
-    def _save_results(self, result_dir):
+    @staticmethod
+    def _set_logging(result_dir):
+        log_path = os.path.join(result_dir, "train.log")
+        logging.basicConfig(level=logging.INFO, format='%(message)s')
+        logger = logging.getLogger('STDOUT')
+        handler = logging.FileHandler(log_path, 'w')
+        logging.StreamHandler.terminator = ""
+        logger.addHandler(handler)
+        sys.stdout.write = logger.info
+
+    @staticmethod
+    def _get_accuracy_plot(history):
+        accuracy_plot = plt.figure()
+        plt.plot(history['train_accuracy'])
+        plt.plot(history['val_accuracy'])
+        plt.plot(history['test_accuracy'])
+        plt.title('model accuracy')
+        plt.ylabel('accuracy')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'val', 'test'], loc='upper left')
+        return accuracy_plot
+
+    @staticmethod
+    def _get_loss_plot(history):
+        loss_plot = plt.figure()
+        plt.plot(history['train_loss'])
+        plt.plot(history['val_loss'])
+        plt.plot(history['test_loss'])
+        plt.title('model loss')
+        plt.ylabel('loss')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'val', 'test'], loc='upper left')
+        return loss_plot
+
+    def _save_results(self, result_dir, accuracy_plot, loss_plot):
         model_path = os.path.join(result_dir, "model.pt")
         torch.save(self.model, model_path)
 
-    def _show_results(self, history):
-        plot_history(history)
+        accuracy_path = os.path.join(result_dir, 'accuracy.png')
+        accuracy_plot.savefig(accuracy_path, dpi=self.PLOT_DPI)
+
+        loss_path = os.path.join(result_dir, 'loss.png')
+        loss_plot.savefig(loss_path, dpi=self.PLOT_DPI)
 
 
 def prepare_dataset(directory, dataset_class, left_margin, right_margin):
@@ -126,10 +143,10 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin):
     return dataset_class(n_samples, sample_lengths, sample_path, label_path, left_margin, right_margin)
 
 
-def main():
-    dataset_dir = "prepared_data/fullset_npy_80_20"
+def main(result_dir):
+    dataset_dir = "prepared_data/fullset_npy_3"
 
-    left_margin = right_margin = 50
+    left_margin = right_margin = 30
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -137,7 +154,7 @@ def main():
     train_dir = os.path.join(dataset_dir, "train")
     train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin)
 
-    val_dir = os.path.join(dataset_dir, "test")
+    val_dir = os.path.join(dataset_dir, "val")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin)
 
     # test_dir = os.path.join(dataset_dir, "test")
@@ -149,7 +166,7 @@ def main():
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
-        hidden_sizes=[64, 64, 64],
+        hidden_sizes=[128, 128, 128],
         output_size=n_classes
     )
 
@@ -160,11 +177,12 @@ def main():
         test_dataset=test_dataset
     )
 
-    result_dir = "models/pytorch/experiment_01"
+    result_dir = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dir)
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=2, result_dir=result_dir)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30, result_dir=result_dir)
 
 
 if __name__ == "__main__":
-    main()
+    experiment_id = "exp_07"
+    main(experiment_id)

@@ -1,0 +1,20 @@
+Runs on device: cpu
+Neural Network Architecture:
+Sequential(
+  (0): Linear(in_features=2379, out_features=128, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=128, out_features=128, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=128, out_features=128, bias=True)
+  (5): ReLU()
+  (6): Linear(in_features=128, out_features=7, bias=True)
+)
+Epoch 1/30
+train_loss: 1.271 - train_accuracy: 0.517  - val_loss: 1.231 - val_accuracy: 0.747  - test_loss: 4.863 - test_accuracy: 0.000
+Epoch 2/30
+train_loss: 1.033 - train_accuracy: 0.611  - val_loss: 1.191 - val_accuracy: 0.791  - test_loss: 5.180 - test_accuracy: 0.032
+Epoch 3/30
+train_loss: 0.947 - train_accuracy: 0.646  - val_loss: 1.171 - val_accuracy: 0.822  - test_loss: 5.528 - test_accuracy: 0.032
+Epoch 4/30
+train_loss: 0.890 - train_accuracy: 0.668  - val_loss: 1.173 - val_accuracy: 0.818  - test_loss: 5.827 - test_accuracy: 0.048
+Epoch 5/30
