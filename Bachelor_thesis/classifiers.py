@@ -49,6 +49,7 @@ class Sequential(nn.Sequential):
     def _test(self, test_dataset, criterion, device):
         return self._eval(test_dataset, criterion, device)
 
+    # per sample accuracy
     def _eval(self, val_dataset, criterion, device):
         # set module to evaluation mode
         self.eval()
@@ -87,6 +88,40 @@ class Sequential(nn.Sequential):
         accuracy = correct / n_samples
 
         return loss_, accuracy
+
+    # # per frame accuracy
+    # def _eval(self, val_dataset, criterion, device):
+    #     # set module to evaluation mode
+    #     self.eval()
+    #
+    #     correct = 0
+    #     running_loss = 0.0
+    #     n_samples = len(val_dataset)
+    #     n_frames = val_dataset.n_frames
+    #
+    #     with torch.no_grad():
+    #         for X, y in val_dataset:
+    #             # move data to device
+    #             X, y = X.to(device), y.to(device)
+    #
+    #             # make labels one dimensional
+    #             y = y.flatten()
+    #
+    #             # forward propagation
+    #             y_pred = self(X.float())
+    #
+    #             loss = criterion(y_pred, y)
+    #
+    #             _, y_pred_label = torch.max(y_pred, 1)
+    #             correct += (y_pred_label == y).sum().item()
+    #
+    #             n_frames_sample = X.shape[0]
+    #             running_loss += loss.item() * n_frames_sample
+    #
+    #     loss_ = running_loss / n_frames
+    #     accuracy = correct / n_frames
+    #
+    #     return loss_, accuracy
 
     def fit(self, train_loader, val_dataset, test_dataset, criterion, optimizer, device, n_epochs=10):
         """

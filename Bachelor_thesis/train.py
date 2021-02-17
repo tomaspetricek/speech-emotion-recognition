@@ -144,9 +144,9 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin):
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/fullset_npy_3"
+    dataset_dir = "prepared_data/int-re-95-05-05"
 
-    left_margin = right_margin = 30
+    left_margin = right_margin = 50
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -160,13 +160,13 @@ def main(result_dir):
     # test_dir = os.path.join(dataset_dir, "test")
     # test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
 
-    test_dir = "prepared_data/call_centers_npy/whole"
+    test_dir = "prepared_data/cz-re/whole"
     test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
 
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
-        hidden_sizes=[128, 128, 128],
+        hidden_sizes=[64, 64, 64],
         output_size=n_classes
     )
 
@@ -184,5 +184,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_07"
+    experiment_id = "exp_10X"
     main(experiment_id)
