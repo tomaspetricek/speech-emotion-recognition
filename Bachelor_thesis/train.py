@@ -160,7 +160,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/int-re-95-05-05"
+    dataset_dir = "prepared_data/en-re-90-10"
 
     left_margin = right_margin = 25
 
@@ -170,11 +170,11 @@ def main(result_dir):
     train_dir = os.path.join(dataset_dir, "train")
     train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="inter")
 
-    val_dir = os.path.join(dataset_dir, "val")
+    val_dir = os.path.join(dataset_dir, "test")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
 
-    test_dir = os.path.join(dataset_dir, "test")
-    test_dataset_int = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
+    test_dir = "prepared_data/it-re/whole"
+    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="ital")
 
     test_dir = "prepared_data/cz-re/whole"
     test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="czech")
@@ -190,7 +190,7 @@ def main(result_dir):
         model=model,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        test_datasets=(test_dataset_int, test_dataset_cz)
+        test_datasets=(test_dataset_it, test_dataset_cz)
     )
 
     result_dir = os.path.join(MODEL_DIR, result_dir)

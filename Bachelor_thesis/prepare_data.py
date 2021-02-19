@@ -109,24 +109,25 @@ class Preparer:
 
 if __name__ == "__main__":
     # load ravdess
-    ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
-    ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
+    # ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    # ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
+    #
+    # # load tess
+    # tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
+    # tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
+    #
+    # # load savee
+    # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
+    # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
 
-    # load tess
-    tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
-    tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
-
-    # load savee
-    savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
-    savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
-
-    # load emovo
+    # # load emovo
     emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
     emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
+    dataset = emovo_mfcc_unified
 
     # combine datasets
-    ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified, emovo_mfcc_unified)
-    dataset = ravdess_mfcc_unified
+    # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified)
+    # dataset = ravdess_mfcc_unified
 
     #call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
 
@@ -134,11 +135,9 @@ if __name__ == "__main__":
 
     preperer = Preparer(
         dataset=dataset,
-        test_size=0.2,
-        val_size=None,
     )
 
-    result_dir = "prepared_data/fullset_npy_80_20"
+    result_dir = "prepared_data/it-re"
     os.mkdir(result_dir)
     preperer(result_dir)
 
