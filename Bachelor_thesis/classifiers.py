@@ -10,41 +10,42 @@ class Sequential(nn.Sequential):
         # set model to training mode
         self.train()
 
-        correct = 0
+        correct_frames = 0
         running_loss = 0.0
-        n_samples = len(train_loader.dataset)
+        n_frames = len(train_loader.dataset)
 
-        for X, y in train_loader:
+        for frames, labels in train_loader:
             # move data to device
-            X, y = X.to(device), y.to(device)
+            frames, labels = frames.to(device), labels.to(device)
 
             # make labels one dimensional
-            y = y.flatten()
+            labels = labels.flatten()
 
             # zero the parameter gradients
             optimizer.zero_grad()
 
             # forward propagation
-            y_pred = self(X.float())
+            pred = self(frames.float())
 
-            loss = criterion(y_pred, y)
+            loss = criterion(pred, labels)
 
             # back propagation
             loss.backward()
 
             optimizer.step()
 
-            # statistics
-            _, y_pred_label = torch.max(y_pred, 1)
-            correct += (y_pred_label == y).sum().item()
+            # add n correct frames
+            _, pred_labels = torch.max(pred, 1)
+            correct_frames += (pred_labels == labels).sum().item()
 
-            batch_size = X.shape[0]
+            # calc running loss
+            batch_size = frames.shape[0]
             running_loss += loss.item() * batch_size
 
-        loss_ = running_loss / n_samples
-        accuracy = correct / n_samples
+        loss_ = running_loss / n_frames
+        accuracy_frames = correct_frames / n_frames
 
-        return loss_, accuracy
+        return loss_, accuracy_frames
 
     def _test(self, test_dataset, criterion, device):
         return self._eval(test_dataset, criterion, device)
@@ -54,76 +55,47 @@ class Sequential(nn.Sequential):
         # set module to evaluation mode
         self.eval()
 
-        correct = 0
+        correct_samples = correct_frames = 0
         running_loss = 0.0
         n_samples = len(val_dataset)
         n_frames = val_dataset.n_frames
 
         with torch.no_grad():
-            for X, y in val_dataset:
+            for frames, labels in val_dataset:
                 # move data to device
-                X, y = X.to(device), y.to(device)
+                frames, labels = frames.to(device), labels.to(device)
 
                 # make labels one dimensional
-                y = y.flatten()
+                labels = labels.flatten()
 
                 # forward propagation
-                y_pred = self(X.float())
+                pred = self(frames.float())
 
-                loss = criterion(y_pred, y)
+                loss = criterion(pred, labels)
 
-                # calc mean label
-                y_mean = torch.mean(y_pred, 0)
-                _, pred_class = torch.max(y_mean, 0)
+                # add correct sample
+                mean_pred = torch.mean(pred, 0)
+                _, pred_label = torch.max(mean_pred, 0)
+                correct_label = labels[0]
 
-                correct_class = y[0]
+                if pred_label == correct_label:
+                    correct_samples += 1
 
-                if pred_class == correct_class:
-                    correct += 1
+                # add n correct frames
+                _, pred_labels = torch.max(pred, 1)
+                correct_frames += (pred_labels == labels).sum().item()
 
-                n_frames_sample = X.shape[0]
-                running_loss += loss.item() * n_frames_sample
+                # calc running loss
+                batch_size = frames.shape[0]
+                running_loss += loss.item() * batch_size
 
         loss_ = running_loss / n_frames
-        accuracy = correct / n_samples
+        accuracy_samples = correct_samples / n_samples
+        accuracy_frames = correct_frames / n_frames
 
-        return loss_, accuracy
+        return loss_, accuracy_frames, accuracy_samples
 
-    # # per frame accuracy
-    # def _eval(self, val_dataset, criterion, device):
-    #     # set module to evaluation mode
-    #     self.eval()
-    #
-    #     correct = 0
-    #     running_loss = 0.0
-    #     n_samples = len(val_dataset)
-    #     n_frames = val_dataset.n_frames
-    #
-    #     with torch.no_grad():
-    #         for X, y in val_dataset:
-    #             # move data to device
-    #             X, y = X.to(device), y.to(device)
-    #
-    #             # make labels one dimensional
-    #             y = y.flatten()
-    #
-    #             # forward propagation
-    #             y_pred = self(X.float())
-    #
-    #             loss = criterion(y_pred, y)
-    #
-    #             _, y_pred_label = torch.max(y_pred, 1)
-    #             correct += (y_pred_label == y).sum().item()
-    #
-    #             n_frames_sample = X.shape[0]
-    #             running_loss += loss.item() * n_frames_sample
-    #
-    #     loss_ = running_loss / n_frames
-    #     accuracy = correct / n_frames
-    #
-    #     return loss_, accuracy
-
-    def fit(self, train_loader, val_dataset, test_dataset, criterion, optimizer, device, n_epochs=10):
+    def fit(self, train_loader, val_dataset, test_datasets, criterion, optimizer, device, n_epochs=10):
         """
         Inspiration:
         https://nodata.science/no-fit-comparing-high-level-learning-interfaces-for-pytorch.html
@@ -131,33 +103,52 @@ class Sequential(nn.Sequential):
 
         # move model to device
         self.to(device)
-        history = defaultdict(list)
+
+        history = dict()
+        sample_acc = defaultdict(list)
+        frame_acc = defaultdict(list)
+        loss = defaultdict(list)
+
+        header = f"{'epoch':^16}|{'name':^16}|{'loss':^16}|{'acc_frames':^16}|{'acc_samples':^16}"
+        divider = "-" * len(header)
+        print(divider)
+        print(header)
+        print(divider)
 
         for epoch in range(n_epochs):
-            print(f"Epoch {epoch + 1}/{n_epochs}")
-
+            print(divider)
             # train model
-            train_loss, train_accuracy = self._train(train_loader, optimizer, criterion, device)
-            history["train_loss"].append(train_loss)
-            history["train_accuracy"].append(train_accuracy)
+            train_loss, train_acc_frames = self._train(train_loader, optimizer, criterion, device)
+            train_key = "train: {}".format(train_loader.dataset.name)
+            loss[train_key].append(train_loss)
+            frame_acc[train_key].append(train_acc_frames)
+            print(f"{epoch:^16}|{train_key:^16}|{train_loss:^16.3f}|{train_acc_frames:^16.3f}")
 
             # evaluate model
-            val_loss, val_accuracy = self._eval(val_dataset, criterion, device)
-            history["val_loss"].append(val_loss)
-            history["val_accuracy"].append(val_accuracy)
+            val_loss, val_acc_frames, val_acc_samples = self._eval(val_dataset, criterion, device)
+            val_key = "val: {}".format(val_dataset.name)
+            loss[val_key].append(val_loss)
+            frame_acc[val_key].append(val_acc_frames)
+            sample_acc[val_key].append(val_acc_samples)
+            print(f"{epoch:^16}|{val_key:^16}|{val_loss:^16.3f}|{val_acc_frames:^16.3f}|{val_acc_samples:^16.3f}")
 
             # test model
-            test_loss, test_accuracy = self._eval(test_dataset, criterion, device)
-            history["test_loss"].append(test_loss)
-            history["test_accuracy"].append(test_accuracy)
+            for test_dataset in test_datasets:
+                test_loss, test_acc_frames, test_acc_samples = self._eval(test_dataset, criterion, device)
+                test_key = "test: {}".format(test_dataset.name)
 
-            # shows stats
-            print(
-                f"train_loss: {train_loss:0.3f} - train_accuracy: {train_accuracy:0.3f}",
-                f" - val_loss: {val_loss:0.3f} - val_accuracy: {val_accuracy:0.3f}",
-                f" - test_loss: {test_loss:0.3f} - test_accuracy: {test_accuracy:0.3f}"
-            )
+                loss[test_key].append(test_loss)
+                frame_acc[test_key].append(test_acc_frames)
+                sample_acc[test_key].append(test_acc_samples)
+                print(f"{epoch:^16}|{test_key:^16}|{test_loss:^16.3f}|{test_acc_frames:^16.3f}|{test_acc_samples:^16.3f}")
 
         print('Finished Training')
 
-        return dict(history)
+        loss = dict(loss)
+        frame_acc = dict(frame_acc)
+        sample_acc = dict(sample_acc)
+        history["loss"] = loss
+        history["frame_acc"] = frame_acc
+        history["sample_acc"] = sample_acc
+
+        return history

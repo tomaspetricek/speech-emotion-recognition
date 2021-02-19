@@ -37,11 +37,11 @@ class Trainer:
 
     PLOT_DPI = 200
 
-    def __init__(self, model, train_dataset, val_dataset, test_dataset):
+    def __init__(self, model, train_dataset, val_dataset, test_datasets):
         self.model = model
         self.train_dataset = train_dataset
         self.val_dataset = val_dataset
-        self.test_dataset = test_dataset
+        self.test_datasets = test_datasets
 
     def __call__(self, batch_size, learning_rate, n_epochs, result_dir=None):
         if result_dir:
@@ -71,20 +71,42 @@ class Trainer:
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
+        print("Batch size: {}".format(batch_size))
+        print("Learning rate: {}".format(learning_rate))
+
         # fit model
-        history = self.model.fit(train_loader, self.val_dataset, self.test_dataset, criterion, optimizer, device,
+        history = self.model.fit(train_loader, self.val_dataset, self.test_datasets, criterion, optimizer, device,
                                  n_epochs)
 
         # get plots
-        accuracy_plot = self._get_accuracy_plot(history)
-        loss_plot = self._get_loss_plot(history)
+        frame_acc_plot = self._get_plot(
+            items=history["frame_acc"],
+            title="model per frame accuracy",
+            y_label="accuracy",
+            x_label="epoch"
+        )
+
+        sample_acc_plot = self._get_plot(
+            items=history["sample_acc"],
+            title="model per sample accuracy",
+            y_label="accuracy",
+            x_label="epoch"
+        )
+
+        loss_plot = self._get_plot(
+            items=history["loss"],
+            title="model loss",
+            y_label="loss",
+            x_label="epoch"
+        )
 
         # save results
         if result_dir:
-            self._save_results(result_dir, accuracy_plot, loss_plot)
+            self._save_results(result_dir, frame_acc_plot, sample_acc_plot, loss_plot)
 
         # show results
-        accuracy_plot.show()
+        frame_acc_plot.show()
+        sample_acc_plot.show()
         loss_plot.show()
 
     @staticmethod
@@ -98,41 +120,35 @@ class Trainer:
         sys.stdout.write = logger.info
 
     @staticmethod
-    def _get_accuracy_plot(history):
-        accuracy_plot = plt.figure()
-        plt.plot(history['train_accuracy'])
-        plt.plot(history['val_accuracy'])
-        plt.plot(history['test_accuracy'])
-        plt.title('model accuracy')
-        plt.ylabel('accuracy')
-        plt.xlabel('epoch')
-        plt.legend(['train', 'val', 'test'], loc='upper left')
-        return accuracy_plot
+    def _get_plot(items, title, y_label, x_label):
+        plot = plt.figure()
 
-    @staticmethod
-    def _get_loss_plot(history):
-        loss_plot = plt.figure()
-        plt.plot(history['train_loss'])
-        plt.plot(history['val_loss'])
-        plt.plot(history['test_loss'])
-        plt.title('model loss')
-        plt.ylabel('loss')
-        plt.xlabel('epoch')
-        plt.legend(['train', 'val', 'test'], loc='upper left')
-        return loss_plot
+        labels = list()
+        for label, item in items.items():
+            plt.plot(item)
+            labels.append(label)
 
-    def _save_results(self, result_dir, accuracy_plot, loss_plot):
+        plt.title(title)
+        plt.ylabel(y_label)
+        plt.xlabel(x_label)
+        plt.legend(labels, loc='upper left')
+        return plot
+
+    def _save_results(self, result_dir, frame_acc_plot, sample_acc_plot, loss_plot):
         model_path = os.path.join(result_dir, "model.pt")
         torch.save(self.model, model_path)
 
-        accuracy_path = os.path.join(result_dir, 'accuracy.png')
-        accuracy_plot.savefig(accuracy_path, dpi=self.PLOT_DPI)
+        frame_acc_path = os.path.join(result_dir, 'frame_accuracy.png')
+        frame_acc_plot.savefig(frame_acc_path, dpi=self.PLOT_DPI)
+
+        sample_acc_path = os.path.join(result_dir, 'frame_accuracy.png')
+        sample_acc_plot.savefig(sample_acc_path, dpi=self.PLOT_DPI)
 
         loss_path = os.path.join(result_dir, 'loss.png')
         loss_plot.savefig(loss_path, dpi=self.PLOT_DPI)
 
 
-def prepare_dataset(directory, dataset_class, left_margin, right_margin):
+def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=None):
     info_path = os.path.join(directory, "info.txt")
     n_samples, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
 
@@ -140,7 +156,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin):
 
     label_path = os.path.join(directory, label_filename)
 
-    return dataset_class(n_samples, sample_lengths, sample_path, label_path, left_margin, right_margin)
+    return dataset_class(n_samples, sample_lengths, sample_path, label_path, left_margin, right_margin, name)
 
 
 def main(result_dir):
@@ -152,16 +168,16 @@ def main(result_dir):
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin)
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="inter")
 
     val_dir = os.path.join(dataset_dir, "val")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin)
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
 
-    # test_dir = os.path.join(dataset_dir, "test")
-    # test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
+    test_dir = os.path.join(dataset_dir, "test")
+    test_dataset_int = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
 
     test_dir = "prepared_data/cz-re/whole"
-    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin)
+    test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="czech")
 
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
@@ -174,15 +190,15 @@ def main(result_dir):
         model=model,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        test_dataset=test_dataset
+        test_datasets=(test_dataset_int, test_dataset_cz)
     )
 
     result_dir = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dir)
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30, result_dir=result_dir)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=2, result_dir=result_dir)
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_10X"
+    experiment_id = "exp_test"
     main(experiment_id)

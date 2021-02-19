@@ -4,7 +4,7 @@ import numpy as np
 
 
 class NumpyDataset(Dataset):
-    def __init__(self, n_samples, samples_lengths, samples_path, labels_path, left_margin, right_margin):
+    def __init__(self, n_samples, samples_lengths, samples_path, labels_path, left_margin, right_margin, name=None):
         self.n_samples = n_samples
         self.left_margin = left_margin
         self.right_margin = right_margin
@@ -13,6 +13,7 @@ class NumpyDataset(Dataset):
         self.samples = samples_path
         self.labels = labels_path
         self.samples_indices = None
+        self.name = name
 
     def set_samples(self, samples_path):
         self._samples = np.load(samples_path)
