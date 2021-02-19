@@ -162,7 +162,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/int-re-95-05-05"
 
-    left_margin = right_margin = 50
+    left_margin = right_margin = 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -182,7 +182,7 @@ def main(result_dir):
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
-        hidden_sizes=[64, 64, 64],
+        hidden_sizes=[128, 128, 128],
         output_size=n_classes
     )
 
@@ -196,9 +196,9 @@ def main(result_dir):
     result_dir = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dir)
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=2, result_dir=result_dir)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30, result_dir=result_dir)
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_test"
+    experiment_id = "exp_01"
     main(experiment_id)

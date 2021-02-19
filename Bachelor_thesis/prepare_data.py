@@ -14,7 +14,7 @@ from files import DatasetInfoFile, SetInfoFile
 
 class Preparer:
 
-    def __init__(self, dataset, test_size, val_size):
+    def __init__(self, dataset, test_size=None, val_size=None):
         self.dataset = dataset
         self.val_size = val_size
         self.test_size = test_size

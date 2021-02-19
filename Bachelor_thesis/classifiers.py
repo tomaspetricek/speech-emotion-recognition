@@ -115,14 +115,14 @@ class Sequential(nn.Sequential):
         print(header)
         print(divider)
 
-        for epoch in range(n_epochs):
+        for epoch in range(1, n_epochs + 1):
             print(divider)
             # train model
             train_loss, train_acc_frames = self._train(train_loader, optimizer, criterion, device)
             train_key = "train: {}".format(train_loader.dataset.name)
             loss[train_key].append(train_loss)
             frame_acc[train_key].append(train_acc_frames)
-            print(f"{epoch:^16}|{train_key:^16}|{train_loss:^16.3f}|{train_acc_frames:^16.3f}")
+            print(f"{epoch:^16}|{train_key:^16}|{train_loss:^16.3f}|{train_acc_frames:^16.3f}|")
 
             # evaluate model
             val_loss, val_acc_frames, val_acc_samples = self._eval(val_dataset, criterion, device)
