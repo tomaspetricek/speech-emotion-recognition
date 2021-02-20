@@ -141,7 +141,7 @@ class Trainer:
         frame_acc_path = os.path.join(result_dir, 'frame_accuracy.png')
         frame_acc_plot.savefig(frame_acc_path, dpi=self.PLOT_DPI)
 
-        sample_acc_path = os.path.join(result_dir, 'frame_accuracy.png')
+        sample_acc_path = os.path.join(result_dir, 'sample_accuracy.png')
         sample_acc_plot.savefig(sample_acc_path, dpi=self.PLOT_DPI)
 
         loss_path = os.path.join(result_dir, 'loss.png')
@@ -160,7 +160,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/en-re-90-10"
+    dataset_dir = "prepared_data/en-4-re-90-10"
 
     left_margin = right_margin = 25
 
@@ -173,10 +173,10 @@ def main(result_dir):
     val_dir = os.path.join(dataset_dir, "test")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
 
-    test_dir = "prepared_data/it-re/whole"
+    test_dir = "prepared_data/it-4-re/whole"
     test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="ital")
 
-    test_dir = "prepared_data/cz-re/whole"
+    test_dir = "prepared_data/cz-4-re/whole"
     test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="czech")
 
     input_size = n_features * (left_margin + 1 + right_margin)
@@ -200,5 +200,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_01"
+    experiment_id = "exp_15"
     main(experiment_id)
