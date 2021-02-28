@@ -151,18 +151,18 @@ def main():
     # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
     # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
 
-    # load emovo
-    emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
-    emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
-    dataset = emovo_mfcc_unified
+    # # load emovo
+    # emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
+    # emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
+    # dataset = emovo_mfcc_unified
 
     # # combine datasets
     # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified)
     # dataset = ravdess_mfcc_unified
 
-    # call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
-    # call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
-    # dataset = call_center_unified
+    call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
+    call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
+    dataset = call_center_unified
 
     # standard_scaler = NDScaler(StandardScaler())
 
