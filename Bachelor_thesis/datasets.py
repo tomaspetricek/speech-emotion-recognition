@@ -14,6 +14,21 @@ HAPPINESS = 4
 DISGUST = 5
 SURPRISE = 6
 
+neutral = 0
+anger = 1
+happiness = 2
+sadness = 3
+
+FOUR_EMOTIONS_CONVERSION_TABLE = {
+    NEUTRAL: neutral,
+    ANGER: anger,
+    DISGUST: anger,
+    HAPPINESS: happiness,
+    SURPRISE: happiness,
+    SADNESS: sadness,
+    FEAR: sadness,
+}
+
 class Data:
     FILE = None
     COLUMNS = [

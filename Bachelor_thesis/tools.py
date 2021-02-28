@@ -31,7 +31,7 @@ class IndexPicker:
         return list(range(from_index, to_index + 1))
 
 
-class Scaler(BaseEstimator, TransformerMixin):
+class NDScaler(BaseEstimator, TransformerMixin):
 
     def __init__(self, scaler):
         self.scaler = scaler
