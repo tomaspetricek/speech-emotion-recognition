@@ -7,10 +7,13 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
 
 from classifiers import Sequential
 from pytorch_datasets import NumpySampleDataset, NumpyFrameDataset
 from files import DatasetInfoFile, SetInfoFile
+from datasets import FOUR_EMOTIONS_VERBOSE, THREE_EMOTIONS_VERBOSE, ALL_EMOTIONS_VERBOSE
 
 MODEL_DIR = "models/pytorch"
 
@@ -30,18 +33,21 @@ def create_model(input_size, hidden_sizes, output_size):
 
     layers = tuple(input_layer + hidden_layers + output_layer)
 
-    return Sequential(*layers)
+    model = Sequential(*layers)
+    setattr(model, "n_classes", output_size)  # should be in Sequential constructor
+
+    return model
 
 
 class Trainer:
-
     PLOT_DPI = 200
 
-    def __init__(self, model, train_dataset, val_dataset, test_datasets):
+    def __init__(self, model, train_dataset, val_dataset, test_datasets, classes_verbose):
         self.model = model
         self.train_dataset = train_dataset
         self.val_dataset = val_dataset
         self.test_datasets = test_datasets
+        self.classes_verbose = classes_verbose
 
     def __call__(self, batch_size, learning_rate, n_epochs, result_dir=None):
         if result_dir:
@@ -75,39 +81,51 @@ class Trainer:
         print("Learning rate: {}".format(learning_rate))
 
         # fit model
-        history = self.model.fit(train_loader, self.val_dataset, self.test_datasets, criterion, optimizer, device,
-                                 n_epochs)
+        history, conf_matrices = self.model.fit(train_loader, self.val_dataset, self.test_datasets, criterion,
+                                                optimizer, device,
+                                                n_epochs)
 
         # get plots
         frame_acc_plot = self._get_plot(
             items=history["frame_acc"],
-            title="model per frame accuracy",
-            y_label="accuracy",
-            x_label="epoch"
+            title="Přesnost modelu pro rámce",
+            y_label="přesnost",
+            x_label="epocha"
         )
 
         sample_acc_plot = self._get_plot(
             items=history["sample_acc"],
-            title="model per sample accuracy",
-            y_label="accuracy",
-            x_label="epoch"
+            title="Přesnost modelu pro náhrávky",
+            y_label="přesnost",
+            x_label="epocha"
         )
 
         loss_plot = self._get_plot(
             items=history["loss"],
-            title="model loss",
-            y_label="loss",
-            x_label="epoch"
+            title="Ztráta modelu",
+            y_label="ztráta",
+            x_label="epocha"
         )
+
+        conf_matrices_plots = []
+        for label, conf_matrix in conf_matrices.items():
+            title = "Matice záměn pro {}".format(label)
+            plot = self._get_conf_matrix_plot(
+                conf_matrix,
+                title=title,
+                y_label="předpovězené třídy",
+                x_label="správné třídy",
+            )
+            conf_matrices_plots.append(plot)
+
+        plots = [frame_acc_plot, sample_acc_plot, loss_plot] + conf_matrices_plots
 
         # save results
         if result_dir:
-            self._save_results(result_dir, frame_acc_plot, sample_acc_plot, loss_plot)
+            self._save_results(result_dir, plots)
 
-        # show results
-        frame_acc_plot.show()
-        sample_acc_plot.show()
-        loss_plot.show()
+        for plot in plots:
+            plot.show()
 
     @staticmethod
     def _set_logging(result_dir):
@@ -134,18 +152,32 @@ class Trainer:
         plt.legend(labels, loc='upper left')
         return plot
 
-    def _save_results(self, result_dir, frame_acc_plot, sample_acc_plot, loss_plot):
+    def _get_conf_matrix_plot(self, conf_matrix, title, y_label, x_label):
+        if self.classes_verbose:
+            classes = self.classes_verbose
+        else:
+            classes = range(self.model.n_classes)
+        df_cm = pd.DataFrame(conf_matrix, classes, classes)
+
+        plot = plt.figure()
+        sns.heatmap(df_cm, annot=True, fmt='g')
+
+        plt.title(title)
+        plt.xlabel(y_label)
+        plt.ylabel(x_label)
+        plt.tight_layout()
+
+        return plot
+
+    def _save_results(self, result_dir, plots):
         model_path = os.path.join(result_dir, "model.pt")
         torch.save(self.model, model_path)
 
-        frame_acc_path = os.path.join(result_dir, 'frame_accuracy.png')
-        frame_acc_plot.savefig(frame_acc_path, dpi=self.PLOT_DPI)
-
-        sample_acc_path = os.path.join(result_dir, 'sample_accuracy.png')
-        sample_acc_plot.savefig(sample_acc_path, dpi=self.PLOT_DPI)
-
-        loss_path = os.path.join(result_dir, 'loss.png')
-        loss_plot.savefig(loss_path, dpi=self.PLOT_DPI)
+        for plot in plots:
+            title = plot.axes[0].get_title()
+            filename = title + ".png"
+            path = os.path.join(result_dir, filename)
+            plot.savefig(path, dpi=self.PLOT_DPI)
 
 
 def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=None):
@@ -160,7 +192,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/en-4-stdsc-90-10"
+    dataset_dir = "prepared_data/ravd-7-re-90-10"
 
     left_margin = right_margin = 25
 
@@ -168,16 +200,16 @@ def main(result_dir):
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="inter")
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="RAVDESS")
 
     val_dir = os.path.join(dataset_dir, "test")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="inter")
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="RAVDESS")
 
-    test_dir = "prepared_data/it-4-stdsc/whole"
-    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="ital")
+    test_dir = "prepared_data/it-7-re/whole"
+    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="italský")
 
-    test_dir = "prepared_data/cz-4-stdsc/whole"
-    test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="czech")
+    test_dir = "prepared_data/cz-7-re/whole"
+    test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="český")
 
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
@@ -190,15 +222,16 @@ def main(result_dir):
         model=model,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        test_datasets=(test_dataset_it, test_dataset_cz)
+        test_datasets=(test_dataset_it, test_dataset_cz),
+        classes_verbose=ALL_EMOTIONS_VERBOSE,
     )
 
     result_dir = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dir)
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=30, result_dir=result_dir)
+    trainer(batch_size=512, learning_rate=0.0001, n_epochs=10, result_dir=result_dir)
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_16"
+    experiment_id = "exp_19"
     main(experiment_id)

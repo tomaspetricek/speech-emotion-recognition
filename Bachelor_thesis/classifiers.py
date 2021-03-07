@@ -52,6 +52,7 @@ class Sequential(nn.Sequential):
 
     # per sample accuracy
     def _eval(self, val_dataset, criterion, device):
+        conf_matrix = np.zeros((self.n_classes, self.n_classes))
         # set module to evaluation mode
         self.eval()
 
@@ -81,6 +82,8 @@ class Sequential(nn.Sequential):
                 if pred_label == correct_label:
                     correct_samples += 1
 
+                conf_matrix[correct_label, pred_label] += 1
+
                 # add n correct frames
                 _, pred_labels = torch.max(pred, 1)
                 correct_frames += (pred_labels == labels).sum().item()
@@ -93,7 +96,7 @@ class Sequential(nn.Sequential):
         accuracy_samples = correct_samples / n_samples
         accuracy_frames = correct_frames / n_frames
 
-        return loss_, accuracy_frames, accuracy_samples
+        return loss_, accuracy_frames, accuracy_samples, conf_matrix
 
     def fit(self, train_loader, val_dataset, test_datasets, criterion, optimizer, device, n_epochs=10):
         """
@@ -108,6 +111,7 @@ class Sequential(nn.Sequential):
         sample_acc = defaultdict(list)
         frame_acc = defaultdict(list)
         loss = defaultdict(list)
+        conf_matrices = dict()
 
         header = f"{'epoch':^16}|{'name':^16}|{'loss':^16}|{'acc_frames':^16}|{'acc_samples':^16}"
         divider = "-" * len(header)
@@ -125,21 +129,29 @@ class Sequential(nn.Sequential):
             print(f"{epoch:^16}|{train_key:^16}|{train_loss:^16.3f}|{train_acc_frames:^16.3f}|")
 
             # evaluate model
-            val_loss, val_acc_frames, val_acc_samples = self._eval(val_dataset, criterion, device)
+            val_loss, val_acc_frames, val_acc_samples, val_conf_matrix = self._eval(val_dataset, criterion, device)
             val_key = "val: {}".format(val_dataset.name)
             loss[val_key].append(val_loss)
             frame_acc[val_key].append(val_acc_frames)
             sample_acc[val_key].append(val_acc_samples)
+
+            if epoch == n_epochs:
+                conf_matrices[val_key] = val_conf_matrix
+
             print(f"{epoch:^16}|{val_key:^16}|{val_loss:^16.3f}|{val_acc_frames:^16.3f}|{val_acc_samples:^16.3f}")
 
             # test model
             for test_dataset in test_datasets:
-                test_loss, test_acc_frames, test_acc_samples = self._eval(test_dataset, criterion, device)
+                test_loss, test_acc_frames, test_acc_samples, test_conf_matrix = self._eval(test_dataset, criterion, device)
                 test_key = "test: {}".format(test_dataset.name)
 
                 loss[test_key].append(test_loss)
                 frame_acc[test_key].append(test_acc_frames)
                 sample_acc[test_key].append(test_acc_samples)
+
+                if epoch == n_epochs:
+                    conf_matrices[test_key] = test_conf_matrix
+
                 print(f"{epoch:^16}|{test_key:^16}|{test_loss:^16.3f}|{test_acc_frames:^16.3f}|{test_acc_samples:^16.3f}")
 
         print('Finished Training')
@@ -151,4 +163,4 @@ class Sequential(nn.Sequential):
         history["frame_acc"] = frame_acc
         history["sample_acc"] = sample_acc
 
-        return history
+        return history, conf_matrices

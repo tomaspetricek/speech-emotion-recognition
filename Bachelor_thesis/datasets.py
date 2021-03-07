@@ -14,6 +14,15 @@ HAPPINESS = 4
 DISGUST = 5
 SURPRISE = 6
 
+ALL_EMOTIONS_VERBOSE = [
+    "neutrální",
+    "hněv",
+    "strach",
+    "smutek",
+    "spokojenost",
+    "odpor",
+    "překvapení",
+]
 neutral = 0
 anger = 1
 happiness = 2
@@ -28,6 +37,34 @@ FOUR_EMOTIONS_CONVERSION_TABLE = {
     SADNESS: sadness,
     FEAR: sadness,
 }
+
+FOUR_EMOTIONS_VERBOSE = [
+    "neutrální",
+    "hněv",
+    "spokojenost",
+    "smutek",
+]
+
+neutral_ = 0
+positive = 1
+negative = 2
+
+THREE_EMOTIONS_CONVERSION_TABLE = {
+    NEUTRAL: neutral_,
+    ANGER: negative,
+    DISGUST: negative,
+    HAPPINESS: positive,
+    SURPRISE: positive,
+    SADNESS: negative,
+    FEAR: negative,
+}
+
+THREE_EMOTIONS_VERBOSE = [
+    "neutrální",
+    "pozitivní",
+    "negativní",
+]
+
 
 class Data:
     FILE = None
@@ -71,8 +108,8 @@ class Label:
     def parse(self, file_path):
         pass
 
-class UnifiedLabel(Label):
 
+class UnifiedLabel(Label):
     COLUMNS = [
         "emotion"
     ]
@@ -297,7 +334,6 @@ class EMOVOUnifiedLabel(UnifiedLabel):
 
 
 class CallCentersUnifiedLabel(UnifiedLabel):
-
     SEPARATOR = "_"
 
     def parse(self, file_path):
@@ -306,6 +342,7 @@ class CallCentersUnifiedLabel(UnifiedLabel):
         label = name.split(self.SEPARATOR)
         emotion = label[1]
         return int(emotion)
+
 
 class Dataset(Directory):
     """
