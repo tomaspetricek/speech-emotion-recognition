@@ -1,0 +1,29 @@
+Runs on device: cpu
+Neural Network Architecture:
+Sequential(
+  (0): Linear(in_features=819, out_features=1024, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=1024, out_features=512, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=512, out_features=64, bias=True)
+  (5): ReLU()
+  (6): Linear(in_features=64, out_features=7, bias=True)
+)
+Batch size: 64
+Learning rate: 0.0001
+------------------------------------------------------------------------------------
+     epoch      |      name      |      loss      |   acc_frames   |  acc_samples   
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+       1        |train: mezinárodní|     1.252      |     0.521      |
+       1        |val: mezinárodní|     1.133      |     0.575      |     0.836      
+       1        |  test: český   |     3.082      |     0.079      |     0.111      
+------------------------------------------------------------------------------------
+       2        |train: mezinárodní|     0.946      |     0.643      |
+       2        |val: mezinárodní|     1.073      |     0.609      |     0.896      
+       2        |  test: český   |     4.161      |     0.079      |     0.143      
+------------------------------------------------------------------------------------
+       3        |train: mezinárodní|     0.791      |     0.703      |
+       3        |val: mezinárodní|     1.071      |     0.624      |     0.913      
+       3        |  test: český   |     4.675      |     0.133      |     0.190      
+Finished Training

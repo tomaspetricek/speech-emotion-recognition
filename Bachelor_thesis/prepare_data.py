@@ -139,10 +139,10 @@ class Preparer:
             self.save_set(self.samples, self.labels, result_dirname, self.WHOLE_DIR)
 
 def main():
-    # load ravdess
-    ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
-    ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
-    #
+    # # load ravdess
+    # ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    # ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
+    # #
     # # load tess
     # tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
     # tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
@@ -150,33 +150,33 @@ def main():
     # # load savee
     # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
     # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
-
+    #
     # # load emovo
     # emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
     # emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
-    # dataset = emovo_mfcc_unified
-
+    # # dataset = emovo_mfcc_unified
+    #
     # # combine datasets
     # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified)
     # dataset = ravdess_mfcc_unified
 
-    # call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
-    # call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
-    # dataset = call_center_unified
+    call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
+    call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
+    dataset = call_center_unified
 
-    # standard_scaler = NDScaler(StandardScaler())
+    # scaler = NDScaler(StandardScaler())
 
-    # with open("prepared_data/en-4-stdsc-90-10/scaler.obj", 'rb') as file:
-    #     en_4_scaler = pickle.load(file)
+    with open("prepared_data/int-7-stdsc-90-10/scaler.obj", 'rb') as file:
+        scaler = pickle.load(file)
 
     preperer = Preparer(
-        dataset=ravdess_mfcc_unified,
-        test_size=0.1,
+        dataset=dataset,
+        # test_size=0.1,
         # conversion_table=THREE_EMOTIONS_CONVERSION_TABLE,
-        # scaler=en_4_scaler,
+        scaler=scaler
     )
 
-    result_dir = "prepared_data/ravd-7-re"
+    result_dir = "prepared_data/cz-7-stdsc"
     os.mkdir(result_dir)
     preperer(result_dir)
 

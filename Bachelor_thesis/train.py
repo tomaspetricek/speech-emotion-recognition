@@ -49,7 +49,7 @@ class Trainer:
         self.test_datasets = test_datasets
         self.classes_verbose = classes_verbose
 
-    def __call__(self, batch_size, learning_rate, n_epochs, result_dir=None):
+    def __call__(self, batch_size, learning_rate, weight_decay=0., n_epochs=10, result_dir=None):
         if result_dir:
             self._set_logging(result_dir)
 
@@ -75,10 +75,11 @@ class Trainer:
         print(self.model)
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
+        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
         print("Batch size: {}".format(batch_size))
         print("Learning rate: {}".format(learning_rate))
+        print("Weight decay: {}".format(weight_decay))
 
         # fit model
         history, conf_matrices = self.model.fit(train_loader, self.val_dataset, self.test_datasets, criterion,
@@ -192,18 +193,18 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/ravd-7-re-90-10"
+    dataset_dir = "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 25
+    left_margin = right_margin = 15
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="RAVDESS")
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="anglický")
 
     val_dir = os.path.join(dataset_dir, "test")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="RAVDESS")
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="anglický")
 
     test_dir = "prepared_data/it-7-re/whole"
     test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="italský")
@@ -211,10 +212,12 @@ def main(result_dir):
     test_dir = "prepared_data/cz-7-re/whole"
     test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="český")
 
+    test_datasets = [test_dataset_cz, test_dataset_it]
+
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
-        hidden_sizes=[128, 128, 128],
+        hidden_sizes=[128, 64],
         output_size=n_classes
     )
 
@@ -222,16 +225,16 @@ def main(result_dir):
         model=model,
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        test_datasets=(test_dataset_it, test_dataset_cz),
+        test_datasets=test_datasets,
         classes_verbose=ALL_EMOTIONS_VERBOSE,
     )
 
     result_dir = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dir)
 
-    trainer(batch_size=512, learning_rate=0.0001, n_epochs=10, result_dir=result_dir)
+    trainer(batch_size=128, learning_rate=0.001, weight_decay=1e-4, n_epochs=10, result_dir=result_dir)
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_19"
+    experiment_id = "exp_24"
     main(experiment_id)
