@@ -1,0 +1,146 @@
+\documentclass[FM,BP]{tulthesis}
+% tento dokument používá balíky specifické pro XeLaTeX a lze jej přeložit
+% jen XeLaTeXem, nemáte-li instalována použitá (komerční) písma, změňte
+% nebo vymažte příkazy \set...font na následujících řádcích
+
+\newcommand{\verze}{1.10}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{czech}
+\usepackage{xevlna}
+
+\usepackage{makeidx}
+\makeindex
+
+% fonty
+\usepackage{fontspec}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+% \setmainfont[Mapping=tex-text,BoldFont={* Bold},Numbers=OldStyle]{Baskerville 10 Pro}
+% \setsansfont[Mapping=tex-text,BoldFont={* Bold},Numbers=OldStyle]{Myriad Pro}
+% \setmonofont[Scale=MatchLowercase]{Vida Mono 32 Pro}
+
+% příkazy specifické pro tento dokument
+\newcommand{\argument}[1]{{\ttfamily\color{\tulcolor}#1}}
+\newcommand{\argumentindex}[1]{\argument{#1}\index{#1}}
+\newcommand{\prostredi}[1]{\argumentindex{#1}}
+\newcommand{\prikazneindex}[1]{\argument{\textbackslash #1}}
+\newcommand{\prikaz}[1]{\prikazneindex{#1}\index{#1@\textbackslash #1}}
+\newenvironment{myquote}{\begin{list}{}{\setlength\leftmargin\parindent}\item[]}{\end{list}}
+\newenvironment{listing}{\begin{myquote}\color{\tulcolor}}{\end{myquote}}
+\sloppy
+
+% deklarace pro titulní stránku
+\TULtitle{Rozpoznávání emocí v audio nahrávkách s využitím hlubokých neuronových sítí}{}
+\TULauthor{Tomáš Petříček}
+
+% pro bakalářské, diplomové a disertační práce
+\TULprogramme{B2646}{}{}
+\TULbranch{1802T007}{Informační technologie}{Information technology}
+\TULsupervisor{Ing. Lukáš Matějů Ph.D.}
+\TULyear{2021}
+
+% Vložil Koprnický, použití bibLateXu
+% BibLaTeX settings
+\usepackage[ 
+backend=biber
+%,style=iso-authoryear
+,style=iso-numeric
+%,style=numeric
+%,sortlocale=cs_CZ
+,autolang=other
+,bibencoding=UTF8
+%,urldate=edtf
+]{biblatex}
+\addbibresource{citations.bib} % vložení seznamu literárních zdrojů v bib formátu / input of references in bib format
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formátování podle pokynů FZS, čárka mezi jmény a poslední jméno se spojkou „a“
+% při volbě iso-authoryear, 
+\DeclareDelimFormat{multinamedelim}{\addcomma\space}
+
+\DeclareDelimFormat{finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace\bibstring{and}\space}
+
+\DeclareNameAlias{author}{family-given/given-family} 
+% kulaté závorky kolem citačního záznamu použitím \parencite{}
+% nebo použitím standardního příkazu \cite{} s touto redefinicí \let\cite\parencite
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Hranaté závorky kolem čísel v seznamu literatury při použitém iso-numeric
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+
+\usepackage{csquotes} %užití biblatexu hlasí warnings, důvodem může být použití českých uvozovek v citacích! / solving of problems with Czech quotations
+\urlstyle{same} %sazba url odkazů stejným fontem jako ostatní text, řešení problémů v zalamování hypertextových odkazů v citacích / url in references seting into the same form as text 
+
+\begin{document}
+
+\ThesisStart{male}
+%\ThesisStart{zadani-a-prohlaseni.pdf}
+
+\begin{abstractCZ}
+\end{abstractCZ}
+
+\begin{keywordsCZ}
+\end{keywordsCZ}
+
+\vspace{2cm}
+
+\begin{abstractEN}
+\end{abstractEN}
+
+\begin{keywordsEN}
+\end{keywordsEN}
+
+\clearpage
+
+\begin{acknowledgement}
+\end{acknowledgement}
+
+\tableofcontents
+
+\clearpage
+
+\begin{abbrList}
+\end{abbrList}
+
+\chapter{Úvod}
+
+Rozpoznávaní emocí ztěžuje, že emoce jsou subjektivní.\cite{DBLP:journals/speech/AkcayO20}
+
+Data nashromážděná v call centry mohou být použita na vývoj virtuálních asistentů, kteří by zautomatizovali komunikaci se zákazníkem.
+
+
+\chapter{Teoretická část}
+\section{Rozpoznávání emocí}
+\subsection{Současné poznání}
+
+\subsection{Příznaky pro rozpoznávání emocí}
+Ze zvukových nahrávek lze získat příznaky jakou jsou Log-Mel
+Spectrogram, Mel-Frequency Cepstral Coefficients (MFCCs), výška tónu a energie.\cite{DBLP:journals/corr/abs-1912-10458}
+
+\subsection{Způsoby rozpoznávání emocí}
+Pro rozpoznávání emocí se používají klasifikátory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít štítek udávající třídu, do které patří. V případě rozpoznávání emocí musí mít každá nahrávka štítek s označením emoce.
+
+Modely strojového učení se na datech učí parametry, kterým říkáme váhy a biasy. Parametry se během fáze učení mění. Jedna iterace trénovaní se nazývá epocha. Během každé trénovací epochy jsou mezi sebou příznaky vzorku a váhy modelu vynásobeny a je k nim přičten bias. Na konci modelu stojí aktivační funkce, která v případě klasifikace přiřadí vzorku pravděpodobnosti příslušnosti do jednotlivých tříd. Každou epochu je zjištěna ztráta modelu, která je pomocí metody gradient descent minimalizována. Výsledkem minimalizace je úprava parametrů modelu.
+
+Každý model má také své hyperparametry, které se používají ve fázi učení.\cite{leonel_2019} Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
+
+Každý model by měl být, co nejobecnější. To znamená, že by měl dosahovat podobných výsledků, jak na trénovacích datech, tak na jakýkoli jiných. Když model nedostatečně zobecňuje, tak říkáme, že se underffiting. Naopak když se model učí v přílišném detailu, tak říkáme, že se přeučuje. Data jsou proto rozdělena na sadu trénovací a testovací. Model je natrénován na sadě trénovací a otestován na sadě testovací. Dobrý model je úspěšný v podobné míře na obou datových sadách. Trénovací sadu můžeme rozdělit také na sadu trénovací a validační. Validační sada se používá při trénování modelu. Na výsledcích této sady můžeme poznat dříve, jestli se model přeučuje nebo naopak, jestli se učí dostatečně. Při testování na testovací nebo validační sadě se parametry modelu nemění. 
+
+Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika, která se používá při hodnocení klasifikátoru, je přesnost udávající poměr mezi správně klasifikovanými vzorky a všemi vzorky. Pro vyhodnocení modelu lze také použít matici záměny, která na jedné ose udává správnou třídu a na druhé předpovězenou třídu. Díky tomu můžeme jednoduše zjistit, jaké třídy si mezi sebou klasifikátor zaměňuje.
+
+Existuje mnoho typů modelů pro klasifikaci jako jsou na příklad logistická regrese, Support Vector Machine, Decision Trees nebo neuronové sítě. \cite{fumo_2017} Dělí se do hlavních 2 skupin podle toho, jestli umí naučit klasifikovat lineárně nebo nelineárně. 
+
+\section{Neuronové sítě}
+Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a nelineární. Lineární vrstvy tvoří parametry sítě. Nelineární vrstvy tvoří aktivační funkce. Abychom mohli označit neuronovou síť za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstvě modelu říkáme vstupní vrstva a poslední vrstvě říkáme výstupní vrstva. Všem vrstvám mezi vstupní a výstupní vrstvou říkáme vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě.
+
+\chapter{Praktická část}
+\chapter{Závěr}
+
+\nocite{*}
+\printbibliography[title={Použitá literatura}] % sazba seznamu citací
+\addcontentsline{toc}{chapter}{Použitá literatura} % vložení nadpisu do obsahu
+
+\end{document}

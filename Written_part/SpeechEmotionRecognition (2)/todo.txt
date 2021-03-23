@@ -1,0 +1,18 @@
+TODO
+- přečíst si odborné články
+
+Úvod
+- co je to rozpoznávání emocí
+- jaké byly úspěchy v posledních letech
+- používá se někde v současnosti model pro rozpoznávání emocí
+- proč neuronové sítě
+- jak by se dali výsledky práce požít dál
+
+S rozvojem neuronových sítí vzrostla i snaha o
+Rozpoznávání emocí je disciplína, která se zabývá
+
+- využití. Interakce s 
+
+Poznámky
+Citování online bibtex
+https://www.citationmachine.net/bibtex/cite-a-website/search?q=https%3A%2F%2Ftowardsdatascience.com%2Ftypes-of-machine-learning-algorithms-you-should-know-953a08248861
