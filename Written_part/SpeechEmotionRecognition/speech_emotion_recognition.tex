@@ -109,8 +109,9 @@ backend=biber
 
 Rozpoznávaní emocí ztěžuje, že emoce jsou subjektivní.\cite{DBLP:journals/speech/AkcayO20}
 
-Data nashromážděná v call centry mohou být použita na vývoj virtuálních asistentů, kteří by zautomatizovali komunikaci se zákazníkem.
+Počet zvukových záznamů komunikace v této době roste. Různé restaurace nabízí donáškové služby a při každé objednávce dochází ke komunikaci se zákazníkem. Objednávky mají svoji zaběhlý sled, a tak vzniká prostor pro automatizaci.
 
+Model schopný rozpoznávat emoce může najít uplatnění na příklad při vývoji virtuálních asistentů do call center. Díky rozpoznávači by mohli lépe vyhodnotit situaci, a tak poskytnout lepší obsluhu zákazníka. Rozpoznávání emocí by jim mohlo pomoci lépe podchytit kontext a přizpůsobit tak své jednání.
 
 \chapter{Teoretická část}
 \section{Rozpoznávání emocí}
@@ -127,7 +128,7 @@ Modely strojového učení se na datech učí parametry, kterým říkáme váhy
 
 Každý model má také své hyperparametry, které se používají ve fázi učení.\cite{leonel_2019} Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
 
-Každý model by měl být, co nejobecnější. To znamená, že by měl dosahovat podobných výsledků, jak na trénovacích datech, tak na jakýkoli jiných. Když model nedostatečně zobecňuje, tak říkáme, že se underffiting. Naopak když se model učí v přílišném detailu, tak říkáme, že se přeučuje. Data jsou proto rozdělena na sadu trénovací a testovací. Model je natrénován na sadě trénovací a otestován na sadě testovací. Dobrý model je úspěšný v podobné míře na obou datových sadách. Trénovací sadu můžeme rozdělit také na sadu trénovací a validační. Validační sada se používá při trénování modelu. Na výsledcích této sady můžeme poznat dříve, jestli se model přeučuje nebo naopak, jestli se učí dostatečně. Při testování na testovací nebo validační sadě se parametry modelu nemění. 
+Každý model by měl být, co nejobecnější. To znamená, že by měl dosahovat podobných výsledků jak na trénovacích datech tak na jakýkoli jiných. Když model nedostatečně zobecňuje, tak říkáme, že se underffiting. Naopak když se model učí v přílišném detailu, tak říkáme, že se přeučuje. Data jsou proto rozdělena na sadu trénovací a testovací. Model je natrénován na sadě trénovací a otestován na sadě testovací. Dobrý model je úspěšný v podobné míře na obou datových sadách. Trénovací sadu můžeme rozdělit také na sadu trénovací a validační. Validační sada se používá při trénování modelu. Na výsledcích této sady můžeme poznat dříve, jestli se model přeučuje nebo naopak, jestli se učí dostatečně. Při testování na testovací nebo validační sadě se parametry modelu nemění. 
 
 Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika, která se používá při hodnocení klasifikátoru, je přesnost udávající poměr mezi správně klasifikovanými vzorky a všemi vzorky. Pro vyhodnocení modelu lze také použít matici záměny, která na jedné ose udává správnou třídu a na druhé předpovězenou třídu. Díky tomu můžeme jednoduše zjistit, jaké třídy si mezi sebou klasifikátor zaměňuje.
 
@@ -136,7 +137,21 @@ Existuje mnoho typů modelů pro klasifikaci jako jsou na příklad logistická 
 \section{Neuronové sítě}
 Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a nelineární. Lineární vrstvy tvoří parametry sítě. Nelineární vrstvy tvoří aktivační funkce. Abychom mohli označit neuronovou síť za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstvě modelu říkáme vstupní vrstva a poslední vrstvě říkáme výstupní vrstva. Všem vrstvám mezi vstupní a výstupní vrstvou říkáme vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě.
 
+Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
+
+Ve skrytých vrstvách se nejčastěji pro klasifikaci používá aktivační funkce ReLu, která při dopředném průchodu propustí pouze kladná čísla a všechny záporná čísla vynuluje.
+
+Pro klasifikaci do více tříd se používá aktivační funkce Softmax. Výsledkem průchodu touto funkcí je vektor, který obsahuje pravděpodobnosti příslušnosti vzorku do jednotlivých tříd. Součet vektor je tedy roven jedné.
+
+Jako hodnotící kritérium pro klasifikaci do více tříd se používá křížová entropie.
+
+
 \chapter{Praktická část}
+\section{Výběr datových sad}
+Datové sady byly vybrány na zásadě přehledu z vědecké článku \cite{DBLP:journals/speech/AkcayO20}. Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Ze zbylých datových sad byly vybrány pouze 3 anglické datové sady a jedna italská.
+
+\subsection{RAVDESS}
+Zkratka RAVDESS znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů mluvících severoamerickým přízvukem. Nahrávky řeči zachycují 7 emocí: klid, radost, smutek, hněv, strach, překvapení a znechucení. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazený štítek, který udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na Kaggle.com. \cite{smart_lab}
 \chapter{Závěr}
 
 \nocite{*}
