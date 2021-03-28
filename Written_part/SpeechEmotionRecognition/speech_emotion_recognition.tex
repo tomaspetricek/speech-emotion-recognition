@@ -126,9 +126,11 @@ Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou
 
 \subsection{Současné poznání}
 
-\subsection{Příznaky pro rozpoznávání emocí}
-Ze zvukových nahrávek lze získat příznaky jakou jsou Log-Mel
-Spectrogram, Mel-Frequency Cepstral Coefficients (MFCCs), výška tónu a energie.\cite{DBLP:journals/corr/abs-1912-10458}
+\subsection{Zpracování dat pro rozpoznávání}
+Během mluvení se emoce mluvčího mění, proto se zvukový záznam dělí do menších časových úseků. Kratší úseky nazývá rámce a mají délku v desítkách milisekund. Jednotlivé rámce lze použít pro získání příznaků pro rozpoznávání emocí. Dalším krokem zpracování je většinou okénkování, kdy je na signál použita okénkovací funkce. Na jednotlivé rámce lze použít také normalizaci, která zmírní rozdíly v řečí mezi mluvčími, ale zachová přenášenou informaci. Během nahrávání se může do nahrávky dostat ve větší míře šum, který lze při předzpracování také odstranit.\cite{DBLP:journals/speech/AkcayO20}
+
+Dalším krokem je zvolení vhodných příznaků pro rozpoznávání. Příznaky pro rozpoznávání emocí lze rozdělit do hlavních ktogorií na prozodické příznaky, spektrální příznaky, příznaky kvality hlasu a příznaky založené na Teager Energy Operator.
+
 
 \subsection{Způsoby rozpoznávání emocí}
 Pro rozpoznávání emocí se používají klasifikátory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít štítek udávající třídu, do které patří. V případě rozpoznávání emocí musí mít každá nahrávka štítek s označením emoce.
@@ -160,7 +162,17 @@ Jako hodnotící kritérium pro klasifikaci do více tříd se používá kří�
 Datové sady byly vybrány na zásadě přehledu z vědecké článku \cite{DBLP:journals/speech/AkcayO20}. Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Ze zbylých datových sad byly vybrány pouze 3 anglické datové sady a jedna italská.
 
 \subsection{RAVDESS}
-Zkratka RAVDESS znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů mluvících severoamerickým přízvukem. Nahrávky řeči zachycují 7 emocí: klid, radost, smutek, hněv, strach, překvapení a znechucení. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazený štítek, který udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na Kaggle.com. \cite{smart_lab}
+Zkratka RAVDESS znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů mluvících severoamerickým přízvukem. Nahrávky řeči zachycují 7 emocí: klid, radost, smutek, hněv, strach, překvapení a znechucení. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazený štítek, který udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na Kaggle.com.\cite{smart_lab}
+
+\subsection{SAVEE}
+Zkratka SAVEE znamená Surrey Audio-Visual Expressed Emotion a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje 7 emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena 4 mužskými herci mluvící britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady TIMIT. Kromě řeči byly při nahrávání zaznamenávány i pohyby v obličeji mluvčích, kteří na něm měli namalovány modré značky.\cite{savee}
+
+\subsection{TESS}
+Zkratka TESS znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny 2 herečkami ve věku 26 a 64 let. Rozlišuje 7 emocí mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začínala slovy "Say the word" a končila jedním z 200 vybraných slov.\cite{tess}
+
+\subsection{EMOVO}
+EMOVO je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny 6 herci, z kterých 3 byli muži a 3 ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje 7 emocí mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav.\cite{COSTANTINI14.591}
+
 \chapter{Závěr}
 
 \nocite{*}
