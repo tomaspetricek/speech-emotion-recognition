@@ -107,14 +107,23 @@ backend=biber
 
 \chapter{Úvod}
 
-Rozpoznávaní emocí ztěžuje, že emoce jsou subjektivní.\cite{DBLP:journals/speech/AkcayO20}
-
-Počet zvukových záznamů komunikace v této době roste. Různé restaurace nabízí donáškové služby a při každé objednávce dochází ke komunikaci se zákazníkem. Objednávky mají svoji zaběhlý sled, a tak vzniká prostor pro automatizaci.
+Mluvení je nám nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Při používání jiných forem komunikace je těžší vyjádřit své emoce. S nástupem chatovácích platforem byly vyvinuty emodži, které nám umožňují lépe vyjádřit své emoce.
+Rozpoznávaní emocí ztěžuje, že emoce jsou subjektivní. Nedají se měřit. \cite{DBLP:journals/speech/AkcayO20}
 
 Model schopný rozpoznávat emoce může najít uplatnění na příklad při vývoji virtuálních asistentů do call center. Díky rozpoznávači by mohli lépe vyhodnotit situaci, a tak poskytnout lepší obsluhu zákazníka. Rozpoznávání emocí by jim mohlo pomoci lépe podchytit kontext a přizpůsobit tak své jednání.
 
 \chapter{Teoretická část}
 \section{Rozpoznávání emocí}
+Rozpoznávání emocí v řeči se zabývá zpracováním zvukových signálů a jejich řazením do emocionálních kategorií. Pro třídění se používají diskrétní a prostorové modely vyžadující označená data. Pro lepší rozpoznávání jsou data pro modely předzpracována. Cílem předzpracování je z dat dostat nejdůležitější informace pro rozpoznávání. Přesnost rozpoznávání může být zvýšena i zapojením dalších příznaků. U rozpoznávání řečí to mohou být příznaky vytažené z vizuální záznamu mluvčího.\cite{DBLP:journals/speech/AkcayO20}
+
+\subsection{Emoce}
+Emoce jsou popisují náš vnitřní stav. Emoce můžeme dělit diskrétně do kategorií. Teorie, která je na tom založená, dělí emoce do šesti kategorií: smutek, radost, strach, hněv, znechucení a překvapení. Dále můžeme dělit emoce rozměrově. Emoce jsou děleny do rozměrů jako je mocenství, vzrušení nebo vliv. Vzrušení udává sílu dané emoce a má rozsah od znudění k nadšení. Nevýhodou rozměrového rozdělení o proti diskrétnímu je, že není tolik intuitivní.\cite{DBLP:journals/speech/AkcayO20}
+
+\subsection{Datové sady}
+Datové sady jsou nezbytnou součástí rozpoznávání emocí. Data pro rozpoznávání musí být označkována. Datové sady mohou být rozděleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Datové sady pořízené tímto způsobem se relativně snadno sestavují, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Tímto způsobem získaná data, ale nemusí odpovídat skutečné reálné situaci, proto existují další 2 způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálné situaci. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. I přesto, že by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější ji sestavit, protože se na data mohou vztahovat právní nároky.\cite{DBLP:journals/speech/AkcayO20}
+
+Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví. Liší se jazykem, kterým byly namluveny a také tím, která tvrzení byla vyslovena. Počet a kategorie rozpoznávacích emocí mohou být také různé.\cite{DBLP:journals/speech/AkcayO20}
+
 \subsection{Současné poznání}
 
 \subsection{Příznaky pro rozpoznávání emocí}
