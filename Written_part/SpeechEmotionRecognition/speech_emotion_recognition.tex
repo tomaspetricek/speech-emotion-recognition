@@ -112,6 +112,8 @@ Rozpoznávaní emocí ztěžuje, že emoce jsou subjektivní. Nedají se měřit
 
 Model schopný rozpoznávat emoce může najít uplatnění na příklad při vývoji virtuálních asistentů do call center. Díky rozpoznávači by mohli lépe vyhodnotit situaci, a tak poskytnout lepší obsluhu zákazníka. Rozpoznávání emocí by jim mohlo pomoci lépe podchytit kontext a přizpůsobit tak své jednání.
 
+V posledních letech došlo k rozvoji osobních virtuálních asistentů jako jsou Siri a Alexa, které jsou používány pro hlasové ovládání elektronických zařízení. Mohou odesílat textové zprávy, přijímat telefonní hudbu nebo vyhledávat na ve webovém prohlížeči. Systém schopný rozpoznávat emoce může zlepšit komunikaci s asistentem tak, aby se nám zdála přirozenější.\cite{DBLP:journals/corr/abs-1912-10458}
+
 \chapter{Teoretická část}
 \section{Rozpoznávání emocí}
 Rozpoznávání emocí v řeči se zabývá zpracováním zvukových signálů a jejich řazením do emocionálních kategorií. Pro třídění se používají diskrétní a prostorové modely vyžadující označená data. Pro lepší rozpoznávání jsou data pro modely předzpracována. Cílem předzpracování je z dat dostat nejdůležitější informace pro rozpoznávání. Přesnost rozpoznávání může být zvýšena i zapojením dalších příznaků. U rozpoznávání řečí to mohou být příznaky vytažené z vizuální záznamu mluvčího.\cite{DBLP:journals/speech/AkcayO20}
@@ -131,6 +133,9 @@ Během mluvení se emoce mluvčího mění, proto se zvukový záznam dělí do 
 
 Dalším krokem je zvolení vhodných příznaků pro rozpoznávání. Příznaky pro rozpoznávání emocí lze rozdělit do hlavních ktogorií na prozodické příznaky, spektrální příznaky, příznaky kvality hlasu a příznaky založené na Teager Energy Operator.
 
+Příznaky pro rozpoznávání lze rozdělit na příznaky založené na čase a příznaky založené na spektru. Mezi příznaky založené na čase patří krátkodobá energie signálu, nejvyšší amplituda nebo nejmenší energie. Je velice jednoduché tyto příznaky získat a jednoduchým způsobem reprezentují zvukové nahrávky. Na druhou stranu příznaky založené na spektru nám mohou přinést hlubší porozumění. Mezi příznaky založené na spektru patří Mel-Frequency Cepstral Coefficients, spectral centroid nebo chroma coefficients.\cite{DBLP:journals/corr/abs-1912-10458}
+
+Mel-Frequency Cepstrum je reprezentuje krátkodobé silové spektrum zvuku za účelem napodobit lidské vnímání zvuku.
 
 \subsection{Způsoby rozpoznávání emocí}
 Pro rozpoznávání emocí se používají klasifikátory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít štítek udávající třídu, do které patří. V případě rozpoznávání emocí musí mít každá nahrávka štítek s označením emoce.
@@ -156,13 +161,16 @@ Pro klasifikaci do více tříd se používá aktivační funkce Softmax. Výsle
 
 Jako hodnotící kritérium pro klasifikaci do více tříd se používá křížová entropie.
 
+\subsection{Konvoluční neuronové sítě}
+\subsection{Rekuretní neuronové sítě}
+\subsection{Zkryté Markovovi modely}
 
 \chapter{Praktická část}
 \section{Výběr datových sad}
 Datové sady byly vybrány na zásadě přehledu z vědecké článku \cite{DBLP:journals/speech/AkcayO20}. Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Ze zbylých datových sad byly vybrány pouze 3 anglické datové sady a jedna italská.
 
 \subsection{RAVDESS}
-Zkratka RAVDESS znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů mluvících severoamerickým přízvukem. Nahrávky řeči zachycují 7 emocí: klid, radost, smutek, hněv, strach, překvapení a znechucení. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazený štítek, který udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na Kaggle.com.\cite{smart_lab}
+Zkratka RAVDESS znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů činící datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují 7 emocí: klid, radost, smutek, hněv, strach, překvapení a znechucení. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazený štítek, který udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nhrávek se pohybují kolem 3 minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na Kaggle.com.\cite{smart_lab}
 
 \subsection{SAVEE}
 Zkratka SAVEE znamená Surrey Audio-Visual Expressed Emotion a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje 7 emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena 4 mužskými herci mluvící britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady TIMIT. Kromě řeči byly při nahrávání zaznamenávány i pohyby v obličeji mluvčích, kteří na něm měli namalovány modré značky.\cite{savee}
@@ -172,6 +180,11 @@ Zkratka TESS znamená Toronto emotional speech set a označuje anglickou datovou
 
 \subsection{EMOVO}
 EMOVO je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny 6 herci, z kterých 3 byli muži a 3 ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje 7 emocí mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav.\cite{COSTANTINI14.591}
+
+\section{Příprava dat}
+Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjednocen formát nahrávek. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl ponechán jeden zvukový kanál. Pro převod byla použit nástroj FFmpeg, který je přístupný přes rozhraní příkazové řádky. V Pythonu lze k němu přistoupit pomocí modulu subprocess. Data byla načtena, převedena do požadovaného formátu a uložena do nových souborů. Správnost převodu byla ověřena.
+
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použit nástroj HTK, který je opět přístupný z příkazové řádky. Pro převod byl použit konfigurační soubor, který na příklad upravoval délku jednotlivých rámců. Zvukové nahrávky byly načteny, převedeny a výsledné příznaky byly uloženy do binárních souborů. Struktura binárních souborů je definovaní HTK. V Pythonu byl napsán, na GitHubu zveřejněn, menší modul PyHTK pomocí, kterého lze data načíst. Správnost načtených příznaků byla také ověřena.
 
 \chapter{Závěr}
 
