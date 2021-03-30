@@ -157,11 +157,12 @@ Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a neline
 
 Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
 
-Ve skrytých vrstvách se nejčastěji pro klasifikaci používá aktivační funkce ReLu, která při dopředném průchodu propustí pouze kladná čísla a všechny záporná čísla vynuluje.
+Ve skrytých vrstvách se nejčastěji pro klasifikaci používá aktivační funkce ReLU, která při dopředném průchodu propustí pouze kladná čísla a všechny záporná čísla vynuluje.
 
 Pro klasifikaci do více tříd se používá aktivační funkce Softmax. Výsledkem průchodu touto funkcí je vektor, který obsahuje pravděpodobnosti příslušnosti vzorku do jednotlivých tříd. Součet vektor je tedy roven jedné.
 
-Jako hodnotící kritérium pro klasifikaci do více tříd se používá křížová entropie.
+\subsection{Křížová entropie}
+Jako hodnotící kritérium pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot.\cite{brownlee_2020}
 
 \subsection{Konvoluční neuronové sítě}
 \subsection{Rekuretní neuronové sítě}
