@@ -139,6 +139,11 @@ Příznaky pro rozpoznávání lze rozdělit na příznaky založené na čase a
 
 Mel-Frequency Cepstrum je reprezentuje krátkodobé silové spektrum zvuku za účelem napodobit lidské vnímání zvuku.
 
+\subsubsection{Příznaky MFCC}
+Technika získávání MFCC příznaků spočívá v před zvýraznění, okénkování signálu, použití Diskrétní Fourierovy transformace, použití Mel banky filtrů, logaritmizace a použití inverzní Diskrétní kosínovi transformace. Ve fázi před zvýraznění je posílena energie vysokých frekvencí signálu. 
+
+Při okénkování je zvukový signál je nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použíto Hammingovo nebo Hanningovo okénko. Dále signál převeden pomocí Diskrétní Fourierovi transformace do frekvenční oblasti. Na výsledné spektrum aplikujeme Mel banku filtrů, která je založena na Mel stupnici. Mel stupnice zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál zlogaritmován a je provedena Diskrétní kosínova transformace. \cite{hui_2019}
+
 \subsection{Způsoby rozpoznávání emocí}
 Pro rozpoznávání emocí se používají klasifikátory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít štítek udávající třídu, do které patří. V případě rozpoznávání emocí musí mít každá nahrávka štítek s označením emoce.
 
