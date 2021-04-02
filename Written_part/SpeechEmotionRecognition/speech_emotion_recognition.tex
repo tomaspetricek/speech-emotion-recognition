@@ -133,6 +133,8 @@ Datové sady jsou nezbytnou součástí rozpoznávání emocí. Data pro rozpozn
 Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví. Liší se jazykem, kterým byly namluveny a také tím, která tvrzení byla vyslovena. Počet a kategorie rozpoznávacích emocí mohou být také různé.\cite{DBLP:journals/speech/AkcayO20}
 
 \subsection{Současné poznání}
+% Popis přístupů - co se na to používalo, co se používá teď nejlepší úspěchy
+% Používané datasety
 
 \subsection{Zpracování dat pro rozpoznávání}
 Během mluvení se emoce mluvčího mění, proto se zvukový záznam dělí do menších časových úseků. Kratší úseky nazývá rámce a mají délku v desítkách milisekund. Jednotlivé rámce lze použít pro získání příznaků pro rozpoznávání emocí. Dalším krokem zpracování je většinou okénkování, kdy je na signál použita okénkovací funkce. Na jednotlivé rámce lze použít také normalizaci, která zmírní rozdíly v řečí mezi mluvčími, ale zachová přenášenou informaci. Během nahrávání se může do nahrávky dostat ve větší míře šum, který lze při předzpracování také odstranit.\cite{DBLP:journals/speech/AkcayO20}
@@ -140,8 +142,10 @@ Během mluvení se emoce mluvčího mění, proto se zvukový záznam dělí do 
 Dalším krokem je zvolení vhodných příznaků pro rozpoznávání. Příznaky pro rozpoznávání emocí lze rozdělit do hlavních ktogorií na prozodické příznaky, spektrální příznaky, příznaky kvality hlasu a příznaky založené na Teager Energy Operator.
 
 Příznaky pro rozpoznávání lze rozdělit na příznaky založené na čase a příznaky založené na spektru. Mezi příznaky založené na čase patří krátkodobá energie signálu, nejvyšší amplituda nebo nejmenší energie. Je velice jednoduché tyto příznaky získat a jednoduchým způsobem reprezentují zvukové nahrávky. Na druhou stranu příznaky založené na spektru nám mohou přinést hlubší porozumění. Mezi příznaky založené na spektru patří Mel-Frequency Cepstral Coefficients, spectral centroid nebo chroma coefficients.\cite{DBLP:journals/corr/abs-1912-10458}
+% Udělat výčet používaných příznaků - 1-3 věty o nich
 
 \subsubsection{Příznaky MFCC}
+% Příznaky jsou popsány podrobněji, protože jsou používané v praktické části
 Technika získávání MFCC příznaků spočívá v před zvýraznění, okénkování signálu, použití Diskrétní Fourierovy transformace, použití Mel banky filtrů, logaritmizace a použití inverzní Diskrétní kosínovi transformace. Ve fázi před zvýraznění je posílena energie vysokých frekvencí signálu. 
 
 Při okénkování je zvukový signál je nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použíto Hammingovo nebo Hanningovo okénko. Dále signál převeden pomocí Diskrétní Fourierovi transformace do frekvenční oblasti. Na výsledné spektrum aplikujeme Mel banku filtrů, která je založena na Mel stupnici. Mel stupnice zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál zlogaritmován a je provedena Diskrétní kosínova transformace. \cite{hui_2019}
@@ -160,6 +164,7 @@ Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika,
 Existuje mnoho typů modelů pro klasifikaci jako jsou na příklad logistická regrese, Support Vector Machine, Decision Trees nebo neuronové sítě. \cite{fumo_2017} Dělí se do hlavních 2 skupin podle toho, jestli umí naučit klasifikovat lineárně nebo nelineárně. 
 
 \section{Neuronové sítě}
+%Obecný popis. Dopředná a zpětná propagace. 
 Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a nelineární. Lineární vrstvy tvoří parametry sítě. Nelineární vrstvy tvoří aktivační funkce. Abychom mohli označit neuronovou síť za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstvě modelu říkáme vstupní vrstva a poslední vrstvě říkáme výstupní vrstva. Všem vrstvám mezi vstupní a výstupní vrstvou říkáme vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě.
 
 Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
@@ -168,12 +173,14 @@ Ve skrytých vrstvách se nejčastěji pro klasifikaci používá aktivační fu
 
 Pro klasifikaci do více tříd se používá aktivační funkce Softmax. Výsledkem průchodu touto funkcí je vektor, který obsahuje pravděpodobnosti příslušnosti vzorku do jednotlivých tříd. Součet vektor je tedy roven jedné.
 
+% Vybrané koncepty
 \subsection{Křížová entropie}
 Jako hodnotící kritérium pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot.\cite{brownlee_2020}
 
+% používané architektury
+% Markovi nepopisovat - nejsou neuronovky
 \subsection{Konvoluční neuronové sítě}
 \subsection{Rekuretní neuronové sítě}
-\subsection{Zkryté Markovovi modely}
 
 \chapter{Praktická část}
 \section{Výběr datových sad}
