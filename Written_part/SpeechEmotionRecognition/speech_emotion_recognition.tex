@@ -218,7 +218,9 @@ Data uložená v polích numpy byla načtena pomocí upravených Dataloaderů. D
 Data byla načítána do modelu i s okolím. Ke každému rámci byly přidány rámce s nejbližšího okolí. Data na krajích sady byla rozšířena o okraje, aby při vybírání krajních rámců nedošlo překročení velikosti pole. Okraje byly tvořeny kopie krajních rámců.
 
 \section{Vytvoření neuronové sítě}
-Pro vytvoření neuronové sítě byl zvolen framework PyTorch. Model byl vytvořen pomocí modelu Sequential. Model byl typu Multi Layer Perceptron, skládal se splně propojených lineárních vrstev, mezi kterými byly jako aktivační funkce umístěny ReLU. Na konci sítě stála funkce Softmax. Jako kritérium pro trénování byla použita křížová entropie.
+Pro vytvoření neuronové sítě byl zvolen framework PyTorch, který je vyvíjen společností Facebook. Dále bylo možné použít framework TensorFlow, který je vyvíjen společností Google. Oba mají velice dobré dokumentace a rozsáhlou komunitu programátorů. Sestavení modelu v TensorFlow je jednoduché. Je možné společně s ním použít framework Keras, který následuje syntax knihovny pro strojové učení scikit-learn. Vytvoření neuronové sítě za pomocí frameworku Keras je velice jednoduché, nicméně neposkytuje tak velkou flexibilitu jako framework PyTorch, kde si kód pro učení, validaci a vyhodnocení může programátor jednoduše napsat sám podle své potřeby. 
+
+Model byl vytvořen pomocí modelu Sequential a byl typu Multi Layer Perceptron, skládal se splně propojených lineárních vrstev, mezi kterými byly jako aktivační funkce umístěny ReLU. Na konci sítě stála funkce Softmax. Jako kritérium pro trénování byla použita křížová entropie.
 
 \chapter{Závěr}
 
