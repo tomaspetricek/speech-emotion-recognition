@@ -186,6 +186,9 @@ Pro klasifikaci do více tříd se používá aktivační funkce Softmax. Výsle
 \subsection{Křížová entropie}
 Jako hodnotící kritérium pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot.\cite{brownlee_2020}
 
+\subsection{ReLU}
+ReLU neboli rectified linear activation function je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce, je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na 1 a velmi malá čísla 0. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaná modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí\cite{brownlee_2020_ReLU}.
+
 % používané architektury
 % Markovi nepopisovat - nejsou neuronovky
 \subsection{Konvoluční neuronové sítě}
