@@ -189,6 +189,9 @@ Jako hodnotící kritérium pro klasifikaci do více tříd lze použít kříž
 \subsection{ReLU}
 ReLU neboli rectified linear activation function je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce, je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na 1 a velmi malá čísla 0. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaná modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí\cite{brownlee_2020_ReLU}.
 
+\subsection{Softmax}
+Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností, kde jsou pravděpodobnosti pro jednotlivé prvky úměrné velikosti všech prvků vektoru. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady\cite{brownlee_2020_Softmax}.
+
 % používané architektury
 % Markovi nepopisovat - nejsou neuronovky
 \subsection{Konvoluční neuronové sítě}
