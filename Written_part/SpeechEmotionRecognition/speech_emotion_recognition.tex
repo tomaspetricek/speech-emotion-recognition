@@ -151,9 +151,9 @@ Dále může na příznaky pro rozpoznávání dělit na příznaky založené n
 
 \subsubsection{Příznaky MFCC}
 % Příznaky jsou popsány podrobněji, protože jsou používané v praktické části
-Technika získávání MFCC příznaků spočívá v před zvýraznění, okénkování signálu, použití Diskrétní Fourierovy transformace, použití Mel banky filtrů, logaritmizace a použití inverzní Diskrétní kosínovi transformace. Ve fázi před zvýraznění je posílena energie vysokých frekvencí signálu. 
+Technika získávání MFCC příznaků spočívá v okénkování signálu, použití Diskrétní Fourierovy transformace, použití Mel banky filtrů, logaritmizace a použití inverzní Diskrétní kosínovi transformace. Ve fázi před zvýraznění je posílena energie vysokých frekvencí signálu. 
 
-Při okénkování je zvukový signál je nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použíto Hammingovo nebo Hanningovo okénko. Dále signál převeden pomocí Diskrétní Fourierovi transformace do frekvenční oblasti. Na výsledné spektrum aplikujeme Mel banku filtrů, která je založena na Mel stupnici. Mel stupnice zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál zlogaritmován a je provedena Diskrétní kosínova transformace. \cite{hui_2019}
+Při okénkování je zvukový signál je nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použito Hammingovo nebo Hanningovo okénko. Dále signál převeden pomocí Diskrétní Fourierovi transformace do frekvenční oblasti. Na výsledné spektrum aplikujeme Mel banku filtrů, která je založena na Mel stupnici. Mel stupnice zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál zlogaritmován a je provedena Diskrétní kosínova transformace. \cite{hui_2019}
 
 \subsection{Způsoby rozpoznávání emocí}
 Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazený štítek udávající třídu, do které patří. V případě klasifikace jsou to diskrétní štítky, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od -1 do +1\cite{konar_chakraborty_2015}.
@@ -195,7 +195,10 @@ Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností
 % používané architektury
 % Markovi nepopisovat - nejsou neuronovky
 \subsection{Konvoluční neuronové sítě}
+Jsou ve velké míře používány pro práci s obrázky. Skládají se z konvolučních vrstev. Každá konvoluční vrstva obsahuje sadu filtrů, jejichž parametry se síť učí. \cite{DBLP:journals/corr/abs-1912-10458}
+
 \subsection{Rekuretní neuronové sítě}
+Rekurentní neuronové sítě (RNN) jsou především používány při řešení úloh s daty závislými na čase. Rekurentní neuronové sítě si pamatují skrytý stav, který je vypočítán ze vstupu a vstupuje společně s následujícím vzorkem do sítě. Síť typu RNN je schopna si pamatovat větší kontext a použít ho při předpovídání. Pokročilejším modelem je LSTM, který je schopný si poradit s problémem mizejícího a explodujícího gradientu. RNN lze také použít k rozpoznávání emocí, kdy jsou jednotlivé rámce společně s jejich okolí postupně posílány do sítě. Délka rámce s okolím by měla mít alespoň 250 milisekund, aby se byl model schopný naučit rozpoznávat emoce. \cite{DBLP:journals/corr/abs-1912-10458}
 
 \chapter{Praktická část}
 \section{Výběr datových sad}
