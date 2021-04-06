@@ -122,11 +122,9 @@ Cílem této práce je nashromáždit veřejně dostupné datové sady pro rozpo
 
 \chapter{Teoretická část}
 
-\section{Rozpoznávání emocí}
-Rozpoznávání emocí v řeči se zabývá zpracováním zvukových signálů a jejich řazením do emocionálních kategorií. Pro lepší rozpoznávání jsou data pro modely předzpracována. Cílem předzpracování je z dat dostat nejdůležitější informace pro rozpoznávání. Přesnost rozpoznávání může být zvýšena i zapojením dalších příznaků. U rozpoznávání řečí to mohou být příznaky vytažené z vizuální záznamu mluvčího.\cite{DBLP:journals/speech/AkcayO20}
-% možná dát odstavec pryč
+\subsection{Emoce}
+V současnosti není zvolena jednotná definice emocí, existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit\cite{DBLP:journals/speech/AkcayO20}.
 
-\subsection{Dělení emocí}
 Emoce můžeme dělit 2 způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější.\cite{DBLP:journals/speech/AkcayO20}
 
 \subsection{Datové sady}
@@ -143,12 +141,17 @@ Přestože existuje mnoho datových sad, tak většina z nich má do 1 hodiny d�
 
 Dále není v rozpoznávání určeno, které emoce rozpoznávat a jestli pro rozpoznávání používat diskrétní nebo prostorový model. Nicméně při použití diskrétního modelu jsou vymezeny takzvané „big N" emoce, mezi než patří na příklad: hněv, strach, smutek nebo radost\cite{konar_chakraborty_2015}.
 
+Bylo provedeno mnoho pokusů pro rozpoznávání za použití různých modelů, datových sad, příznaků na různých jazycích. Parthasarathy a
+Tashev porovnali neuronové sítě typu DNNs, RNNs a 1D-CNN na čínských datových sadách. S 1D-CNN dosáhli výsledků 56\% procent. Kannan Venkataramanan a Haresh Rengaraj Rajamohan provedli několik pokusů na datové sadě RAVDESS. Použili různé příznaky pro rozpoznávání jako MFCC nebo Log Mel Spectrogramy a vyzkoušeli modely jako různé varianty CNN a HMM. Nejlepší model 2D CNN s globalním average poolingem dosáhl 70\% na validačních datech a 66\% testovacích datech při rozpoznávání emocí do 14 kategorií\cite{DBLP:journals/corr/abs-1912-10458}.
+
 \subsection{Zpracování dat pro rozpoznávání}
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracovány. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozděleny na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je PCA nebo LDA.\cite{konar_chakraborty_2015}.
 
-Během mluvení se emoce mluvčího mění, proto je zvukový záznam dělen do menších časových úseků. Kratší úseky nazývá rámce a mají délku většinou mezi 10-30 milisekundami\cite{konar_chakraborty_2015}. Dalším krokem zpracování bývá okénkování, kdy je na signál použita okénkovací funkce. Na jednotlivé rámce lze použít také normalizaci, která zmírní rozdíly v řečí mezi mluvčími, ale zachová přenášenou informaci. Během nahrávání se může do nahrávky dostat ve větší míře šum, který lze při předzpracování také odstranit.\cite{DBLP:journals/speech/AkcayO20}
+Prvním krokem předzpracování dat pro rozpoznávání bývá rámcování, kdy je zvukový signál rozdělen na menší časové kousky zvané rámce, které nabývají většinou rozsahu mezi 10-30 milisekundami. Rámcování se dělá z toho důvodu, že se emoce v průběhu řeči může měnit a rozdělení na menší časové úseky zajistí, že se emoce na zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
 
-Dalším krokem je zvolení vhodných příznaků pro rozpoznávání. Příznaky pro rozpoznávání emocí mohou být založeny na intonaci (výška tónu), intenzitě (energie, Teager), linear prediction cepstral coefficients (LPCCs), perceptual linear prediction (PLP), cepstrálních koeficientech (MFCC), spektru (Mel frequency bands (MFBs)) a další.\cite{konar_chakraborty_2015}.
+Před získáním příznaků lze na data uplatnit techniky pro zvýšení kvality. Může být použita normalizaci, která zmírňuje rozdíly v řečí mezi mluvčími a zároveň zachová přenášenou informaci. Mohou být zapojeny také techniky pro odstranění šumu, který se může během nahrávání do nahrávky dostat\cite{DBLP:journals/speech/AkcayO20}.
+
+Následuje zvolení vhodných příznaků pro rozpoznávání. Příznaky pro rozpoznávání emocí mohou být založeny na intonaci (výška tónu), intenzitě (energie, Teager), linear prediction cepstral coefficients (LPCCs), perceptual linear prediction (PLP), cepstrálních koeficientech (MFCC), spektru (Mel frequency bands (MFBs)) a další.\cite{konar_chakraborty_2015}.
 
 Dále může na příznaky pro rozpoznávání dělit na příznaky založené na čase a příznaky založené na spektru. Mezi příznaky založené na čase patří krátkodobá energie signálu, nejvyšší amplituda nebo nejmenší energie. Je velice jednoduché tyto příznaky získat a jednoduchým způsobem reprezentují zvukové nahrávky. Na druhou stranu příznaky založené na spektru nám mohou přinést hlubší porozumění. Mezi příznaky založené na spektru patří Mel-Frequency Cepstral Coefficients, spectral centroid nebo chroma coefficients\cite{DBLP:journals/corr/abs-1912-10458}.
 % Udělat výčet používaných příznaků - 1-3 věty o nich
