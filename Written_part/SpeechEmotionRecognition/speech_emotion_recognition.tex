@@ -122,19 +122,7 @@ Cílem této práce je nashromáždit veřejně dostupné datové sady pro rozpo
 
 \chapter{Teoretická část}
 
-\subsection{Emoce}
-V současnosti není zvolena jednotná definice emocí, existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit\cite{DBLP:journals/speech/AkcayO20}.
-
-Emoce můžeme dělit 2 způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější.\cite{DBLP:journals/speech/AkcayO20}
-
-\subsection{Datové sady}
-K rozpoznávání emocí se používají datové sady, které musí být označkovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Tímto způsobem získaná data, ale nemusejí odpovídat reálné situaci, a proto existují další 2 způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídali potenciálnímu použití\cite{konar_chakraborty_2015}. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. I přesto, že by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování.\cite{DBLP:journals/speech/AkcayO20}
-
-Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávacích emocí mohou být také různé.\cite{DBLP:journals/speech/AkcayO20}
-
-Mezi často používané a bezplatné datové sady patří Danish Emotional Speech (DES) database, Berlin Emotional Speech (BES) database, Speech Under Simulated and Actual Stress (SUSAS) database nebo eNTERFACE datová sada.\cite{konar_chakraborty_2015}
-
-\subsection{Současné poznání}
+\section{Současné poznání}
 % Popis přístupů - co se na to používalo, co se používá teď nejlepší úspěchy
 % Používané datasety
 Přestože existuje mnoho datových sad, tak většina z nich má do 1 hodiny délky a nahrávky jsou namluveny kolem 10 mluvčích. V rozpoznává řečí je typicky potřeba datová sada s několika sty hodin a větší různorodost mluvčích\cite{konar_chakraborty_2015}.
@@ -144,19 +132,38 @@ Dále není v rozpoznávání určeno, které emoce rozpoznávat a jestli pro ro
 Bylo provedeno mnoho pokusů pro rozpoznávání za použití různých modelů, datových sad, příznaků na různých jazycích. Parthasarathy a
 Tashev porovnali neuronové sítě typu DNNs, RNNs a 1D-CNN na čínských datových sadách. S 1D-CNN dosáhli výsledků 56\% procent. Kannan Venkataramanan a Haresh Rengaraj Rajamohan provedli několik pokusů na datové sadě RAVDESS. Použili různé příznaky pro rozpoznávání jako MFCC nebo Log Mel Spectrogramy a vyzkoušeli modely jako různé varianty CNN a HMM. Nejlepší model 2D CNN s globalním average poolingem dosáhl 70\% na validačních datech a 66\% testovacích datech při rozpoznávání emocí do 14 kategorií\cite{DBLP:journals/corr/abs-1912-10458}.
 
-\subsection{Zpracování dat pro rozpoznávání}
+\section{Emoce}
+V současnosti není zvolena jednotná definice emocí, existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit\cite{DBLP:journals/speech/AkcayO20}.
+
+Emoce můžeme dělit 2 způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější.\cite{DBLP:journals/speech/AkcayO20}
+
+\section{Datové sady}
+K rozpoznávání emocí se používají datové sady, které musí být označkovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Tímto způsobem získaná data, ale nemusejí odpovídat reálné situaci, a proto existují další 2 způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídali potenciálnímu použití\cite{konar_chakraborty_2015}. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. I přesto, že by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování.\cite{DBLP:journals/speech/AkcayO20}
+
+Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávacích emocí mohou být také různé.\cite{DBLP:journals/speech/AkcayO20}
+
+Mezi často používané a bezplatné datové sady patří Danish Emotional Speech (DES) database, Berlin Emotional Speech (BES) database, Speech Under Simulated and Actual Stress (SUSAS) database nebo eNTERFACE datová sada.\cite{konar_chakraborty_2015}
+
+
+\section{Zpracování dat pro rozpoznávání}
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracovány. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozděleny na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je PCA nebo LDA.\cite{konar_chakraborty_2015}.
 
+\subsection{Rámcování}
 Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové kousky zvané rámce, které nabývají většinou rozsahu mezi 10-30 milisekundami. Často se jednotlivé rámce překrývají 30\% až 50\%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že se emoce na zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
 
+\subsection{Okénkování}
 Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích a tím snižuje úniky, ke kterým může dojít při použití Rychlé Fourierovi Transformace (FFT). Pro okénková lze použít Hammingovu okénkovací funkci\cite{DBLP:journals/speech/AkcayO20}.
 
+\subsection{Odstranění ticha}
 Dále mohou být použity techniky pro detekci hlasové aktivity. S jejich pomocí může ze signálu odstranit tichá. Mohou být použity metody jako je zero crossing rate, short time energy nebo autokorelační metody. Metoda zero crossing rate, která udává míru přechodu signálu z kladných do záporných hodnot a naopak v rámci jednoho rámce. Hodnota ukazatele je nízká v místech řeči a vysoká v místech ostatních. Při použité metody short time energy dosáhne vysokých hodnot energie v hlasové části a nízkou hodnotu v částech ostatních. Techniky pro odstranění tichých míst v řeči mohou snížit počet dat a zvýšit jejich přínos pro učení\cite{DBLP:journals/speech/AkcayO20}.
 
+\subsection{Normalizace}
 Může být použita také normalizace, která zmírňuje rozdíly v řečí mezi mluvčími a zároveň zachová přenášenou informaci. Normalizace může být použita na více úrovních na úrovni jednotlivých rámců nebo na úrovni celé datové sady. Nejčastěji se pro normalizaci používá z-normalizace.\cite{DBLP:journals/speech/AkcayO20}
 
+\subsection{Odstranění šumu}
 Dále mohou být použity techniky na odstranění šumu, který se může během nahrávání do nahrávky dostat. Mezi nejčastěji používané techniky patří Minimum mean square error (MMSE) a log-spectral amplitude MMSE.\cite{DBLP:journals/speech/AkcayO20}.
 
+\section{Příznaky}
 Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybraný pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodili přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné tak lokální příznaky pro rozpoznávání. Mezi souhrnné  příznaky patří na střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu.\cite{DBLP:journals/speech/AkcayO20}.
 
 Příznaky pro rozpoznávání emocí mohou být založeny na intonaci (výška tónu), intenzitě (energie, Teager), linear prediction cepstral coefficients (LPCCs), perceptual linear prediction (PLP), cepstrálních koeficientech (MFCC), spektru (Mel frequency bands (MFBs)) a další.\cite{konar_chakraborty_2015}.
@@ -164,13 +171,13 @@ Příznaky pro rozpoznávání emocí mohou být založeny na intonaci (výška 
 Dále může na příznaky pro rozpoznávání dělit na příznaky založené na čase a příznaky založené na spektru. Mezi příznaky založené na čase patří krátkodobá energie signálu, nejvyšší amplituda nebo nejmenší energie. Je velice jednoduché tyto příznaky získat a jednoduchým způsobem reprezentují zvukové nahrávky. Na druhou stranu příznaky založené na spektru nám mohou přinést hlubší porozumění. Mezi příznaky založené na spektru patří Mel-Frequency Cepstral Coefficients, spectral centroid nebo chroma coefficients\cite{DBLP:journals/corr/abs-1912-10458}.
 % Udělat výčet používaných příznaků - 1-3 věty o nich
 
-\subsubsection{Příznaky MFCC}
+\subsection{MFCC}
 % Příznaky jsou popsány podrobněji, protože jsou používané v praktické části
 Technika získávání MFCC příznaků spočívá v okénkování signálu, použití Diskrétní Fourierovy transformace, použití Mel banky filtrů, logaritmizace a použití inverzní Diskrétní kosínovi transformace. Ve fázi před zvýraznění je posílena energie vysokých frekvencí signálu. 
 
 Při okénkování je zvukový signál je nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použito Hammingovo nebo Hanningovo okénko. Dále signál převeden pomocí Diskrétní Fourierovi transformace do frekvenční oblasti. Na výsledné spektrum aplikujeme Mel banku filtrů, která je založena na Mel stupnici. Mel stupnice zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál zlogaritmován a je provedena Diskrétní kosínova transformace. \cite{hui_2019}
 
-\subsection{Způsoby rozpoznávání emocí}
+\section{Způsoby rozpoznávání emocí}
 Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem.\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazený štítek udávající třídu, do které patří. V případě klasifikace jsou to diskrétní štítky, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od -1 do +1\cite{konar_chakraborty_2015}.
 
 Při klasifikaci na základě rámců, musí mít klasifikátor přístup k širšímu okolí rámců, aby tak zachytil kontext. Důvodem je, že emoce ovlivňují dlouhodobé charakteristiky řeči. Přesný počet rámců, který by se měl vzít není určen. Na příklad při použít neuronové sítě typu RNN lze pro zachycení kontextu použít kolem maximálně 10 ramců, jinak model začne trpět problémem mizejícího gradientu. Dalším způsobem, jak klasifikovat emoce je podle statických příznaků jako je maximum, minimum nebo časová délka\cite{konar_chakraborty_2015}.
