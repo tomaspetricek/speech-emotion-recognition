@@ -190,6 +190,9 @@ Při klasifikaci na základě rámců, musí mít klasifikátor přístup k šir
 
 Při trénování se používá často cross validace, kdy se trénovací a validační sada mění a je vytvořeno několik modelů, kterých výsledky jsou zprůměrovány a je tak dosaženo smysluplnějším výsledkům. U rozpoznávání emocí je používáno především, protože jsou datové sady po většině menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost. Vážená přesnost zohledňuje případný jiný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy\cite{konar_chakraborty_2015}.
 
+Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus strojového učení, která by se používal. Nicméně nejčastěji používané algoritmy jsou Skryté Markovovy modely (HMM), Gaussian Mixture Model (GMM), Support Vector Machines (SVM), a umělé neuronové sítě (ANN)\cite{DBLP:journals/speech/AkcayO20}.
+
+
 Modely strojového učení se na datech učí parametry, kterým říkáme váhy a biasy. Parametry se během fáze učení mění. Jedna iterace trénovaní se nazývá epocha. Během každé trénovací epochy jsou mezi sebou příznaky vzorku a váhy modelu vynásobeny a je k nim přičten bias. Na konci modelu stojí aktivační funkce, která v případě klasifikace přiřadí vzorku pravděpodobnosti příslušnosti do jednotlivých tříd. Každou epochu je zjištěna ztráta modelu, která je pomocí metody gradient descent minimalizována. Výsledkem minimalizace je úprava parametrů modelu.
 
 Každý model má také své hyperparametry, které se používají ve fázi učení.\cite{leonel_2019} Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
@@ -198,10 +201,11 @@ Každý model by měl být, co nejobecnější. To znamená, že by měl dosahov
 
 Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika, která se používá při hodnocení klasifikátoru, je přesnost udávající poměr mezi správně klasifikovanými vzorky a všemi vzorky. Pro vyhodnocení modelu lze také použít matici záměny, která na jedné ose udává správnou třídu a na druhé předpovězenou třídu. Díky tomu můžeme jednoduše zjistit, jaké třídy si mezi sebou klasifikátor zaměňuje.
 
-Existuje mnoho typů modelů pro klasifikaci jako jsou na příklad logistická regrese, Support Vector Machine, Decision Trees nebo neuronové sítě. \cite{fumo_2017} Dělí se do hlavních 2 skupin podle toho, jestli umí naučit klasifikovat lineárně nebo nelineárně. 
-
 \section{Neuronové sítě}
-%Obecný popis. Dopředná a zpětná propagace. 
+
+\subsection{Vícevrství perceptron}
+Vícevrství perceptron neboli feed-forward neural network je složen z více vrstev logických regresí nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů. Při vstupu příznaků do lineární vrstvy se příznaky nejdříve maticově vynásobí s váhami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí\cite{DBLP:books/lib/Bishop07}. 
+
 Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a nelineární. Lineární vrstvy tvoří parametry sítě. Nelineární vrstvy tvoří aktivační funkce. Abychom mohli označit neuronovou síť za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstvě modelu říkáme vstupní vrstva a poslední vrstvě říkáme výstupní vrstva. Všem vrstvám mezi vstupní a výstupní vrstvou říkáme vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě.
 
 Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
