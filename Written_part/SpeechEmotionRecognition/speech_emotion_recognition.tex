@@ -204,13 +204,18 @@ Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika,
 \section{Neuronové sítě}
 
 \subsection{Vícevrství perceptron}
-Vícevrství perceptron neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů. Při vstupu příznaků do lineární vrstvy se příznaky nejdříve maticově vynásobí s vahami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí\cite{DBLP:books/lib/Bishop07}.
+Vícevrství perceptron (MLP) neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva se skládá z aktivačních funkcí.\cite{DBLP:books/lib/Bishop07}.
 
 Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce Softmax. V klasickém provedení vícevrstvého perceptronu jsou používány jako aktivační funkce ve skryté vrstvě step funkce, nicméně lze použít jiné funkce jako je ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity\cite{DBLP:books/lib/Bishop07}.
 
-\subsection{Dopředná propagace}
+\subsection{Trénování}
+Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu. Jeden proces učení nazýváme epochou.
 
-Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
+Při dopředném průchodu sítí typu vícevrstvý perceptron jsou příznaky při průchodu lineární vrstvou nejdříve maticově vynásobeny s vahami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí. Proces se opakuje v každé vrstvě sítě. Při dopředném průchodu sítí si musíme pamatovat hodnoty vstupu do jednotlivých vrstev sítě, abychom mohli později použít algoritmus zpětné propagace. Výsledkem dopředného průchodu jsou předpovězené hodnoty, z kterých lze pomocí kriteriální funkce získána ztráta.
+
+Při zpětné propagaci se ztráta modelu propaguje zpět sítí pomocí řetízkové pravidla. Po získání všech gradientů sítě se provede optimalizační algoritmus metody největšího spádu. 
+
+který lze využít Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
 
 Ve skrytých vrstvách se nejčastěji pro klasifikaci používá aktivační funkce ReLU, která při dopředném průchodu propustí pouze kladná čísla a všechny záporná čísla vynuluje.
 
