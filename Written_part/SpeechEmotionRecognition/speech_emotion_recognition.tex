@@ -204,9 +204,11 @@ Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika,
 \section{Neuronové sítě}
 
 \subsection{Vícevrství perceptron}
-Vícevrství perceptron neboli feed-forward neural network je složen z více vrstev logických regresí nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů. Při vstupu příznaků do lineární vrstvy se příznaky nejdříve maticově vynásobí s váhami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí\cite{DBLP:books/lib/Bishop07}. 
+Vícevrství perceptron neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů. Při vstupu příznaků do lineární vrstvy se příznaky nejdříve maticově vynásobí s vahami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí\cite{DBLP:books/lib/Bishop07}.
 
-Neuronové sítě jsou tvořeny vrstvami, které dělíme na lineární a nelineární. Lineární vrstvy tvoří parametry sítě. Nelineární vrstvy tvoří aktivační funkce. Abychom mohli označit neuronovou síť za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstvě modelu říkáme vstupní vrstva a poslední vrstvě říkáme výstupní vrstva. Všem vrstvám mezi vstupní a výstupní vrstvou říkáme vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě.
+Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce Softmax. V klasickém provedení vícevrstvého perceptronu jsou používány jako aktivační funkce ve skryté vrstvě step funkce, nicméně lze použít jiné funkce jako je ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity\cite{DBLP:books/lib/Bishop07}.
+
+\subsection{Dopředná propagace}
 
 Všechny vrstvy sítě musí být derivovatelné, aby se mohl pro aktualizaci parametrů sítě použít algoritmus gradient descent. Derivace pro jednotlivé vrstvy sítě se počítají pomocí řetízkového pravidla. Během dopředného průchodu se v lineární vrstvě vynásobí váhy s příchozími příznaky a přičte se k nim bias.
 
