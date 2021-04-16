@@ -16,3 +16,7 @@ Rozpoznávání emocí je disciplína, která se zabývá
 Poznámky
 Citování online bibtex
 https://www.citationmachine.net/bibtex/cite-a-website/search?q=https%3A%2F%2Ftowardsdatascience.com%2Ftypes-of-machine-learning-algorithms-you-should-know-953a08248861
+
+
+Bibtex from doi:
+https://www.doi2bib.org/bib/https://doi.org/10.1371/journal.pone.0196391
