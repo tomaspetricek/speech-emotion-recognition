@@ -194,18 +194,32 @@ Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus 
 \subsection{Vícevrstvý perceptron}
 Vícevrství perceptron (MLP) neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva se skládá z aktivačních funkcí \cite{DBLP:books/lib/Bishop07}.
 
-Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax. Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
+Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax.
 
 $$ y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} }  $$ 
+
+Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
 
 \subsection{Trénování}
 Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu, která minimalizuje ztrátu modelu. Jeden proces učení nazýváme epochou.
 
-Při dopředném průchodu sítí typu vícevrstvý perceptron jsou příznaky při průchodu lineární vrstvou nejdříve maticově vynásobeny s vahami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí. Proces se opakuje v každé vrstvě sítě. Při dopředném průchodu sítí si musíme pamatovat hodnoty vstupu do jednotlivých vrstev sítě, abychom mohli později použít algoritmus zpětné propagace. Výsledkem dopředného průchodu jsou předpovězené hodnoty, z kterých lze pomocí kriteriální funkce získána ztráta. 
+Při dopředném průchodu lineární vrstvou jsou vstupní příznaky $ y_i $ přeměněny na výstupní příznaky $ x_j $ pomocí lineární kombinace, kterou lze vyjádřit:
 
 $$ x_j = b_j + \sum_{i}^{N} y_i w_{ij} $$
 
-Při zpětné propagaci se ztráta modelu propaguje zpět sítí pomocí řetízkové pravidla. Po získání všech gradientů sítě se provede optimalizační algoritmus metody největšího spádu.
+kde proměnná $ i $ odpovídá indexu příznaku z předchozí vrstvy. $ N $ je celkový počet neuronů předchozí vrstvy. Proměnné $ w_{ij} $ a $ b_j $ reprezentují parametry lineární vrstvy \cite{MATEJU2021327}. Dále jsou příznaky aktivovány nelineární funkcí, kterou lze obecně vyjádřit:
+
+$$ z_j = h(x_j) $$
+
+kde $ x_j $ jsou vstupní příznaky z předchozí vrstvy. Proměnná $ h $ je nelineární, diferencovatelná aktivační funkce a $ z_j $ jsou výstupní příznaky \cite{DBLP:books/lib/Bishop07}.
+
+Proces se opakuje v každé vrstvě sítě. Při dopředném průchodu je nutné si zapamatovat hodnoty vstupních příznaků jednotlivých vrstev sítě, které jsou používány při zpětné propagaci. Výsledkem dopředného průchodu jsou předpovězené hodnoty, z kterých lze pomocí kriteriální funkce získat ztrátu.
+
+Při zpětné propagaci se ztráta modelu propaguje zpět sítí pomocí řetízkového pravidla. Po získání všech gradientů sítě se provede optimalizační algoritmus metody největšího spádu, který aktualizuje parametry sítě. Metodu nejvyššího spádu lze vyjádřit:
+
+$$ x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t) $$
+
+kde proměnná $ x_{t+1} $ je hodnota aktualizovaného parametru sítě a $ x_t $ je hodnota původního parametru sítě. Hodnota gradientu pro parametr x je $ \frac{d}{dx} $. Ztráta parametru $ x_t $ je označena $ J $.
 
 \subsection{Hyperparametry}
 Každý model má také své hyperparametry, které se používají ve fázi učení \cite{leonel_2019}. Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
