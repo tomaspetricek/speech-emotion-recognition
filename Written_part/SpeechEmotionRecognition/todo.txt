@@ -25,3 +25,4 @@ https://www.doi2bib.org/bib/https://doi.org/10.1371/journal.pone.0196391
 Convert .txt to .png
 https://cloudconvert.com/txt-to-png
 
+Generate table

@@ -253,6 +253,21 @@ Zkratka TESS \cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a ozna
 \subsection{EMOVO}
 EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny 6 herci, z kterých 3 byli muži a 3 ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje 7 emocí mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav \cite{COSTANTINI14.591}.
 
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{ccccccc}
+  \hline
+ název & jazyk & počet tříd & počet mluvčích & pohlaví mluvčích & počet promluv & celková délka (hodiny) \\
+  \hline
+    RAVDESS & angličtina & 8 & 24 & obojí & 1440 & 1.5 \\
+    SAVEE   & angličtina & 7 & 4  & muži  & 480  & 0.5 \\
+    TESS    & angličtina & 7 & 2  & ženy  & 2800 & 1.6 \\
+    EMOVO   & italština  & 7 & 6  & obojí & 588  & 0.5 \\
+   \hline
+\end{tabular}}
+\caption{Přehled vybraných datových sad} 
+\end{table} 
+
 \section{Příprava dat}
 Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjednocen formát nahrávek. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Pro převod byl použit nástroj FFmpeg, který je přístupný přes rozhraní příkazové řádky. V Pythonu lze k němu přistoupit pomocí modulu subprocess. Data byla načtena, převedena do požadovaného formátu a uložena do nových souborů. Správnost převodu byla ověřena.
 
