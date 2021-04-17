@@ -266,6 +266,12 @@ Hlavní metoda objektu je volána přes metodu \_\_call\_\_, která bere jakou s
 
 Jako poslední byly datové sety uloženy do složek vložené do složky s datovou sadu. Data byla uložená jako celistvá pole numpy, která měla šířku rovnou počtu příznaků a výšku rovnou počtu vzorků. Dále byly jako pole numpy uloženy štítky pro jednotlivé vzorky. Do textového souboru info.txt pro jednotlivé sety datové sady byly uloženy počty vzorků, délky vzorků a názvy souborů s štítky a se vzorky. Délky vzorků byly ukládány, aby bylo možné při načtení datové sady odlišit jednotlivé vzorky a přidat jim příslušné štítky.
 
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.25]{dataset_file_structure.png}}
+\caption{Souborová struktura uložené datové sady}
+\label{fig}
+\end{figure}
+
 \section{Načítání dat}
 Pro načítání uložených datových sad byly vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objekt při vytváření bere jako parametry počet vzorků, délky vzorků, cestu k datové setu, cestu k ke štítkům datového setu, velikost pravého a levého okraje a název datové sady. Informace o datové sadě jsou přečteny ze souboru info.txt. Hodnoty levého a pravého okraje udávají velikost vstupního vzorku, ke každému vzorku (rámci) datového setu jsou při vyžádání jsou ke vzorku přiřazeny vzorky z jeho okolí. Při načtení vzorků ze souboru k nim byly na okrajích přidány hranice o délce okrajů. Hranice byly tvořeny kopiemi krajích vzorků datové sady. Při vybírání krajních vzorků se nemuseli přidávat vzorky kopie vzorků z okolí při výběru, a tak došlo k redukci logiky pro výběr vzorků z okolí. Štítky byly ukládány pro jednotlivé nahrávky, při inicializaci byly rozšířeny, tak aby odpovídali počtu všech vzorků datového setu. Důležitá metoda je také add\_margin, která přidá ke vzorku okolí, když je vyžadován vzorek datového setu.
 
@@ -275,6 +281,12 @@ Hlavní metody, které museli být implementovány byly metody \_\_len\_\_, kter
 Pro vytvoření neuronové sítě byl zvolen framework PyTorch, který je vyvíjen společností Facebook. Dále bylo možné použít framework TensorFlow, který je vyvíjen společností Google. Oba mají velice dobré dokumentace a rozsáhlou komunitu programátorů. Sestavení modelu v TensorFlow je jednoduché. Je možné společně s ním použít framework Keras, který následuje syntax knihovny pro strojové učení scikit-learn. Vytvoření neuronové sítě za pomocí frameworku Keras je velice jednoduché, nicméně neposkytuje tak velkou flexibilitu jako framework PyTorch, kde si kód pro učení, validaci a vyhodnocení může programátor jednoduše napsat sám podle své potřeby. 
 
 Pro vytvoření modelu byl použit objekt Sequential balíčku torch.nn. Model lze inicializovat několika způsoby. Jedním ze způsobů je předáním objektu tuple. Jednotlivé prvky tuplu musí být tvořeny vrstvami modelu, které lze importovat z balíčku torch.nn. Model byl tvořen lineárními vrstvami nn.Linear, které jako vstup berou velikost vstupní vrstvy a velikost vrstvy výstupní. Mezi lineární vrstvy byly umístěny funkce ReLU, který vstupní parametr nemají.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.25]{model_architecture.png}}
+\caption{Ukázka výpisu architektury modelu}
+\label{fig}
+\end{figure}
 
 Model Sequential byl rozšířen o metodu fit, která se podobá metodě fit používané ve frameworku scikit-learn pro strojové učení. Mezi své parametry bere zdroje dat, které můžou být typu DataLoader nebo Dataset. Dále je pro trénování potřeba předat kriteriální funkci a optimizer. Metoda byla navržena tak, aby bylo možné specifikovat zařízení, na kterém bude trénování probíhat, proto se předává také parametr device. Je možné při trénování na příklad přesunout data s modelem na grafickou kartu pomocí platformy cuda a tím urychlit rychlost trénování. Posledním předaným parametrem je počet epoch, během kterých se má model trénovat.
 
@@ -287,6 +299,12 @@ Metoda \_eval se liší od metody \_train hlavně tím, že je na začátku mode
 Trénování modelu obstarává objekt Trainer. Při inicializaci je mu předán model, trénovací, testovací a validační data. Objekt má definovanou metodu \_\_call\_\_, jejíž parametry jsou velikost dávky, míra učení, weight decay, počet epoch a název složky kam se mají uložit výsledky trénování. Při zavolí metody je spuštěno logování, které se ukládá do složky s výsledky. Do logovacího souboru se ukládají informace o trénování: zvolené hyperparamtry, výpis modelu a stav trénování. V případě, že nastane chyba při trénování, tak je zaznamenána do logovací souboru, kde je možné si ji přečíst a chybu před dalším trénování opravit. Hlavní funkce, kterou metoda volá je metoda fit modelu.
 
 Metoda fit volá v hlavním cyklu metoda \_train pro trénovací datovou sadu a metodu \_eval pro validační a testovací sady. Počet iterací hlavního cyklu je rovek počtu epoch trénování. Motada fit dále vypisuje do příkazové řádky informace o trénování do přehledného výpisu. Pro každou datovou sadu je vypsána přesnost na jednotlivých vzorcích a ztráta. U validačních a testovacích sad je navíc vypisována přesnost dosažená na celých záznamech. Informace o trénování jsou kromě vypisování také ukládány do datové struktury, která si zaznamenává historii jednotlivých hodnot při trénování. Metoda vrací historii trénování a matici záměn pro poslední epochu trénování.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.215]{train_log.png}}
+\caption{Přehledný výpis trénování}
+\label{fig}
+\end{figure}
 
 Poslední činnost, kterou objekt Trainer vykoná je uložení dat. Při ukládání je do složky s výsledky uložen natrénovaný model pomocí funkce torch.save a výsledky trénování. Mezi výsledky trénování jsou uloženy grafy ztráty a přesnosti. Grafy zobrazující přesnost jsou rozděleny na grafy, které ukazují přesnost pro vzorek a přesnost pro nahrávku. Grafy jsou vytvořené pomocí knihovny matplotlib a její funkce plot. Pro validační a testovací sady jsou uloženy matice záměn, kterou jsou vykresleny pomocí knihovny seaborn a její funkce heatmap. Grafy jsou uloženy jako obrázky ve formátu PNG s rozlišením 200 DPI do složky s výsledky.
 
