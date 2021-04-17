@@ -26,3 +26,6 @@ Convert .txt to .png
 https://cloudconvert.com/txt-to-png
 
 Generate table
+
+Lukáš článek - dopředný průchod:
+https://www.sciencedirect.com/science/article/pii/S0925231221001466
