@@ -194,10 +194,14 @@ Vícevrství perceptron (MLP) neboli feed-forward neural network je složen z v�
 
 Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax. Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
 
+$$ y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} }  $$ 
+
 \subsection{Trénování}
 Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu, která minimalizuje ztrátu modelu. Jeden proces učení nazýváme epochou.
 
 Při dopředném průchodu sítí typu vícevrstvý perceptron jsou příznaky při průchodu lineární vrstvou nejdříve maticově vynásobeny s vahami, a potom je k nim přičten bias. Dále jsou příznaky aktivovány nelineární funkcí. Proces se opakuje v každé vrstvě sítě. Při dopředném průchodu sítí si musíme pamatovat hodnoty vstupu do jednotlivých vrstev sítě, abychom mohli později použít algoritmus zpětné propagace. Výsledkem dopředného průchodu jsou předpovězené hodnoty, z kterých lze pomocí kriteriální funkce získána ztráta. 
+
+$$ x_j = b_j + \sum_{i}^{N} y_i w_{ij} $$
 
 Při zpětné propagaci se ztráta modelu propaguje zpět sítí pomocí řetízkové pravidla. Po získání všech gradientů sítě se provede optimalizační algoritmus metody největšího spádu.
 
@@ -213,11 +217,17 @@ Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika,
 \subsection{Křížová entropie}
 Jako hodnotící kritérium pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
 
+$$ l = -{\sum_{c}^{C}t_{c}\log p_{c}} $$
+
 \subsection{ReLU}
 Rectified linear activation function (ReLU) je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce, je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na 1 a velmi malá čísla 0. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaná modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
 
+$$ y = max(0, x) $$
+
 \subsection{Softmax}
 Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností, kde jsou pravděpodobnosti pro jednotlivé prvky úměrné velikosti všech prvků vektoru. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady \cite{brownlee_2020_Softmax}.
+
+$$ p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}} $$
 
 % používané architektury
 % Markovi nepopisovat - nejsou neuronovky
