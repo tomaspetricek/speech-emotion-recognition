@@ -312,7 +312,20 @@ Jako poslední byly datové sety uloženy do složek vložené do složky s dato
 \section{Načítání dat}
 Pro načítání uložených datových sad byly vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objekt při vytváření bere jako parametry počet vzorků, délky vzorků, cestu k datové setu, cestu k ke štítkům datového setu, velikost pravého a levého okraje a název datové sady. Informace o datové sadě jsou přečteny ze souboru info.txt. Hodnoty levého a pravého okraje udávají velikost vstupního vzorku, ke každému vzorku (rámci) datového setu jsou při vyžádání jsou ke vzorku přiřazeny vzorky z jeho okolí. Při načtení vzorků ze souboru k nim byly na okrajích přidány hranice o délce okrajů. Hranice byly tvořeny kopiemi krajích vzorků datové sady. Při vybírání krajních vzorků se nemuseli přidávat vzorky kopie vzorků z okolí při výběru, a tak došlo k redukci logiky pro výběr vzorků z okolí. Štítky byly ukládány pro jednotlivé nahrávky, při inicializaci byly rozšířeny, tak aby odpovídali počtu všech vzorků datového setu. Důležitá metoda je také add\_margin, která přidá ke vzorku okolí, když je vyžadován vzorek datového setu.
 
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.15]{dataset_arrangement.png}}
+\caption{Uspořádání dat v NumpyDatasetu}
+\label{fig}
+\end{figure}
+
 Hlavní metody, které museli být implementovány byly metody \_\_len\_\_, která vrací počet vzorků datového setu a \_\_getitem\_\_, která vrací jednotlivé vzorky. Jelikož byly zvoleny různé způsoby načítání vzorků pro trénovací a validační set, byly vytvořeny objekty NumpySampleDataset a NumpyFrameDataset, které dědí od NumpyDataset. NumpyFrameDataset při zavolání metody \_\_getitem\_\_ vrací jednotlivé vzorky s okolím společně se štítky, zatím co NumpySampleDataset vrací celé nahrávky s okolím a štítky. Výhodou NumpyFrameDatasetu je, že při načítání dat při trénování sítě lze použít další objekt Dataloader, který také pochází z balíčku torch.utils.data. Hlavním parametrem, které mu lze předat kromě objektu typu Dataset je také velikost dávky, která musí při načítání zůstat konstantní. Při načítání z objektu NumpySampleDataset jsou vzorky různé délky, protože odpovídají délce jedné nahrávky, která je odlišná pro každou nahrávku. Další parametr, která lze zvolit u vytváření objektu Dataloader je možnost shuffle, která mění pořadí načítaných vzorků pro každou epochu. Míchání je důležité při učení, aby se model naučil správně zobecňovat.
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.15]{sample_selection.png}}
+\caption{Výběr vzorku}
+\label{fig}
+\end{figure}
 
 \section{Vytvoření neuronové sítě}
 Pro vytvoření neuronové sítě byl zvolen framework PyTorch, který je vyvíjen společností Facebook. Dále bylo možné použít framework TensorFlow, který je vyvíjen společností Google. Oba mají velice dobré dokumentace a rozsáhlou komunitu programátorů. Sestavení modelu v TensorFlow je jednoduché. Je možné společně s ním použít framework Keras, který následuje syntax knihovny pro strojové učení scikit-learn. Vytvoření neuronové sítě za pomocí frameworku Keras je velice jednoduché, nicméně neposkytuje tak velkou flexibilitu jako framework PyTorch, kde si kód pro učení, validaci a vyhodnocení může programátor jednoduše napsat sám podle své potřeby. 
