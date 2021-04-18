@@ -293,7 +293,19 @@ EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpozn
 \section{Příprava dat}
 Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjednocen formát nahrávek. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Pro převod byl použit nástroj FFmpeg, který je přístupný přes rozhraní příkazové řádky. V Pythonu lze k němu přistoupit pomocí modulu subprocess. Data byla načtena, převedena do požadovaného formátu a uložena do nových souborů. Správnost převodu byla ověřena.
 
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{ffmpeg_command.png}}
+\caption{Příkaz FFmpeg}
+\label{fig}
+\end{figure}
+
 Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použit nástroj HTK, který je opět přístupný z příkazové řádky. Pro převod byl použit konfigurační soubor. Zvukové nahrávky byly načteny, převedeny a výsledné příznaky byly uloženy do binárních souborů. Struktura binárních souborů je definovaní HTK. V Pythonu byl napsán, na GitHubu zveřejněn, menší modul PyHTK, pomocí kterého lze data načíst. Správnost načtených příznaků byla také ověřena.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
+\caption{Příkaz HTK}
+\label{fig}
+\end{figure}
 
 Následovalo sjednocení označení datových sad. Každá z datových měla jinak strukturované značení a obsahovalo různé informace. Proto byly pro každou datovou sadu vytvořeny načítače, které převedli značení do jednotného stavu. Byla zachována pouze informace o tom, do které třídy nahrávka patří. Všechny datové sady obsahovali 7 emocí, kromě datové sady RAVDESS, která obsahovala navíc klidovou emoci. Klidná emoce byla převedena na neutrální stav. Tím bylo získáno 7 základních emocí pro rozpoznávání mezi něž patřil smutek, hněv, radost, překvapení, strach, znechucení a neutrální stav.
 
