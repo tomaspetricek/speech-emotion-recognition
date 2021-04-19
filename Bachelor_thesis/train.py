@@ -11,9 +11,9 @@ import seaborn as sns
 import pandas as pd
 
 from classifiers import Sequential
-from pytorch_datasets import NumpySampleDataset, NumpyFrameDataset
+from datasets import NumpySampleDataset, NumpyFrameDataset
 from files import DatasetInfoFile, SetInfoFile
-from datasets import FOUR_EMOTIONS_VERBOSE, THREE_EMOTIONS_VERBOSE, ALL_EMOTIONS_VERBOSE
+from data import FOUR_EMOTIONS_VERBOSE, THREE_EMOTIONS_VERBOSE, ALL_EMOTIONS_VERBOSE
 
 MODEL_DIR = "models/pytorch"
 
