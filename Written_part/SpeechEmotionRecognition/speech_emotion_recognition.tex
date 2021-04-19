@@ -273,7 +273,7 @@ Jsou ve velké míře používány pro práci s obrázky. Skládají se z konvol
 Rekurentní neuronové sítě (RNN) jsou především používány při řešení úloh s daty závislými na čase. Rekurentní neuronové sítě si pamatují skrytý stav, který je vypočítán ze vstupu a vstupuje společně s následujícím vzorkem do sítě. Síť typu RNN je schopna si pamatovat větší kontext a použít ho při předpovídání. Pokročilejším modelem je Long Short-Term Memory (LSTM), který je schopný si poradit s problémem mizejícího a explodujícího gradientu. RNN lze také použít k rozpoznávání emocí, kdy jsou jednotlivé rámce společně s jejich okolí postupně posílány do sítě. Délka rámce s okolím by měla mít alespoň 250 milisekund, aby se byl model schopný naučit rozpoznávat emoce \cite{DBLP:journals/corr/abs-1912-10458}.
 
 \chapter{Vývoj balíčku pro rozpoznávání emocí}
-Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Byly vytvořeny moduly: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihivny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky.
+Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Byly vytvořeny moduly: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihivny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK pro načítání souborů vytvořené pomocí sady nástrojů HTK.
 
 \section{Výběr datových sad}
 Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají zastoupení 7 společných emocí, mezi které patří emoce: neutrální, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupeny obě pohlaví. Informace o datových sadách byly shrnuty v následující tabulce:
@@ -296,7 +296,7 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 Celkem tedy byly získány 4 datové sady o 2 jazycích se zastoupením 7 emocí. Dohromady vzniklá datová sada má celkem přibližně dobu trvání 4 hodin.
 
 \section{Předpříprava dat}
-Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjednocen formát nahrávek. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Pro převod byl použit nástroj FFmpeg, který je přístupný přes rozhraní příkazové řádky. V Pythonu lze k němu přistoupit pomocí modulu subprocess. Data byla načtena, převedena do požadovaného formátu a uložena do nových souborů. Správnost převodu byla ověřena.
+Data byla nejdříve předzpracována, byl sjednocen jejich formát a byla převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu níže:
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{ffmpeg_command.png}}
@@ -304,7 +304,7 @@ Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjedn
 \label{fig}
 \end{figure}
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použit nástroj HTK, který je opět přístupný z příkazové řádky. Pro převod byl použit konfigurační soubor. Zvukové nahrávky byly načteny, převedeny a výsledné příznaky byly uloženy do binárních souborů. Struktura binárních souborů je definovaní HTK. V Pythonu byl napsán, na GitHubu zveřejněn, menší modul PyHTK, pomocí kterého lze data načíst. Správnost načtených příznaků byla také ověřena.
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor. Převod byl uskutečněn pomocí příkazu:
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
@@ -312,7 +312,13 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použit nást
 \label{fig}
 \end{figure}
 
-Následovalo sjednocení označení datových sad. Každá z datových měla jinak strukturované značení a obsahovalo různé informace. Proto byly pro každou datovou sadu vytvořeny načítače, které převedli značení do jednotného stavu. Byla zachována pouze informace o tom, do které třídy nahrávka patří. Všechny datové sady obsahovali 7 emocí, kromě datové sady RAVDESS, která obsahovala navíc klidovou emoci. Klidná emoce byla převedena na neutrální stav. Tím bylo získáno 7 základních emocí pro rozpoznávání mezi něž patřil smutek, hněv, radost, překvapení, strach, znechucení a neutrální stav.
+Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena základní třída Convertor, z které konkrétní převaděče dědili. Pro sjednocení formátu byla vytvořena třída AudioFormatConverter a třída MFCCConverter pro převod na příznaky MFCC. Vztahy mezi převaděči jsou znázorněni na UML diagramu níže:
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{convertors.png}}
+\caption{Převaděče}
+\label{fig}
+\end{figure}
 
 \section{Příprava datových sad pro trénování}
 

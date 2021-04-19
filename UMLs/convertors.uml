@@ -22,13 +22,13 @@
       <point x="-68.5" y="38.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="426.0" y="135.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="481.5" y="90.0" />
   <SelectedNodes>
     <node>processing.convertors.MFCCConverter</node>
   </SelectedNodes>
   <Categories>
-    <Category>Inner Classes</Category>
     <Category>Methods</Category>
+    <Category>Inner Classes</Category>
   </Categories>
 </Diagram>
 
