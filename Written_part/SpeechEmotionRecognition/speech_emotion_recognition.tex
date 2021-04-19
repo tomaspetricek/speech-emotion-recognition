@@ -370,6 +370,11 @@ Metoda fit volá v hlavním cyklu metoda \_train pro trénovací datovou sadu a 
 
 Poslední činnost, kterou objekt Trainer vykoná je uložení dat. Při ukládání je do složky s výsledky uložen natrénovaný model pomocí funkce torch.save a výsledky trénování. Mezi výsledky trénování jsou uloženy grafy ztráty a přesnosti. Grafy zobrazující přesnost jsou rozděleny na grafy, které ukazují přesnost pro vzorek a přesnost pro nahrávku. Grafy jsou vytvořené pomocí knihovny matplotlib a její funkce plot. Pro validační a testovací sady jsou uloženy matice záměn, kterou jsou vykresleny pomocí knihovny seaborn a její funkce heatmap. Grafy jsou uloženy jako obrázky ve formátu PNG s rozlišením 200 DPI do složky s výsledky.
 
+$$ acc = \frac{\sum_{c}^{C}{l_c}}{\sum_{i}^{N}{l_i}}  $$ 
+
+$$ p_r = \frac{\sum_{i}^{N}{p_i}}{N} $$
+
+$$ c_s = max(p_s) $$
 
 
 \chapter{Závěr}
