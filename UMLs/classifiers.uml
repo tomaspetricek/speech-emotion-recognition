@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Bachelor_thesis/classifiers.py</OriginalElement>
+  <nodes>
+    <node x="137.0" y="0.0">torch.nn.modules.container.Sequential</node>
+    <node x="0.0" y="324.0">classifiers.Sequential</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="classifiers.Sequential" target="torch.nn.modules.container.Sequential">
+      <point x="0.0" y="-60.0" />
+      <point x="0.0" y="137.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="376.5" y="175.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+</Diagram>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Bachelor_thesis/train.py</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">train.Trainer</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="75.0" y="95.0" />
+  <SelectedNodes>
+    <node>train.Trainer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+</Diagram>
+
