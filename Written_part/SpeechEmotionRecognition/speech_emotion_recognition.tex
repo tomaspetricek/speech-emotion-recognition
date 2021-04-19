@@ -143,6 +143,10 @@ Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou
 Mezi často používané a bezplatné datové sady patří Danish Emotional Speech (DES) database, Berlin Emotional Speech (BES) database, Speech Under Simulated and Actual Stress (SUSAS) database nebo eNTERFACE datová sada \cite{konar_chakraborty_2015}.
 
 \section{Vybrané datové sady}
+
+\subsection{RAVDESS}
+Zkratka RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů činící datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují 8 emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nhrávek se pohybují kolem 3 minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
+
 \subsection{SAVEE}
 Zkratka SAVEE znamená Surrey Audio-Visual Expressed Emotion a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje 7 emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena 4 mužskými herci mluvící britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology (TIMIT). Kromě řeči byly při nahrávání zaznamenávány i pohyby v obličeji mluvčích, kteří na něm měli namalovány modré značky \cite{savee}.
 
@@ -268,15 +272,11 @@ Jsou ve velké míře používány pro práci s obrázky. Skládají se z konvol
 \subsection{Rekuretní neuronové sítě}
 Rekurentní neuronové sítě (RNN) jsou především používány při řešení úloh s daty závislými na čase. Rekurentní neuronové sítě si pamatují skrytý stav, který je vypočítán ze vstupu a vstupuje společně s následujícím vzorkem do sítě. Síť typu RNN je schopna si pamatovat větší kontext a použít ho při předpovídání. Pokročilejším modelem je Long Short-Term Memory (LSTM), který je schopný si poradit s problémem mizejícího a explodujícího gradientu. RNN lze také použít k rozpoznávání emocí, kdy jsou jednotlivé rámce společně s jejich okolí postupně posílány do sítě. Délka rámce s okolím by měla mít alespoň 250 milisekund, aby se byl model schopný naučit rozpoznávat emoce \cite{DBLP:journals/corr/abs-1912-10458}.
 
-\chapter{Vývoj modulu pro rozpoznávání emocí}
+\chapter{Vývoj balíčku pro rozpoznávání emocí}
+Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Byly vytvořeny moduly: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihivny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky.
 
 \section{Výběr datových sad}
-Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Ze zbylých datových sad byly vybrány pouze 3 anglické datové sady a jedna italská.
-
-\subsection{RAVDESS}
-Zkratka RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů činící datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují 8 emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nhrávek se pohybují kolem 3 minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
-
-
+Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají zastoupení 7 společných emocí, mezi které patří emoce: neutrální, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupeny obě pohlaví. Informace o datových sadách byly shrnuty v následující tabulce:
 
 \begin{table}[ht]
 \centering
@@ -284,14 +284,16 @@ Zkratka RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of
   \hline
  název & jazyk & počet tříd & počet mluvčích & pohlaví mluvčích & počet promluv & celková délka (hodiny) \\
   \hline
-    RAVDESS & angličtina & 8 & 24 & obojí & 1440 & 1.5 \\
+    RAVDESS & angličtina & 8 & 24 & obě & 1440 & 1.5 \\
     SAVEE   & angličtina & 7 & 4  & muži  & 480  & 0.5 \\
     TESS    & angličtina & 7 & 2  & ženy  & 2800 & 1.6 \\
-    EMOVO   & italština  & 7 & 6  & obojí & 588  & 0.5 \\
+    EMOVO   & italština  & 7 & 6  & obě & 588  & 0.5 \\
    \hline
 \end{tabular}}
 \caption{Přehled vybraných datových sad} 
 \end{table} 
+
+Celkem tedy byly získány 4 datové sady o 2 jazycích se zastoupením 7 emocí. Dohromady vzniklá datová sada má celkem přibližně dobu trvání 4 hodin.
 
 \section{Předpříprava dat}
 Data byla před vstupem do neuronové sítě předzpracována. Nejprve byl sjednocen formát nahrávek. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Pro převod byl použit nástroj FFmpeg, který je přístupný přes rozhraní příkazové řádky. V Pythonu lze k němu přistoupit pomocí modulu subprocess. Data byla načtena, převedena do požadovaného formátu a uložena do nových souborů. Správnost převodu byla ověřena.
