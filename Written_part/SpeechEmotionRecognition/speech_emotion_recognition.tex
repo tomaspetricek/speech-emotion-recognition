@@ -316,20 +316,53 @@ Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena z�
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{convertors.png}}
-\caption{Převaděče}
+\caption{Třídy Convertor}
 \label{fig}
 \end{figure}
 
 \section{Příprava datových sad pro trénování}
+Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními úkoly této třídy bylo načíst data a z anotací získat třídy emocí. Třída Dataset dědí od třídy Directory z modulu files, která umožňuje načíst získat cesty k souborům ve složce. Vztah mezi třídami je znázorněn na diagramu níže:
 
-Pro přípravu datových sad pro trénování byl vytvořen objekt Preperer, jehož hlavním úkolem bylo vzít poskytnutá data, rozdělit je na trénovací, testovací a validační set a uložit je do složky. Při volání kostruktoru objektu byla předána datová sady, která se mohla skládat z více datový sad. Mohla být předána datová sada tvořená všemi anglickými datovými sadami, které byly před předáním do konstruktoru sjednoceny. Dále byly předány poměry testovací a validační sady vyjádřené v procentech. Mohla být předána převodní tabulka pomocí, které je možné sjednocovat emoce. Poslední nepovyný parametr byl scaler, který by byl na škálován na trénovací sadě a použit na sadách validačních a testovacích.
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=.25,keepaspectratio]{data-dataset.png}}
+\caption{Třída Dataset}
+\label{fig}
+\end{figure}
 
-Hlavní metoda objektu je volána přes metodu \_\_call\_\_, která bere jakou svůj argument cestu ke složce, kam se má vytvořená datová sada uložit. Metoda nejdřív uloží do souboru s názven info.txt informace o datové sadě. Je uložen počet tříd, počet příznaků na jeden vzorek a počet vzorků. Informace mohou být použity při načítání datové sady nebo při získání rychlého přehledu o datové sadě. Dále byly data rozdělena do datových setů pomocí train\_test\_split z knihovny scikit-learn, která v daném poměru rozdělí datovo sadu na trénovací a testovací set. Při dělení byla použita možnost stratifikace, která rozdělí vzorky v datové sadě tak, aby byli v každém datovém setu zastoupeny vzorky se stejnou třídou v podobném množství. Byla zvolena možnost nastavení náhodného stavu, která zajistí, aby se datová sada se stejnými vstupy rozdělili po každé stejně. Datová sada byla rozdělena po jednotlivých nahrávkách, aby se při validaci testovací nebo validační sady mohla vypočítat přesnost na jednu nahrávku.
+Třída Dataset má navíc attributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data na základě cesty k souboru načte vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny byly vytvořeny třídy dědící od třídy UnifiedLabel, které navíc anotace pro vzorek převedly na stejné značení. Na následujícím diagramu jsou vidět vztahy mezi třídami Label:
 
-Jako poslední byly datové sety uloženy do složek vložené do složky s datovou sadu. Data byla uložená jako celistvá pole numpy, která měla šířku rovnou počtu příznaků a výšku rovnou počtu vzorků. Dále byly jako pole numpy uloženy štítky pro jednotlivé vzorky. Do textového souboru info.txt pro jednotlivé sety datové sady byly uloženy počty vzorků, délky vzorků a názvy souborů s štítky a se vzorky. Délky vzorků byly ukládány, aby bylo možné při načtení datové sady odlišit jednotlivé vzorky a přidat jim příslušné štítky.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.25,keepaspectratio]{data-label.png}}
+\caption{Třídy Label}
+\label{fig}
+\end{figure}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[scale=.25]{dataset_file_structure.png}}
+Z třídy data dědí třída MFCCData umožňující načtení příznaků MFCC a WAVData zprostředkovávající načtení nahrávek ze souboru typu WAV. MFCCData používá třídu HTKFile z balíčku PyHTK pro načtení příznaků.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.25,keepaspectratio]{data-data.png}}
+\caption{Třídy Data}
+\label{fig}
+\end{figure}
+
+Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady, na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně třídy train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.25,keepaspectratio]{prepare.png}}
+\caption{Třída Preparer}
+\label{fig}
+\end{figure}
+
+Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena svoje složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Pro ukládání a načítání informací z ze souborů info.txt byly vytvořeny třídy DatasetInfoFile a SetInfoFile. V souboru třídy DatasetInfoFile byly ulož údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.25]{files-info.png}}
+\caption{Třídy InfoFile}
+\label{fig}
+\end{figure}
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.2]{dataset_file_structure.png}}
 \caption{Souborová struktura uložené datové sady}
 \label{fig}
 \end{figure}
@@ -338,7 +371,7 @@ Jako poslední byly datové sety uloženy do složek vložené do složky s dato
 Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá jsou velikosti pravé a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídali délce vzorů nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na následujícím diagramu:
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[scale=.15]{dataset_arrangement.png}}
+\centerline{\includegraphics[scale=.125]{dataset_arrangement.png}}
 \caption{Uspořádání dat v NumpyDatasetu}
 \label{fig}
 \end{figure}
@@ -347,10 +380,16 @@ kde písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotliv
 
 Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset, které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden vzorek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají a to je také důvod, proč je lepší mít třídu rozdělenou.
 
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.2]{datasets.png}}
+\caption{Třídy NumpyDataset}
+\label{fig}
+\end{figure}
+
 Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachycení kontextu nahrávky. Počet vzorků z okolí je načítán na základě velikosti pravého a levého okraje. Vybrané vzorky jsou před vrácením zploštěny. Proces výběru vzorku je znázorněn na následujícím diagramu:
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[scale=.15]{sample_selection.png}}
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.125]{sample_selection.png}}
 \caption{Výběr vzorku}
 \label{fig}
 \end{figure}
