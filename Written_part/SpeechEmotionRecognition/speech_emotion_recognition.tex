@@ -396,36 +396,42 @@ Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachyce
 
 kde vybraný vzorek má označení $ S $ a krajní vzorky mají označení $ S_{P-L} $ a $ S_{P+R} $. Písmeno $ F $ označuje počet příznaků pro jeden vzorek. Značky $ L $ a $ P $ odpovídají délkám levého a pravého okraje. Výsledný zploštělí obrázek má délku odpovídající $ F * (L + R + 1) $.
 
-\section{Vytvoření neuronové sítě}
-Pro vytvoření neuronové sítě byl zvolen framework PyTorch, který je vyvíjen společností Facebook. Dále bylo možné použít framework TensorFlow, který je vyvíjen společností Google. Oba mají velice dobré dokumentace a rozsáhlou komunitu programátorů. Sestavení modelu v TensorFlow je jednoduché. Je možné společně s ním použít framework Keras, který následuje syntax knihovny pro strojové učení scikit-learn. Vytvoření neuronové sítě za pomocí frameworku Keras je velice jednoduché, nicméně neposkytuje tak velkou flexibilitu jako framework PyTorch, kde si kód pro učení, validaci a vyhodnocení může programátor jednoduše napsat sám podle své potřeby. 
+\section{Tvorba neuronové sítě}
+Pro vytvoření modelu byla zvolena třída Sequential z modulu torch.nn. Jedním způsobem, jak vytvořit objekt třídy Sequential, je předáním listu s vrstvami modelu. Třída byla rozšířena a umístěna do modulu classifiers. Metoda fit byla stěžejní přidanou metodou inspirovanou zápisem z knihovny Scikit-Learn, jejíž úkolem je natrénovat model. Mezi hlavní parametry, které metoda přebírá patří trénovací, testovací a validační datové sady. Trénovací set je předáván jako objekt třída Dataloader z modulu torch.utils.data, jelikož lze předat objektu velikost dávky. Testovací a validační sety jsou objekty dědící od objektu Dataset z téže modulu. Metoda dále přebírá objekt typu Optimizer z modulu torch.optim pomocí, kterého se aktualizují parametry modelu a kritérium z modulu torch.nn počítající ztrátu modelu. Je předán taky device umožňující zvolit, na kterých zařízení bude model trénovat.
 
-Pro vytvoření modelu byl použit objekt Sequential balíčku torch.nn. Model lze inicializovat několika způsoby. Jedním ze způsobů je předáním objektu tuple. Jednotlivé prvky tuplu musí být tvořeny vrstvami modelu, které lze importovat z balíčku torch.nn. Model byl tvořen lineárními vrstvami nn.Linear, které jako vstup berou velikost vstupní vrstvy a velikost vrstvy výstupní. Mezi lineární vrstvy byly umístěny funkce ReLU, který vstupní parametr nemají.
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.25]{classifiers.png}}
+\caption{Rozšířená třída Sequential}
+\label{fig}
+\end{figure}
+
+Při trénování jsou každou epochu zaznamenávány různé statistiky, některé z nich jsou vypisovány do konzole v přehledném výpisu. Díky tomu je možné při trénování vidět, v jaké míře se model učí. Jsou vypisovány informace o přesnosti a ztrátě modelu u jednotlivých datových setů.
+
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.215]{train_log.png}}
+\caption{Přehledný výpis průběhu trénování}
+\label{fig}
+\end{figure}
+
+Metoda fit vrací historii trénovaní obsahující statistiky a matice záměn, které jsou vytvořeny během poslední epochy pro trénovací a testovací sety. Řádky matice záměn odpovídají správným třídám a sloupce odpovídají předpovězeným třídám. Jednotlivé prvky matice odpovídají počtu přiřazených vzorků ke třídě. Pokud by byly všechny vzorky přiřazeny správně, tak by byla všechna čísla větší než nula na hlavní diagonále matice.
+
+\subsection{Trénování}
+
+V modulu train byla vytvořena třída Trainer, která měla za úkol obstarávat vše spojené s trénováním. Třída funguje jako Functor, takže je volána jako funkce. Při zavolání třídy je včetně parametrů pro trénování předána také cesta ke složce, kde se mají uložit výsledky trénování. Před zahájením trénování je spuštěno logovaní, které do souboru ukládá informace vypsané do konzole. Po ukončení trénování jsou vytvořeny, pomocí funkce plot z knihovny matplolib, grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy jsou včetně samotného modelu uloženy do složky s výsledky.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.215]{train.png}}
+\caption{Třída Trainer}
+\label{fig}
+\end{figure}
+
+\chapter{Pokusy}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.25]{model_architecture.png}}
 \caption{Ukázka výpisu architektury modelu}
 \label{fig}
 \end{figure}
-
-Model Sequential byl rozšířen o metodu fit, která se podobá metodě fit používané ve frameworku scikit-learn pro strojové učení. Mezi své parametry bere zdroje dat, které můžou být typu DataLoader nebo Dataset. Dále je pro trénování potřeba předat kriteriální funkci a optimizer. Metoda byla navržena tak, aby bylo možné specifikovat zařízení, na kterém bude trénování probíhat, proto se předává také parametr device. Je možné při trénování na příklad přesunout data s modelem na grafickou kartu pomocí platformy cuda a tím urychlit rychlost trénování. Posledním předaným parametrem je počet epoch, během kterých se má model trénovat.
-
-Byly přidány také metody \_train a \_eval. Metoda train má za úkol trénování modelu. Jako své parametry přebírá trénovací načítače, optimizer, kritérium a zařízení. Model musí být před trénováním nastaven do trénovacího režimu pomocí metody train, která patří modelu nn.Sequential.
-Při trénování se načítají data po dávkách z trénovacího načítače a jsou načítány vzorky a štítky. Nejdříve jsou data poslány na zařízení. Dále vynulován gradient optimiteru. Proveden dopředný průchod zavoláním funkce \_\_call\_\_ modelu. Pomocí kritéria je spočítána ztráta modelu, na kterou je zavolána metoda backward, která provede zpětnou propagaci. Při dopředném průchodu je sestavován výpočetní graf, takže si pamatuje cestu zpět. Pomocí metody step optimizeru jsou parametry modelu upraveny. Trénování probíhá, dokud trénovací načítač vrací data pro trénovaní. Při trénování je počítána běžící ztráta, z které lze spočítat průměrnou ztrátu na jednu datovou dávku a po ukončení jednohé epochy trénování i průměrnou ztrátu pro celou trénovací sadu. Dále je počítána přesnost, kdy jsou počítány správně přiřazené vzorky a na konci epochy je z nich spočítána přesnost učení pro danou epochu.
-
-Metoda \_eval se liší od metody \_train hlavně tím, že je na začátku model přepnut do validačního režimu pomocí metody eval. Dále je trénování prováděno v části obsluhované kontextovým manažerem torch.no\_grad, který zajišťuje, že se váhy modelu při validaci nemění. Při trénování byl místo objektu Dataloader používán objekt Dataset, jelikož byla data načítána po jednotlivých nahrávkách. Měla různou délku, a tak nebylo možné použít objekt typu Dataloader. Při trénování byla data před načtením zamíchána, takže nebylo možné určit, do které nahrávky patří. Nicméně při validaci nezáleží na tom, jestli se data před vstupem zamíchají, jelikož nejsou upravovány parametry modelu. Při načítání dat po nahrávkách lze zjistit nejen přesnost předpovědi jednoho vzorku, ale také přesnost předpovědi jedné nahrávky. Pro zjištění přesnosti pro jednu nahrávku byl zjištěna průměrně předpovězená třída. Během validace byly kromě přesnosti a ztráty zaznamenávána matice záměn, kdy byla hodnota ve sloupci se správnou třídou v řádku pro předpovězenou třídu zvýšena hodnota o jedna.
-
-\section{Trénování}
-Trénování modelu obstarává objekt Trainer. Při inicializaci je mu předán model, trénovací, testovací a validační data. Objekt má definovanou metodu \_\_call\_\_, jejíž parametry jsou velikost dávky, míra učení, weight decay, počet epoch a název složky kam se mají uložit výsledky trénování. Při zavolí metody je spuštěno logování, které se ukládá do složky s výsledky. Do logovacího souboru se ukládají informace o trénování: zvolené hyperparamtry, výpis modelu a stav trénování. V případě, že nastane chyba při trénování, tak je zaznamenána do logovací souboru, kde je možné si ji přečíst a chybu před dalším trénování opravit. Hlavní funkce, kterou metoda volá je metoda fit modelu.
-
-Metoda fit volá v hlavním cyklu metoda \_train pro trénovací datovou sadu a metodu \_eval pro validační a testovací sady. Počet iterací hlavního cyklu je rovek počtu epoch trénování. Metada fit dále vypisuje do příkazové řádky informace o trénování do přehledného výpisu. Pro každou datovou sadu je vypsána přesnost na jednotlivých vzorcích a ztráta. U validačních a testovacích sad je navíc vypisována přesnost dosažená na celých záznamech. Informace o trénování jsou kromě vypisování také ukládány do datové struktury, která si zaznamenává historii jednotlivých hodnot při trénování. Metoda vrací historii trénování a matici záměn pro poslední epochu trénování.
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[scale=.215]{train_log.png}}
-\caption{Přehledný výpis trénování}
-\label{fig}
-\end{figure}
-
-Poslední činnost, kterou objekt Trainer vykoná je uložení dat. Při ukládání je do složky s výsledky uložen natrénovaný model pomocí funkce torch.save a výsledky trénování. Mezi výsledky trénování jsou uloženy grafy ztráty a přesnosti. Grafy zobrazující přesnost jsou rozděleny na grafy, které ukazují přesnost pro vzorek a přesnost pro nahrávku. Grafy jsou vytvořené pomocí knihovny matplotlib a její funkce plot. Pro validační a testovací sady jsou uloženy matice záměn, kterou jsou vykresleny pomocí knihovny seaborn a její funkce heatmap. Grafy jsou uloženy jako obrázky ve formátu PNG s rozlišením 200 DPI do složky s výsledky.
 
 $$ acc = \frac{\sum_{c}^{C}{l_c}}{\sum_{i}^{N}{l_i}}  $$ 
 
