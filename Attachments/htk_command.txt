@@ -1,0 +1,1 @@
+HCopy -C configuracni_soubor vstupni_soubor vystupni_soubor

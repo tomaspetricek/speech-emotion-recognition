@@ -7,10 +7,8 @@
   </nodes>
   <notes />
   <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="78.5" y="95.0" />
-  <SelectedNodes>
-    <node>prepare.Preparer</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="1.0" x="307.5" y="82.0" />
+  <SelectedNodes />
   <Categories>
     <Category>Methods</Category>
   </Categories>

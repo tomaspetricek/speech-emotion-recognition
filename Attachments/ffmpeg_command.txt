@@ -1,0 +1,1 @@
+ffmpeg -i vstupni_soubor -ar vzorkovaci_frekvence -ac pocet_zvukovych_kanalu -y vystupni_soubor

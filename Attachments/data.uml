@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/Users/tomaspetricek/TUL/TUL_2020:21/BP/Speech_Emotion_Recognition/Bachelor_thesis/data.py</OriginalElement>
+  <nodes>
+    <node x="88.5" y="706.0">data.Data</node>
+    <node x="125.0" y="214.0">data.Dataset</node>
+    <node x="680.0" y="607.0">data.SAVEEUnifiedLabel</node>
+    <node x="216.0" y="607.0">data.EMOVOUnifiedLabel</node>
+    <node x="351.5" y="423.0">data.Label</node>
+    <node x="177.0" y="810.0">data.WAVData</node>
+    <node x="351.5" y="527.0">data.UnifiedLabel</node>
+    <node x="0.0" y="810.0">data.MFCCData</node>
+    <node x="440.0" y="607.0">data.RAVDESSUnifiedLabel</node>
+    <node x="0.0" y="0.0">files.Directory</node>
+    <node x="0.0" y="607.0">data.TESSUnifiedLabel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="data.EMOVOUnifiedLabel" target="data.UnifiedLabel">
+      <point x="0.0" y="-27.0" />
+      <point x="318.0" y="587.0" />
+      <point x="413.375" y="587.0" />
+      <point x="-20.625" y="15.0" />
+    </edge>
+    <edge source="data.WAVData" target="data.Data">
+      <point x="0.0" y="-27.0" />
+      <point x="255.5" y="785.0" />
+      <point x="206.25" y="785.0" />
+      <point x="39.25" y="27.0" />
+    </edge>
+    <edge source="data.UnifiedLabel" target="data.Label">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="data.SAVEEUnifiedLabel" target="data.UnifiedLabel">
+      <point x="0.0" y="-27.0" />
+      <point x="782.0" y="577.0" />
+      <point x="495.875" y="577.0" />
+      <point x="61.875" y="15.0" />
+    </edge>
+    <edge source="data.Dataset" target="files.Directory">
+      <point x="0.0" y="-82.0" />
+      <point x="0.0" y="82.0" />
+    </edge>
+    <edge source="data.RAVDESSUnifiedLabel" target="data.UnifiedLabel">
+      <point x="0.0" y="-27.0" />
+      <point x="550.0" y="587.0" />
+      <point x="454.625" y="587.0" />
+      <point x="20.625" y="15.0" />
+    </edge>
+    <edge source="data.MFCCData" target="data.Data">
+      <point x="0.0" y="-27.0" />
+      <point x="78.5" y="785.0" />
+      <point x="127.75" y="785.0" />
+      <point x="-39.25" y="27.0" />
+    </edge>
+    <edge source="data.TESSUnifiedLabel" target="data.UnifiedLabel">
+      <point x="0.0" y="-27.0" />
+      <point x="98.0" y="577.0" />
+      <point x="372.125" y="577.0" />
+      <point x="-61.875" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7586191338862471" x="673.6755365988506" y="491.4555943406768" />
+  <SelectedNodes>
+    <node>data.Dataset</node>
+    <node>files.Directory</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+</Diagram>
+

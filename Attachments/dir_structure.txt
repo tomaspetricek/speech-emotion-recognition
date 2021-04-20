@@ -1,0 +1,14 @@
+int-7-re-95-05-05
+├── info.txt
+├── test
+│   ├── info.txt
+│   ├── labels.npy
+│   └── samples.npy
+├── train
+│   ├── info.txt
+│   ├── labels.npy
+│   └── samples.npy
+└── val
+    ├── info.txt
+    ├── labels.npy
+    └── samples.npy
