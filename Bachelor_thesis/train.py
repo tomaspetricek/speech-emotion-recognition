@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+from collections import defaultdict
 
 from classifiers import Sequential
 from datasets import NumpySampleDataset, NumpyFrameDataset
@@ -38,109 +39,104 @@ def create_model(input_size, hidden_sizes, output_size):
 
     return model
 
+class Stats:
+    def __init__(self, dataset_names):
+        self.dataset_names = dataset_names
+        self.sample_accuracies = defaultdict(list)
+        self.frame_accuracies = defaultdict(list)
+        self.losses = defaultdict(list)
+        self.conf_matrices = dict()
+        self.printer = StatsPrinter(self)
 
-class Trainer:
+    def append(self, dataset_name, frame_acc, loss, sample_acc=None, conf_matrix=None):
+        self.frame_accuracies[dataset_name].append(frame_acc)
+        self.losses[dataset_name].append(loss)
+
+        if sample_acc is not None:
+            self.sample_accuracies[dataset_name].append(sample_acc)
+
+        if conf_matrix is not None:
+            self.conf_matrices[dataset_name] = conf_matrix
+
+    def print_last_epoch(self):
+        self.printer.print_last_epoch()
+
+class StatsPrinter:
+    def __init__(self, stats):
+        self.stats = stats
+        self.header = f"{'epoch':^16}|{'name':^16}|{'loss':^16}|{'acc_frames':^16}|{'acc_samples':^16}"
+        self.divider = "-" * len(self.header)
+        self.header_printed = False
+
+    def print_last_epoch(self):
+        if not self.header_printed:
+            print(self.divider)
+            print(self.header)
+            print(self.divider)
+            self.header_printed = True
+
+        for dataset_name in self.stats.dataset_names:
+            loss = self.stats.losses[dataset_name]
+            acc_frames = self.stats.frame_accuracies[dataset_name]
+            acc_samples = self.stats.sample_accuracies[dataset_name]
+
+            epoch = len(self.stats.losses[dataset_name])
+            print(f"{epoch:^16}|{dataset_name:^16}|{loss[-1]:^16.3f}|{acc_frames[-1]:^16.3f}|", end="")
+
+            if acc_samples:
+                print(f"{acc_samples[-1]:^16.3f}")
+            else:
+                print()
+
+        print(self.divider)
+
+class StatsResults:
     PLOT_DPI = 200
 
-    def __init__(self, model, train_dataset, val_dataset, test_datasets, classes_verbose):
-        self.model = model
-        self.train_dataset = train_dataset
-        self.val_dataset = val_dataset
-        self.test_datasets = test_datasets
+    def __init__(self, stats, classes_verbose):
+        self.stats = stats
         self.classes_verbose = classes_verbose
 
-    def __call__(self, batch_size, learning_rate, weight_decay=0., n_epochs=10, result_dir=None):
-        if result_dir:
-            self._set_logging(result_dir)
-
-        # set device
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("Runs on device: {}".format(device))
-
-        # check if device is cuda
-        if device.type == 'cuda':
-            pin_memory = True
-        else:
-            pin_memory = False
-
-        # prepare torch dataloaders
-        train_loader = DataLoader(
-            self.train_dataset,
-            batch_size=batch_size,
-            shuffle=True,
-            pin_memory=pin_memory
-        )
-
-        print("Neural Network Architecture:")
-        print(self.model)
-
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-
-        print("Batch size: {}".format(batch_size))
-        print("Learning rate: {}".format(learning_rate))
-        print("Weight decay: {}".format(weight_decay))
-
-        # fit model
-        history, conf_matrices = self.model.fit(train_loader, self.val_dataset, self.test_datasets, criterion,
-                                                optimizer, device,
-                                                n_epochs)
-
-        # get plots
-        frame_acc_plot = self._get_plot(
-            items=history["frame_acc"],
+        self.frame_acc_fig = self._plot(
+            items=self.stats.frame_accuracies,
             title="Přesnost modelu pro rámce",
             y_label="přesnost",
             x_label="epocha"
         )
 
-        sample_acc_plot = self._get_plot(
-            items=history["sample_acc"],
+        self.sample_acc_fig = self._plot(
+            items=self.stats.sample_accuracies,
             title="Přesnost modelu pro náhrávky",
             y_label="přesnost",
             x_label="epocha"
         )
 
-        loss_plot = self._get_plot(
-            items=history["loss"],
+        self.loss_fig = self._plot(
+            items=self.stats.losses,
             title="Ztráta modelu",
             y_label="ztráta",
             x_label="epocha"
         )
 
-        conf_matrices_plots = []
-        for label, conf_matrix in conf_matrices.items():
+        self.conf_matrices_figs = []
+        for label, conf_matrix in self.stats.conf_matrices.items():
             title = "Matice záměn pro {}".format(label)
-            plot = self._get_conf_matrix_plot(
+            fig = self._plot_conf_matrix(
                 conf_matrix,
                 title=title,
                 y_label="předpovězené třídy",
                 x_label="správné třídy",
             )
-            conf_matrices_plots.append(plot)
+            self.conf_matrices_figs.append(fig)
 
-        plots = [frame_acc_plot, sample_acc_plot, loss_plot] + conf_matrices_plots
+    def show(self):
+        figs = [self.frame_acc_fig, self.sample_acc_fig, self.loss_fig] + self.conf_matrices_figs
 
-        # save results
-        if result_dir:
-            self._save_results(result_dir, plots)
-
-        for plot in plots:
+        for plot in figs:
             plot.show()
 
-    @staticmethod
-    def _set_logging(result_dir):
-        log_path = os.path.join(result_dir, "train.log")
-        logging.basicConfig(level=logging.INFO, format='%(message)s')
-        logger = logging.getLogger('STDOUT')
-        handler = logging.FileHandler(log_path, 'w')
-        logging.StreamHandler.terminator = ""
-        logger.addHandler(handler)
-        sys.stdout.write = logger.info
-
-    @staticmethod
-    def _get_plot(items, title, y_label, x_label):
-        plot = plt.figure()
+    def _plot(self, items, title, y_label, x_label):
+        fig = plt.figure()
 
         labels = list()
         for label, item in items.items():
@@ -151,16 +147,13 @@ class Trainer:
         plt.ylabel(y_label)
         plt.xlabel(x_label)
         plt.legend(labels, loc='upper left')
-        return plot
+        return fig
 
-    def _get_conf_matrix_plot(self, conf_matrix, title, y_label, x_label):
-        if self.classes_verbose:
-            classes = self.classes_verbose
-        else:
-            classes = range(self.model.n_classes)
+    def _plot_conf_matrix(self, conf_matrix, title, y_label, x_label):
+        classes = self.classes_verbose
         df_cm = pd.DataFrame(conf_matrix, classes, classes)
 
-        plot = plt.figure()
+        fig = plt.figure()
         sns.heatmap(df_cm, annot=True, fmt='g')
 
         plt.title(title)
@@ -168,18 +161,147 @@ class Trainer:
         plt.ylabel(x_label)
         plt.tight_layout()
 
-        return plot
+        return fig
 
-    def _save_results(self, result_dir, plots):
-        model_path = os.path.join(result_dir, "model.pt")
-        torch.save(self.model, model_path)
+    def save(self, dirname):
+        figs = [self.frame_acc_fig, self.sample_acc_fig, self.loss_fig] + self.conf_matrices_figs
 
-        for plot in plots:
-            title = plot.axes[0].get_title()
+        for fig in figs:
+            title = fig.axes[0].get_title()
             filename = title + ".png"
-            path = os.path.join(result_dir, filename)
-            plot.savefig(path, dpi=self.PLOT_DPI)
+            path = os.path.join(dirname, filename)
+            fig.savefig(path, dpi=self.PLOT_DPI)
 
+class Trainer:
+
+    def __init__(self, model, train_loader, val_dataset, test_datasets, optimizer, criterion, device, stats):
+        self.model = model
+        self.train_loader = train_loader
+        self.val_dataset = val_dataset
+        self.test_datasets = test_datasets
+        self.optimizer = optimizer
+        self.criterion = criterion
+        self.device = device
+        self.stats = stats
+
+    def _train(self, train_loader):
+        # set model to training mode
+        self.model.train()
+
+        correct_frames = 0
+        running_loss = 0.0
+        n_frames = len(train_loader.dataset)
+
+        for frames, labels in train_loader:
+            # move data to device
+            frames, labels = frames.to(self.device), labels.to(self.device)
+
+            # make labels one dimensional
+            labels = labels.flatten()
+
+            # zero the parameter gradients
+            self.optimizer.zero_grad()
+
+            # forward propagation
+            pred = self.model(frames.float())
+
+            loss = self.criterion(pred, labels)
+
+            # back propagation
+            loss.backward()
+
+            self.optimizer.step()
+
+            # add n correct frames
+            _, pred_labels = torch.max(pred, 1)
+            correct_frames += (pred_labels == labels).sum().item()
+
+            # calc running loss
+            batch_size = frames.shape[0]
+            running_loss += loss.item() * batch_size
+
+        loss_ = running_loss / n_frames
+        accuracy_frames = correct_frames / n_frames
+
+        self.stats.append(train_loader.dataset.name, accuracy_frames, loss_)
+
+        return loss_, accuracy_frames
+
+    # per sample accuracy
+    def _validate(self, dataset):
+        conf_matrix = np.zeros((self.model.n_classes, self.model.n_classes))
+        # set module to evaluation mode
+        self.model.eval()
+
+        correct_samples = correct_frames = 0
+        running_loss = 0.0
+        n_samples = len(dataset)
+        n_frames = dataset.n_frames
+
+        with torch.no_grad():
+            for frames, labels in dataset:
+                # move data to device
+                frames, labels = frames.to(self.device), labels.to(self.device)
+
+                # make labels one dimensional
+                labels = labels.flatten()
+
+                # forward propagation
+                pred = self.model(frames.float())
+
+                loss = self.criterion(pred, labels)
+
+                # add correct sample
+                mean_pred = torch.mean(pred, 0)
+                _, pred_label = torch.max(mean_pred, 0)
+                correct_label = labels[0]
+
+                if pred_label == correct_label:
+                    correct_samples += 1
+
+                conf_matrix[correct_label, pred_label] += 1
+
+                # add n correct frames
+                _, pred_labels = torch.max(pred, 1)
+                correct_frames += (pred_labels == labels).sum().item()
+
+                # calc running loss
+                batch_size = frames.shape[0]
+                running_loss += loss.item() * batch_size
+
+        loss_ = running_loss / n_frames
+        accuracy_samples = correct_samples / n_samples
+        accuracy_frames = correct_frames / n_frames
+
+        self.stats.append(dataset.name, accuracy_frames, loss_, accuracy_samples, conf_matrix)
+
+        return loss_, accuracy_frames, accuracy_samples, conf_matrix
+
+    def __call__(self, n_epochs=10):
+        # move model to device
+        self.model.to(self.device)
+
+        for epoch in range(1, n_epochs + 1):
+            # train model
+            self._train(self.train_loader)
+
+            self._validate(self.val_dataset)
+
+            # test model
+            for test_dataset in self.test_datasets:
+                self._validate(test_dataset)
+
+            self.stats.print_last_epoch()
+
+
+class Logger:
+    def __init__(self, filename):
+        logging.basicConfig(level=logging.INFO, format='%(message)s')
+        logger = logging.getLogger('STDOUT')
+        handler = logging.FileHandler(filename, 'w')
+        logging.StreamHandler.terminator = ""
+        logger.addHandler(handler)
+        sys.stdout.write = logger.info
 
 def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=None):
     info_path = os.path.join(directory, "info.txt")
@@ -201,18 +323,15 @@ def main(result_dir):
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="anglický")
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="train: anglický")
 
     val_dir = os.path.join(dataset_dir, "test")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="anglický")
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="val: anglický")
 
     test_dir = "prepared_data/it-7-re/whole"
-    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="italský")
+    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="test: italský")
 
-    test_dir = "prepared_data/cz-7-re/whole"
-    test_dataset_cz = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="český")
-
-    test_datasets = [test_dataset_cz, test_dataset_it]
+    test_datasets = [test_dataset_it]
 
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
@@ -221,20 +340,45 @@ def main(result_dir):
         output_size=n_classes
     )
 
-    trainer = Trainer(
-        model=model,
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        test_datasets=test_datasets,
-        classes_verbose=ALL_EMOTIONS_VERBOSE,
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # check if device is cuda
+    if device.type == 'cuda':
+        pin_memory = True
+    else:
+        pin_memory = False
+
+    batch_size = 128
+
+    # prepare torch dataloaders
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        pin_memory=pin_memory
     )
 
-    result_dir = os.path.join(MODEL_DIR, result_dir)
-    os.mkdir(result_dir)
+    result_dirname = os.path.join(MODEL_DIR, result_dir)
+    os.mkdir(result_dirname)
 
-    trainer(batch_size=128, learning_rate=0.001, weight_decay=1e-4, n_epochs=10, result_dir=result_dir)
+    learning_rate = 0.001
+    weight_decay = 1e-4
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    criterion = nn.CrossEntropyLoss()
+
+    dataset_names = [train_dataset.name, val_dataset.name, test_dataset_it.name]
+    stats = Stats(dataset_names)
+
+    trainer = Trainer(model, train_loader, val_dataset, test_datasets, optimizer, criterion, device, stats)
+    trainer(n_epochs=2)
+
+    model_filename = os.path.join(result_dirname, "model.pt")
+    model.save(model_filename)
+    result = StatsResults(stats, ALL_EMOTIONS_VERBOSE)
+    result.show()
+    result.save(result_dirname)
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_24"
+    experiment_id = "exp_26"
     main(experiment_id)
