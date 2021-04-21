@@ -220,9 +220,14 @@ Při dopředném průchodu lineární vrstvou jsou vstupní příznaky $ y_i $ p
 
 $$ x_j = b_j + \sum_{i}^{N} y_i w_{ij} $$
 
-kde proměnná $ i $ odpovídá indexu příznaku z předchozí vrstvy. $ N $ je celkový počet neuronů předchozí vrstvy. Proměnné $ w_{ij} $ a $ b_j $ reprezentují parametry lineární vrstvy \cite{MATEJU2021327}. Dále jsou příznaky aktivovány nelineární funkcí, kterou lze obecně vyjádřit:
+kde proměnná $ i $ odpovídá indexu příznaku z předchozí vrstvy. $ N $ je celkový počet neuronů předchozí vrstvy. Proměnné $ w_{ij} $ a $ b_j $ reprezentují parametry lineární vrstvy \cite{MATEJU2021327}. Dále jsou příznaky aktivovány nelineární funkcí, kterou lze obecně vyjádřit: 
 
-$$ z_j = h(x_j) $$
+% \ref{eqn:activation}
+
+\begin{equation}
+\label{eqn:activation}
+z_j = h(x_j)
+\end{equation}
 
 kde $ x_j $ jsou vstupní příznaky z předchozí vrstvy. Proměnná $ h $ je nelineární, diferencovatelná aktivační funkce a $ z_j $ jsou výstupní příznaky \cite{DBLP:books/lib/Bishop07}.
 
@@ -397,15 +402,24 @@ Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachyce
 kde vybraný vzorek má označení $ S $ a krajní vzorky mají označení $ S_{P-L} $ a $ S_{P+R} $. Písmeno $ F $ označuje počet příznaků pro jeden vzorek. Značky $ L $ a $ P $ odpovídají délkám levého a pravého okraje. Výsledný zploštělí obrázek má délku odpovídající $ F * (L + R + 1) $.
 
 \section{Tvorba neuronové sítě}
-Pro vytvoření modelu byla zvolena třída Sequential z modulu torch.nn. Jedním způsobem, jak vytvořit objekt třídy Sequential, je předáním listu s vrstvami modelu. Třída byla rozšířena a umístěna do modulu classifiers. Metoda fit byla stěžejní přidanou metodou inspirovanou zápisem z knihovny Scikit-Learn, jejíž úkolem je natrénovat model. Mezi hlavní parametry, které metoda přebírá patří trénovací, testovací a validační datové sady. Trénovací set je předáván jako objekt třída Dataloader z modulu torch.utils.data, jelikož lze předat objektu velikost dávky. Testovací a validační sety jsou objekty dědící od objektu Dataset z téže modulu. Metoda dále přebírá objekt typu Optimizer z modulu torch.optim pomocí, kterého se aktualizují parametry modelu a kritérium z modulu torch.nn počítající ztrátu modelu. Je předán taky device umožňující zvolit, na kterých zařízení bude model trénovat.
+Byl vytvořen model FeedForwardNet pomocí dědění z třídy Module z modulu torch.nn. V konstruktoru třídy FeedForwardNet byly vytvořeny jednotlivé vrsty neuronové sítě a byly uloženy do objektu ModuleList z modulu torch.nn. Dále byl pomocí metody forward implementován dopředný průchod.
+
+\subsection{Trénování}
+V modulu train byla vytvořena třída Trainer, jejíž úkolem je trénování modelu. Hlavní parametr předaný při vytváření instance třídy je model. Dále jsou předány trénovací, testovací a validační sady. Pro trénování modelu jsou důležité parametry optimizer k úpravě parametrů a kritérium pro získání ztráty. Parametr device umožňuje zvolit zařízení, na kterém bude trénování probíhat. Jako poslední je předán objekt typu Stats, do kterého se ukládají statistiky získané při trénování modelu. 
 
 \begin{figure}[ht]
-\centerline{\includegraphics[scale=.25]{classifiers.png}}
-\caption{Rozšířená třída Sequential}
+\centerline{\includegraphics[scale=.3]{train-trainer.png}}
+\caption{Třída Trainer}
 \label{fig}
 \end{figure}
 
-Při trénování jsou každou epochu zaznamenávány různé statistiky, některé z nich jsou vypisovány do konzole v přehledném výpisu. Díky tomu je možné při trénování vidět, v jaké míře se model učí. Jsou vypisovány informace o přesnosti a ztrátě modelu u jednotlivých datových setů.
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.33]{train-stats.png}}
+\caption{Třída Stats}
+\label{fig}
+\end{figure}
+
+Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán počet trénovacích epoch. Každou epochu jsou do objektu třídy Stats ukládány statistiky trénování, mezi které patří přesnost na jeden vzorek, přesnost na jednu nahrávku, ztráta modelu a matice záměn. Řádky matice záměn odpovídají správným třídám a sloupce odpovídají předpovězeným třídám. Jednotlivé prvky matice odpovídají počtu přiřazených vzorků ke třídě. Pokud by byly všechny vzorky přiřazeny správně, tak by byla všechna čísla větší než nula na hlavní diagonále matice. Zároveň jsou vybrané statistiky vypisovány v přehledném výpisu do konzole, k výpisu je používán objekt třídy StatsPrinter.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.215]{train_log.png}}
@@ -413,15 +427,17 @@ Při trénování jsou každou epochu zaznamenávány různé statistiky, někte
 \label{fig}
 \end{figure}
 
-Metoda fit vrací historii trénovaní obsahující statistiky a matice záměn, které jsou vytvořeny během poslední epochy pro trénovací a testovací sety. Řádky matice záměn odpovídají správným třídám a sloupce odpovídají předpovězeným třídám. Jednotlivé prvky matice odpovídají počtu přiřazených vzorků ke třídě. Pokud by byly všechny vzorky přiřazeny správně, tak by byla všechna čísla větší než nula na hlavní diagonále matice.
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.32]{train-stats_printer.png}}
+\caption{Třída StatsPrinter}
+\label{fig}
+\end{figure}
 
-\subsection{Trénování}
+Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statistiky trénování lze uložit do souboru CSV. Ze statistik lze pomocí třídy Results získat grafy průběhu trénování. Pomocí funkce plot z knihovny matplolib jsou vykresleny grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy lze zobrazit a uložit jako obrázky typu PNG.
 
-V modulu train byla vytvořena třída Trainer, která měla za úkol obstarávat vše spojené s trénováním. Třída funguje jako Functor, takže je volána jako funkce. Při zavolání třídy je včetně parametrů pro trénování předána také cesta ke složce, kde se mají uložit výsledky trénování. Před zahájením trénování je spuštěno logovaní, které do souboru ukládá informace vypsané do konzole. Po ukončení trénování jsou vytvořeny, pomocí funkce plot z knihovny matplolib, grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy jsou včetně samotného modelu uloženy do složky s výsledky.
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[scale=.215]{train.png}}
-\caption{Třída Trainer}
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.3]{train-results.png}}
+\caption{Třída Results}
 \label{fig}
 \end{figure}
 
