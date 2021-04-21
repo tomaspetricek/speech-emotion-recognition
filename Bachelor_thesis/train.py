@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from collections import defaultdict
+from classifiers import FeedForwardNet
 
 from classifiers import Sequential
 from datasets import NumpySampleDataset, NumpyFrameDataset
@@ -61,6 +62,27 @@ class Stats:
     def print_last_epoch(self):
         self.printer.print_last_epoch()
 
+    def save(self, filename):
+        stats = pd.DataFrame()
+
+        for dataset_name in self.dataset_names:
+            losses = self.losses[dataset_name]
+            loss_col = "losses {}".format(dataset_name)
+            stats[loss_col] = losses
+
+            sample_accuracies = self.sample_accuracies[dataset_name]
+
+            if sample_accuracies:
+                samples_acc_col = "sample acc {}".format(dataset_name)
+                stats[samples_acc_col] = sample_accuracies
+
+            frame_accuracies = self.frame_accuracies[dataset_name]
+            frame_acc_col = "frame acc {}".format(dataset_name)
+            stats[frame_acc_col] = frame_accuracies
+
+        stats.to_csv(filename, index=False)
+
+
 class StatsPrinter:
     def __init__(self, stats):
         self.stats = stats
@@ -90,7 +112,7 @@ class StatsPrinter:
 
         print(self.divider)
 
-class StatsResults:
+class Results:
     PLOT_DPI = 200
 
     def __init__(self, stats, classes_verbose):
@@ -294,14 +316,13 @@ class Trainer:
             self.stats.print_last_epoch()
 
 
-class Logger:
-    def __init__(self, filename):
-        logging.basicConfig(level=logging.INFO, format='%(message)s')
-        logger = logging.getLogger('STDOUT')
-        handler = logging.FileHandler(filename, 'w')
-        logging.StreamHandler.terminator = ""
-        logger.addHandler(handler)
-        sys.stdout.write = logger.info
+def begin_logging(filename):
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+    logger = logging.getLogger('STDOUT')
+    handler = logging.FileHandler(filename, 'w')
+    logging.StreamHandler.terminator = ""
+    logger.addHandler(handler)
+    sys.stdout.write = logger.info
 
 def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=None):
     info_path = os.path.join(directory, "info.txt")
@@ -317,7 +338,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 15
+    left_margin = right_margin = 30
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -336,9 +357,14 @@ def main(result_dir):
     input_size = n_features * (left_margin + 1 + right_margin)
     model = create_model(
         input_size=input_size,
-        hidden_sizes=[128, 64],
+        hidden_sizes=[128, 64, 32],
         output_size=n_classes
     )
+
+    model = FeedForwardNet(input_size, n_classes)
+
+    # model_filename = os.path.join(MODEL_DIR, "exp_32", "model.pt")
+    # model = torch.load(model_filename)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -348,7 +374,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 128
+    batch_size = 32 # 128
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -361,24 +387,31 @@ def main(result_dir):
     result_dirname = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dirname)
 
-    learning_rate = 0.001
+    learning_rate = 0.0001
     weight_decay = 1e-4
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate) # weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
 
     dataset_names = [train_dataset.name, val_dataset.name, test_dataset_it.name]
     stats = Stats(dataset_names)
 
+    log_filename = os.path.join(result_dirname, "train.log")
+    begin_logging(log_filename)
+
     trainer = Trainer(model, train_loader, val_dataset, test_datasets, optimizer, criterion, device, stats)
-    trainer(n_epochs=2)
+    trainer(n_epochs=15)
 
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
-    result = StatsResults(stats, ALL_EMOTIONS_VERBOSE)
+
+    result = Results(stats, ALL_EMOTIONS_VERBOSE)
     result.show()
     result.save(result_dirname)
 
+    stats_filename = os.path.join(result_dirname, "stats.csv")
+    stats.save(stats_filename)
+
 
 if __name__ == "__main__":
-    experiment_id = "exp_26"
+    experiment_id = "exp_34"
     main(experiment_id)
