@@ -326,7 +326,13 @@ Data byla nejdříve předzpracována, byl sjednocen jejich formát a byla přev
 \label{fig:ffmpeg}
 \end{figure}
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor. Převod byl uskutečněn pomocí příkazu na obrázku \ref{fig:htk}.
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_confiģ}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
+\caption{Konfigurační soubor}
+\label{fig:htk_config}
+\end{figure}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
@@ -336,9 +342,9 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada
 
 Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena základní třída Convertor, z které konkrétní převaděče dědili. Pro sjednocení formátu byla vytvořena třída AudioFormatConverter a třída MFCCConverter pro převod na příznaky MFCC. Vztahy mezi převaděči jsou znázorněni na UML diagramu \ref{fig:convertor}.
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{convertors.png}}
-\caption{Třídy Convertor}
+\caption{Třídy Converter}
 \label{fig:convertor}
 \end{figure}
 
@@ -384,7 +390,7 @@ Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena sv
 \end{figure}
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=.2]{dataset_file_structure.png}}
+\centerline{\includegraphics[scale=.22]{dataset_file_structure.png}}
 \caption{Souborová struktura uložené datové sady}
 \label{fig:file_structure}
 \end{figure}
