@@ -338,7 +338,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 5
+    left_margin = right_margin = 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -418,5 +418,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_05-margin_5"
+    experiment_id = "exp_12-width_512"
     main(experiment_id)

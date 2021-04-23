@@ -50,25 +50,27 @@ class FeedForwardNet(nn.Module):
         self.n_classes = n_classes
         self.layers = nn.ModuleList()
 
+        hidden_layer_size = 512
+
         in_s = input_size
-        out_s = 128
+        out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
 
         # BEGIN - HIDDEN
 
         in_s = out_s
-        out_s = 128
+        out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
 
         in_s = out_s
-        out_s = 128
+        out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
 
         in_s = out_s
-        out_s = 128
+        out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
 
