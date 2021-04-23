@@ -1,0 +1,43 @@
+Optimizer:  Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    weight_decay: 0
+)
+Criterion:  CrossEntropyLoss()
+Model:  FeedForwardNet(
+  (layers): ModuleList(
+    (0): Linear(in_features=2379, out_features=64, bias=True)
+    (1): ReLU()
+    (2): BasicResidual(
+      (layers): ModuleList(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=64, out_features=64, bias=True)
+        (3): ReLU()
+      )
+    )
+    (3): Linear(in_features=64, out_features=7, bias=True)
+  )
+)
+------------------------------------------------------------------------------------
+     epoch      |      name      |      loss      |   acc_frames   |  acc_samples   
+------------------------------------------------------------------------------------
+       1        |train: anglický |     1.526      |     0.398      |
+       1        | val: anglický  |     1.503      |     0.427      |     0.659      
+       1        | test: italský  |     2.108      |     0.172      |     0.190      
+------------------------------------------------------------------------------------
+       2        |train: anglický |     1.429      |     0.443      |
+       2        | val: anglický  |     1.488      |     0.429      |     0.672      
+       2        | test: italský  |     2.227      |     0.172      |     0.162      
+------------------------------------------------------------------------------------
+       3        |train: anglický |     1.399      |     0.456      |
+       3        | val: anglický  |     1.441      |     0.440      |     0.676      
+       3        | test: italský  |     2.102      |     0.189      |     0.204      
+------------------------------------------------------------------------------------
+       4        |train: anglický |     1.382      |     0.464      |
+       4        | val: anglický  |     1.447      |     0.445      |     0.706      
+       4        | test: italský  |     2.035      |     0.192      |     0.202      
+------------------------------------------------------------------------------------

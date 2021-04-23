@@ -8,6 +8,42 @@ class Sequential(nn.Sequential):
         torch.save(self, filename)
 
 
+class ResidualBlock(nn.Module):
+    def __init__(self, layers):
+        super().__init__()
+        self.layers = layers
+
+    def forward(self, x):
+        residual = x
+
+        for layer in self.layers:
+            x = layer(x)
+
+        x += residual
+
+        x = nn.ReLU()(x)
+        return x
+
+
+class BasicResidual(ResidualBlock):
+    def __init__(self, input_size):
+        layers = nn.ModuleList()
+
+        in_s = input_size
+        out_s = input_size
+        layers.append(nn.Linear(in_s, out_s))
+        layers.append(nn.BatchNorm1d(out_s))
+        layers.append(nn.ReLU())
+
+        in_s = input_size
+        out_s = input_size
+        layers.append(nn.Linear(in_s, out_s))
+        layers.append(nn.BatchNorm1d(out_s))
+        layers.append(nn.ReLU())
+
+        super().__init__(layers)
+
+
 class FeedForwardNet(nn.Module):
     def __init__(self, input_size, n_classes):
         super().__init__()
@@ -18,25 +54,25 @@ class FeedForwardNet(nn.Module):
         out_s = 128
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
+
+        # BEGIN - HIDDEN
 
         in_s = out_s
         out_s = 128
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
 
         in_s = out_s
         out_s = 128
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
 
         in_s = out_s
-        out_s = 64
+        out_s = 128
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
+
+        # END - HIDDEN
 
         in_s = out_s
         out_s = n_classes

@@ -338,7 +338,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 30
+    left_margin = right_margin = 5
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -355,15 +355,10 @@ def main(result_dir):
     test_datasets = [test_dataset_it]
 
     input_size = n_features * (left_margin + 1 + right_margin)
-    model = create_model(
-        input_size=input_size,
-        hidden_sizes=[128, 64, 32],
-        output_size=n_classes
-    )
 
     model = FeedForwardNet(input_size, n_classes)
 
-    # model_filename = os.path.join(MODEL_DIR, "exp_32", "model.pt")
+    # model_filename = os.path.join(MODEL_DIR, "exp_36", "model.pt")
     # model = torch.load(model_filename)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -374,7 +369,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 32 # 128
+    batch_size = 32   # 128
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -387,7 +382,7 @@ def main(result_dir):
     result_dirname = os.path.join(MODEL_DIR, result_dir)
     os.mkdir(result_dirname)
 
-    learning_rate = 0.0001
+    learning_rate = 0.001
     weight_decay = 1e-4
     optimizer = optim.Adam(model.parameters(), lr=learning_rate) # weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
@@ -398,8 +393,18 @@ def main(result_dir):
     log_filename = os.path.join(result_dirname, "train.log")
     begin_logging(log_filename)
 
+    n_epochs = 10
+
+    print("Optimizer: ", optimizer)
+    print("Criterion: ", criterion)
+    print("Model: ", model)
+    print("N epochs:", n_epochs)
+    print("Batch size: ", batch_size)
+    print("Left margin: ", left_margin)
+    print("Right margin: ", right_margin)
+
     trainer = Trainer(model, train_loader, val_dataset, test_datasets, optimizer, criterion, device, stats)
-    trainer(n_epochs=15)
+    trainer(n_epochs=n_epochs)
 
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
@@ -413,5 +418,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_34"
+    experiment_id = "exp_05-margin_5"
     main(experiment_id)
