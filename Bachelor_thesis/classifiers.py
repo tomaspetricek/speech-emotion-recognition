@@ -50,7 +50,7 @@ class FeedForwardNet(nn.Module):
         self.n_classes = n_classes
         self.layers = nn.ModuleList()
 
-        hidden_layer_size = 512
+        hidden_layer_size = 128
 
         in_s = input_size
         out_s = hidden_layer_size

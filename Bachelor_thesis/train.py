@@ -121,7 +121,7 @@ class Results:
 
         self.frame_acc_fig = self._plot(
             items=self.stats.frame_accuracies,
-            title="Přesnost modelu pro rámce",
+            title="Přesnost modelu pro vzorky",
             y_label="přesnost",
             x_label="epocha"
         )
@@ -409,7 +409,7 @@ def main(result_dir):
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
 
-    result = Results(stats, ALL_EMOTIONS_VERBOSE)
+    result = Results(stats, FOUR_EMOTIONS_VERBOSE)
     result.show()
     result.save(result_dirname)
 
@@ -418,5 +418,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_12-width_512"
+    experiment_id = "exp_12-4_emotions"
     main(experiment_id)
