@@ -2,12 +2,13 @@
 % tento dokument používá balíky specifické pro XeLaTeX a lze jej přeložit
 % jen XeLaTeXem, nemáte-li instalována použitá (komerční) písma, změňte
 % nebo vymažte příkazy \set...font na následujících řádcích
-
 \newcommand{\verze}{1.10}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{czech}
 \usepackage{xevlna}
+\usepackage{graphicx}
+\usepackage{placeins}
 
 \usepackage{makeidx}
 \makeindex
@@ -204,7 +205,7 @@ Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus 
 
 \chapter{Vybrané základy neuronových sítí}
 
-\subsection{Vícevrstvý perceptron}
+\section{Vícevrstvý perceptron}
 Vícevrství perceptron (MLP) neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva se skládá z aktivačních funkcí \cite{DBLP:books/lib/Bishop07}.
 
 Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax.
@@ -245,6 +246,12 @@ x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t)
 \end{equation}
 
 kde proměnná $ x_{t+1} $ je hodnota aktualizovaného parametru sítě a $ x_t $ je hodnota původního parametru sítě. Hodnota gradientu pro parametr x je $ \frac{d}{dx} $. Ztráta parametru $ x_t $ je označena $ J $.
+
+\section{Rozdělení na datové sady}
+\section{Přeučování a nedoučování}
+\section{Regularizace}
+\section{Hodnocení}
+\subsection{Přesnost}
 
 \subsection{Hyperparametry}
 Každý model má také své hyperparametry, které se používají ve fázi učení \cite{leonel_2019}. Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
@@ -313,7 +320,8 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 \end{tabular}}
 \caption{Přehled vybraných datových sad}
 \label{tab:overview}
-\end{table} 
+\end{table}
+\FloatBarrier
 
 Celkem tedy byly získány 4 datové sady o 2 jazycích se zastoupením 7 emocí. Dohromady vzniklá datová sada má celkem přibližně dobu trvání 4 hodin.
 
@@ -325,6 +333,7 @@ Data byla nejdříve předzpracována, byl sjednocen jejich formát a byla přev
 \caption{Příkaz FFmpeg}
 \label{fig:ffmpeg}
 \end{figure}
+\FloatBarrier
 
 Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_confiģ}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
 
@@ -333,12 +342,14 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada
 \caption{Konfigurační soubor}
 \label{fig:htk_config}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
 \caption{Příkaz HTK}
 \label{fig:htk}
 \end{figure}
+\FloatBarrier
 
 Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena základní třída Convertor, z které konkrétní převaděče dědili. Pro sjednocení formátu byla vytvořena třída AudioFormatConverter a třída MFCCConverter pro převod na příznaky MFCC. Vztahy mezi převaděči jsou znázorněni na UML diagramu \ref{fig:convertor}.
 
@@ -347,6 +358,7 @@ Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena z�
 \caption{Třídy Converter}
 \label{fig:convertor}
 \end{figure}
+\FloatBarrier
 
 \section{Příprava datových sad pro trénování}
 Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními úkoly této třídy bylo načíst data a z anotací získat třídy emocí. Třída Dataset dědí od třídy Directory z modulu files, která umožňuje načíst získat cesty k souborům ve složce. Vztah mezi třídami je znázorněn na diagramu \ref{fig:datasets}.
@@ -356,6 +368,7 @@ Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními ú
 \caption{Třída Dataset}
 \label{fig:datasets}
 \end{figure}
+\FloatBarrier
 
 Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data na základě cesty k souboru načte vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny byly vytvořeny třídy dědící od třídy UnifiedLabel (viz Obr. \ref{fig:label}), které navíc anotace pro vzorek převedly na stejné značení.
 
@@ -364,6 +377,7 @@ Třída Dataset má navíc atributy samples pro uložení načtených vzorků a 
 \caption{Třídy Label}
 \label{fig:label}
 \end{figure}
+\FloatBarrier
 
 Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující načtení příznaků MFCC a WAVData zprostředkovávající načtení nahrávek ze souboru typu WAV. MFCCData používá třídu HTKFile z balíčku PyHTK pro načtení příznaků.
 
@@ -372,6 +386,7 @@ Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující 
 \caption{Třídy Data}
 \label{fig:data}
 \end{figure}
+\FloatBarrier
 
 Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer (viz Obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady, na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně třídy train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
 
@@ -380,6 +395,7 @@ Dále byla data rozdělena do trénovacích, validačních a testovacích setů.
 \caption{Třída Preparer}
 \label{fig:preparer}
 \end{figure}
+\FloatBarrier
 
 Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena svoje složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Struktura složky je znázorněna na obrátku \ref{fig:file_structure}. Pro ukládání a načítání informací z ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz Obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly ulož údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
 
@@ -388,21 +404,24 @@ Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena sv
 \caption{Třídy InfoFile}
 \label{fig:info_files}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=.22]{dataset_file_structure.png}}
 \caption{Souborová struktura uložené datové sady}
 \label{fig:file_structure}
 \end{figure}
+\FloatBarrier
 
 \section{Načítání dat}
-Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá jsou velikosti pravé a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídali délce vzorů nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
+Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá, jsou velikosti pravého a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídali délce vzorů nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.125]{dataset_arrangement.png}}
 \caption{Uspořádání dat v NumpyDatasetu}
 \label{fig:data_arrangement}
 \end{figure}
+\FloatBarrier
 
 kde písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotlivé nahrávky, které mohou mít různou délku. Písmeno $ N $ udává počet vzorků a $ M $ počet uložených nahrávek. $ L $ a $ R $ značí velikost pravého a levého okraje. Písmeno $ F $ odpovídá počtu příznaků pro jeden vzorek.
 
@@ -413,6 +432,7 @@ Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (vi
 \caption{Třídy NumpyDataset}
 \label{fig:numpy_dataset}
 \end{figure}
+\FloatBarrier
 
 Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachycení kontextu nahrávky. Počet vzorků z okolí je načítán na základě velikosti pravého a levého okraje. Vybrané vzorky jsou před vrácením zploštěny. Proces výběru vzorku je znázorněn na obrázku \ref{fig:sample_selection}.
 
@@ -421,6 +441,7 @@ Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachyce
 \caption{Výběr vzorku}
 \label{fig:sample_selection}
 \end{figure}
+\FloatBarrier
 
 kde vybraný vzorek má označení $ S $ a krajní vzorky mají označení $ S_{P-L} $ a $ S_{P+R} $. Písmeno $ F $ označuje počet příznaků pro jeden vzorek. Značky $ L $ a $ P $ odpovídají délkám levého a pravého okraje. Výsledný zploštělí obrázek má délku odpovídající $ F * (L + R + 1) $.
 
@@ -435,12 +456,14 @@ V modulu train byla vytvořena třída Trainer (viz Obr. \ref{fig:trainer}), jej
 \caption{Třída Trainer}
 \label{fig:trainer}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.33]{train-stats.png}}
 \caption{Třída Stats}
 \label{fig:stats}
 \end{figure}
+\FloatBarrier
 
 Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán počet trénovacích epoch. Každou epochu jsou do objektu třídy Stats ukládány statistiky trénování, mezi které patří přesnost na jeden vzorek, přesnost na jednu nahrávku, ztráta modelu a matice záměn. Řádky matice záměn odpovídají správným třídám a sloupce odpovídají předpovězeným třídám. Jednotlivé prvky matice odpovídají počtu přiřazených vzorků ke třídě. Pokud by byly všechny vzorky přiřazeny správně, tak by byla všechna čísla větší než nula na hlavní diagonále matice. Zároveň jsou vybrané statistiky vypisovány v přehledném výpisu (viz Obr. \ref{fig:print}) do konzole, k výpisu je používán objekt třídy StatsPrinter (viz Obr. \ref{fig:printer}).
 
@@ -449,12 +472,14 @@ Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán p
 \caption{Přehledný výpis průběhu trénování}
 \label{fig:print}
 \end{figure}
+\FloatBarrier
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.32]{train-stats_printer.png}}
 \caption{Třída StatsPrinter}
 \label{fig:printer}
 \end{figure}
+\FloatBarrier
 
 Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statistiky trénování lze uložit do souboru CSV. Ze statistik lze pomocí třídy Results (viz Obr. \ref{fig:results}) získat grafy průběhu trénování. Pomocí funkce plot z knihovny matplolib jsou vykresleny grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy lze zobrazit a uložit jako obrázky typu PNG.
 
@@ -463,21 +488,61 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 \caption{Třída Results}
 \label{fig:results}
 \end{figure}
+\FloatBarrier
 
-\chapter{Pokusy}
+\chapter{Experimenty}
+Bylo provedeno několik experimentů pro vyladění hyperparametrů modelu. Jako první byl proveden výchozí experiment. Trénovací a validační sady byly vytvořeny z anglických datových sad a byly rozděleny v poměru 90 \% a 10 \%. 
+Italská datová sada EMOVO byla použita jako testovací datová sada. Pro získání ztráty modelu byla jako kriteriální funkce zvolena křížová entropie. Byl zvolen algoritmus Adaptive Momentum (Adam) pro optimalizaci modelu a míra učení byla nastavena na hodnotu 0,001. Zvolený model se skládal ze tří lineárních vrstev o šířce 128 neuronů. Ve skryté vrstvě byla použita aktivační funkce ReLU. Model byl trénován 10 epoch s velikostí jedné dávky 32 vzorků. Velikost pravého a levého okolí byla rovna 25 vzorkům.
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[scale=.25]{model_architecture.png}}
-\caption{Ukázka výpisu architektury modelu}
+Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala až k hodně 66 \% a na trénovací sadě kolísala kolem 57 \%. Ztráta modelu na trénovací sadě postupně klesala a u validační sady se opět příliš neměnila. Naopak přesnost pro nahrávky byla pro validační sadu poměrně vysoká a dosáhla 86 \%. Úspěch dokládá i rozložení předpovědí v matici záměn, kde je většina předpovědí umístěna na hlavní diagonále.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{baseline-conf_matrix-val.png}}
+\caption{Matice záměn pro validační sadu}
 \label{fig}
 \end{figure}
+\FloatBarrier
 
-$$ acc = \frac{\sum_{c}^{C}{l_c}}{\sum_{i}^{N}{l_i}}  $$ 
+Na druhou stranu přesnost pro nahrávky na testovací sadě dosáhla pouze 26 \%. Mezi nejlépe klasifikované třídy patřili strach a hněv, kde byla přibližně polovina předpovědí umístěna na hlavní diagonále.
 
-$$ p_r = \frac{\sum_{i}^{N}{p_i}}{N} $$
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{baseline-conf_matrix-test.png}}
+\caption{Matice záměn pro testovací sadu}
+\label{fig}
+\end{figure}
+\FloatBarrier
 
-$$ c_s = max(p_s) $$
+Následně bylo provedeno několik pokusů se snahou vyladit hyperparametry modelu. Byla měněna především architektura sítě, počet a šířka vrstev. Upravovány byly také velikosti okolí vzorku. Trénování probíhalo během 10 epoch, jelikož bylo zjištěno u výchozího pokusu, že tento počet postačí pro získání představy o výkonu modelu. Kriteriální a optimalizační funkce zůstali stejné.
 
+\section{Změny počtu skrytých vrstev}
+Byly provedeny 3 experimenty, jejíž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost na validační sadě také roste s počtem skrytých vrstev. Nicméně s ní vrůstá i ztráta, která by měla naopak klesat. Rozdíl nárůstu ztráty mezi jednotlivými modely není až tolik vysoký, ale přesto vypadá, že počet 3 až 4 vrstev je optimální. Při počtu dvou vrstev se model nedoučuje a při počtu pěti vrstev se naopak přeučuje.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_vsrtvy.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+\section{Změny velikosti okolí vzorku}
+Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny 4 pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá i přesnost a klesá ztráta modelu. U validačním datové sady přesnost stoupá stejným způsobem jenom pomaleji. Ztráta klesá od velikosti okolí 5 až k velikosti 15, z toho lze usoudit, že optimální velikost okolí je mezi 15 a 30 vzorky.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_okoli.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+\section{Změny šířky skrytých vrstev}
+Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskutečnily se 4 experimenty, během kterých nabývala šířka vrstev hodnot od 16 do 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Modely s šířkami 64 a 128 u výchozího modelu dosahují přesnosti kolem 60 \%. Poslední pár tvoří modely s šířkou 256 a 512 neuronů, které docílili přesnosti přibližně 80 \%. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů, pro modely se šířkou 128 a 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_sirka.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
 
 \chapter{Závěr}
 
