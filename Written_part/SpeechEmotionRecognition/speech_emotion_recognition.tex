@@ -544,6 +544,32 @@ Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskute
 \end{figure}
 \FloatBarrier
 
+\section{Omezení počtu emocí}
+V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřili spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. U přesnosti na validačních datech je to velice podobné, nicméně z grafu ztráty lze usoudit, že by bylo vhodné pro klasifikaci do méně tříd použít menší model, jelikož ztráta roste.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_snizeni.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+Na grafech matic záměn pro lze zpozorovat, že jsou nově vytvořené třídy velice nevyvážené. Neutrální stav má nejméně vzorků a nejvíce vzorků mají negativní emoce. I přesto bylo dosaženo 88 \% na přesnosti na validační sadě pro celé nahrávky. U testovací italské datové sady docházelo k záměně z velké části za emoce negativní.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační data}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-test.png}}
+\caption{Matice záměn pro testovací data}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
 \chapter{Závěr}
 
 \nocite{*}
