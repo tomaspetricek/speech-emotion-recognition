@@ -336,7 +336,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/en-7-re-90-10"
+    dataset_dir = "prepared_data/en-3-re-90-10"
 
     left_margin = right_margin = 25
 
@@ -349,7 +349,7 @@ def main(result_dir):
     val_dir = os.path.join(dataset_dir, "test")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="val: anglický")
 
-    test_dir = "prepared_data/it-7-re/whole"
+    test_dir = "prepared_data/it-3-re/whole"
     test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="test: italský")
 
     test_datasets = [test_dataset_it]
@@ -409,7 +409,7 @@ def main(result_dir):
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
 
-    result = Results(stats, FOUR_EMOTIONS_VERBOSE)
+    result = Results(stats, THREE_EMOTIONS_VERBOSE)
     result.show()
     result.save(result_dirname)
 
@@ -418,5 +418,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_12-4_emotions"
+    experiment_id = "exp_14-3_emotions"
     main(experiment_id)
