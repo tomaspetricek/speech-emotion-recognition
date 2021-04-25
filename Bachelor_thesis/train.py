@@ -369,7 +369,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 64   # 128
+    batch_size = 256   # 128
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -393,7 +393,7 @@ def main(result_dir):
     log_filename = os.path.join(result_dirname, "train.log")
     begin_logging(log_filename)
 
-    n_epochs = 10
+    n_epochs = 30
 
     print("Optimizer:")
     print(optimizer)
@@ -421,5 +421,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_21-batch_64"
+    experiment_id = "exp_22-final"
     main(experiment_id)
