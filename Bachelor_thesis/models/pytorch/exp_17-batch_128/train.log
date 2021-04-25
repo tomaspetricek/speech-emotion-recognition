@@ -1,0 +1,78 @@
+Optimizer:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    weight_decay: 0
+)
+Criterion:
+CrossEntropyLoss()
+Model:
+FeedForwardNet(
+  (layers): ModuleList(
+    (0): Linear(in_features=2379, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=128, out_features=128, bias=True)
+    (3): ReLU()
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): Dropout(p=0.25, inplace=False)
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): ReLU()
+    (8): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): Dropout(p=0.25, inplace=False)
+    (10): Linear(in_features=128, out_features=128, bias=True)
+    (11): ReLU()
+    (12): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (13): Dropout(p=0.25, inplace=False)
+    (14): Linear(in_features=128, out_features=7, bias=True)
+  )
+)
+N epochs:  10
+Batch size:  128
+Left margin:  30
+Right margin:  30
+------------------------------------------------------------------------------------
+     epoch      |      name      |      loss      |   acc_frames   |  acc_samples   
+------------------------------------------------------------------------------------
+       1        |train: anglický |     1.203      |     0.536      |
+       1        | val: anglický  |     1.044      |     0.601      |     0.818      
+       1        | test: italský  |     2.256      |     0.199      |     0.262      
+------------------------------------------------------------------------------------
+       2        |train: anglický |     1.015      |     0.610      |
+       2        | val: anglický  |     0.982      |     0.627      |     0.820      
+       2        | test: italský  |     2.379      |     0.206      |     0.250      
+------------------------------------------------------------------------------------
+       3        |train: anglický |     0.951      |     0.635      |
+       3        | val: anglický  |     0.946      |     0.641      |     0.847      
+       3        | test: italský  |     2.425      |     0.206      |     0.245      
+------------------------------------------------------------------------------------
+       4        |train: anglický |     0.912      |     0.651      |
+       4        | val: anglický  |     0.934      |     0.647      |     0.860      
+       4        | test: italský  |     2.470      |     0.203      |     0.252      
+------------------------------------------------------------------------------------
+       5        |train: anglický |     0.885      |     0.662      |
+       5        | val: anglický  |     0.917      |     0.654      |     0.856      
+       5        | test: italský  |     2.577      |     0.206      |     0.235      
+------------------------------------------------------------------------------------
+       6        |train: anglický |     0.865      |     0.670      |
+       6        | val: anglický  |     0.915      |     0.653      |     0.852      
+       6        | test: italský  |     2.577      |     0.202      |     0.236      
+------------------------------------------------------------------------------------
+       7        |train: anglický |     0.849      |     0.676      |
+       7        | val: anglický  |     0.907      |     0.660      |     0.858      
+       7        | test: italský  |     2.645      |     0.191      |     0.223      
+------------------------------------------------------------------------------------
+       8        |train: anglický |     0.836      |     0.681      |
+       8        | val: anglický  |     0.899      |     0.661      |     0.862      
+       8        | test: italský  |     2.630      |     0.204      |     0.240      
+------------------------------------------------------------------------------------
+       9        |train: anglický |     0.827      |     0.685      |
+       9        | val: anglický  |     0.893      |     0.666      |     0.875      
+       9        | test: italský  |     2.672      |     0.198      |     0.236      
+------------------------------------------------------------------------------------
+       10       |train: anglický |     0.817      |     0.688      |
+       10       | val: anglický  |     0.898      |     0.665      |     0.871      
+       10       | test: italský  |     2.708      |     0.199      |     0.226      
+------------------------------------------------------------------------------------

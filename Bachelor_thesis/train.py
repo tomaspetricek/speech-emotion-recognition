@@ -336,9 +336,9 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/en-3-re-90-10"
+    dataset_dir = "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 25
+    left_margin = right_margin = 30
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -349,7 +349,7 @@ def main(result_dir):
     val_dir = os.path.join(dataset_dir, "test")
     val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="val: anglický")
 
-    test_dir = "prepared_data/it-3-re/whole"
+    test_dir = "prepared_data/it-7-re/whole"
     test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="test: italský")
 
     test_datasets = [test_dataset_it]
@@ -358,7 +358,7 @@ def main(result_dir):
 
     model = FeedForwardNet(input_size, n_classes)
 
-    # model_filename = os.path.join(MODEL_DIR, "exp_36", "model.pt")
+    # model_filename = os.path.join(MODEL_DIR, "exp_18-20_epochs", "model.pt")
     # model = torch.load(model_filename)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -369,7 +369,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 32   # 128
+    batch_size = 64   # 128
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -384,7 +384,7 @@ def main(result_dir):
 
     learning_rate = 0.001
     weight_decay = 1e-4
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate) # weight_decay=weight_decay)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)    # weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
 
     dataset_names = [train_dataset.name, val_dataset.name, test_dataset_it.name]
@@ -395,10 +395,13 @@ def main(result_dir):
 
     n_epochs = 10
 
-    print("Optimizer: ", optimizer)
-    print("Criterion: ", criterion)
-    print("Model: ", model)
-    print("N epochs:", n_epochs)
+    print("Optimizer:")
+    print(optimizer)
+    print("Criterion:")
+    print(criterion)
+    print("Model:")
+    print(model)
+    print("N epochs: ", n_epochs)
     print("Batch size: ", batch_size)
     print("Left margin: ", left_margin)
     print("Right margin: ", right_margin)
@@ -409,7 +412,7 @@ def main(result_dir):
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
 
-    result = Results(stats, THREE_EMOTIONS_VERBOSE)
+    result = Results(stats, ALL_EMOTIONS_VERBOSE)
     result.show()
     result.save(result_dirname)
 
@@ -418,5 +421,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_14-3_emotions"
+    experiment_id = "exp_21-batch_64"
     main(experiment_id)
