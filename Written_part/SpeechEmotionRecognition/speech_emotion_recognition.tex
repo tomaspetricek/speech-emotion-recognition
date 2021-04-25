@@ -106,16 +106,16 @@ backend=biber
 \begin{abbrList}
 \end{abbrList}
 
-\chapter{Úvod}
-Mluvení je nám nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychologický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět \cite{DBLP:journals/speech/AkcayO20}.
+\chapter{Úvod} % Grammer checked
+Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychologický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět \cite{DBLP:journals/speech/AkcayO20}.
 
-Nicméně i přesto, že jsme schopni vyjádřit své emoce, tak to neznamená, že se pochopíme. Emoce jsou subjektivní a každý z nás je může vnímat trochu jinak. Tato vlastnost emocí neusnadňuje ani vývoj systémů pro jejich rozpoznávání. Zatím nebyl vyvinut způsob, jak emoce měřit. Proto lidé usilují o vyvinutí systémů schopných rozpoznávat emoce bez explicitně zadaných instrukcí.
+Nicméně i přesto, že jsme schopni vyjádřit své emoce, tak to neznamená, že se pochopíme. Emoce jsou subjektivní a každý z nás je může vnímat trochu jinak. Tato vlastnost emocí neusnadňuje ani vývoj systémů pro jejich rozpoznávání. Zatím nebyl nalezen způsob, jak emoce měřit. Proto lidé usilují o vyvinutí systémů schopných rozpoznávat emoce bez explicitně zadaných instrukcí.
 
 Modely strojového učení jsou schopné najít skryté vzory v datech a naučit se je rozdělovat. Pro učení modelu pro rozpoznávání emocí lze použít data získaná z textu, změn výrazu tváře, hlasu, gest nebo držení těla \cite{konar_chakraborty_2015}. Modely založené na rozpoznávání emocí z řeči mohou najít uplatnění na příklad při vývoji virtuálních asistentů. 
 
 V posledních letech došlo k rozvoji osobních virtuálních asistentů jako jsou Siri a Alexa, které jsou používány pro hlasové ovládání elektronických zařízení. Mohou odesílat textové zprávy, přijímat telefonní hovory, přehrávat hudbu nebo vyhledávat ve webovém prohlížeči. Systém schopný rozpoznávat emoce může zlepšit komunikaci s asistentem tak, aby se nám zdála přirozenější \cite{DBLP:journals/corr/abs-1912-10458}.
 
-Dále může model najít uplatnění pro call centra. Data generovaná call centrem mohou posloužit k vývoji automatické obsluhy zákazníků nebo pro optimalizaci práce v call centru. Dispečerovi můžou být, podle emocionálního stavu zákazníka, nabídnuty scénáře podle, kterých je vhodné v dané situaci postupovat. Model může být využit také k vylepšení systémů doporučující videa nebo podcasty. Uplatnění může najít také při vývoji realističtějších her. Zdroje dat jsou různé, v dnešní době převažují uměle vytvořené datové sady \cite{konar_chakraborty_2015}.
+Dále může model najít uplatnění pro call centra. Data generovaná call centrem mohou posloužit k vývoji automatické obsluhy zákazníků nebo pro optimalizaci práce v call centru. Dispečerovi můžou být, podle emocionálního stavu zákazníka, nabídnuty scénáře, podle kterých je vhodné v dané situaci postupovat. Model může být využit také k vylepšení systémů doporučující videa nebo podcasty. Uplatnění může najít také při vývoji realističtějších her. Zdroje dat jsou různé. V dnešní době převažují uměle vytvořené datové sady \cite{konar_chakraborty_2015}.
 
 Práce se zabývá aktuálním tématem a výsledky mohou vést k rozšíření systémů vyvíjených Laboratoří počítačového zpracování řeči Speech Lab \cite{speechlab}. Model by se mohl implementovat na příklad do systému pro zpracování a analýzu řeči pro call-centra.
 
@@ -131,31 +131,32 @@ Dále není v rozpoznávání určeno, které emoce rozpoznávat a jestli pro ro
 Bylo provedeno mnoho pokusů pro rozpoznávání za použití různých modelů, datových sad, příznaků na různých jazycích. Parthasarathy a
 Tashev porovnali neuronové sítě typu DNNs, RNNs a 1D-CNN na čínských datových sadách. S 1D-CNN dosáhli výsledků 56 \% procent. Kannan Venkataramanan a Haresh Rengaraj Rajamohan provedli několik pokusů na datové sadě RAVDESS. Použili různé příznaky pro rozpoznávání jako MFCC nebo log Mel spektrogramy a vyzkoušeli modely jako různé varianty CNN a HMM. Nejlepší model 2D CNN s globalním average poolingem dosáhl 70 \% na validačních datech a 66 \% testovacích datech při rozpoznávání emocí do 14 kategorií \cite{DBLP:journals/corr/abs-1912-10458}.
 
-\section{Emoce}
-V současnosti není zvolena jednotná definice emocí, existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit \cite{DBLP:journals/speech/AkcayO20}.
+\section{Emoce} % Grammer checked
+V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory, jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit \cite{DBLP:journals/speech/AkcayO20}.
 
-Emoce můžeme dělit 2 způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
+Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
 
-\chapter{Datové sady}
-K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Tímto způsobem získaná data, ale nemusejí odpovídat reálné situaci, a proto existují další 2 způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídali potenciálnímu použití \cite{konar_chakraborty_2015}. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. I přesto, že by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
+\chapter{Datové sady} % Grammer checked
+K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
 
-Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávacích emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
+Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
 
+% Not grammatically checked
 Mezi často používané a bezplatné datové sady patří Danish Emotional Speech (DES) database, Berlin Emotional Speech (BES) database, Speech Under Simulated and Actual Stress (SUSAS) database nebo eNTERFACE datová sada \cite{konar_chakraborty_2015}.
 
 \section{Vybrané datové sady}
 
-\subsection{RAVDESS}
-Zkratka RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z kterých bylo 12 žen a 12 mužů činící datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují 8 emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil 2 tvrzení ve 2 úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nhrávek se pohybují kolem 3 minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
+\subsection{RAVDESS} % Grammer checked
+RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z nichž bylo dvanáct žen a dvanáct mužů, což činí datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují osm emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil dvě tvrzení ve dvou úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nahrávek se pohybují kolem třech minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
 
-\subsection{SAVEE}
-Zkratka SAVEE znamená Surrey Audio-Visual Expressed Emotion a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje 7 emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena 4 mužskými herci mluvící britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology (TIMIT). Kromě řeči byly při nahrávání zaznamenávány i pohyby v obličeji mluvčích, kteří na něm měli namalovány modré značky \cite{savee}.
+\subsection{SAVEE} % Grammer checked
+Surrey Audio-Visual Expressed Emotion (SAVEE) označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje sedm emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena čtyřmi mužskými herci mluvícími britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology (TIMIT). Kromě řeči byla při nahrávání zaznamenána i mimika obličeje mluvčích, kteří na něm měli namalovány modré značky \cite{savee}.
 
-\subsection{TESS}
-Zkratka TESS \cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny 2 herečkami ve věku 26 a 64 let. Rozlišuje 7 emocí mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začínala slovy "Say the word" a končila jedním z 200 vybraných slov \cite{tess}.
+\subsection{TESS} % Grammer checked
+Zkratka TESS \cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny dvěma herečkami ve věku 26 a 64 let. Rozlišuje sedm emocí, mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začínala slovy "Say the word" a končila jedním z 200 vybraných slov \cite{tess}.
 
-\subsection{EMOVO}
-EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny 6 herci, z kterých 3 byli muži a 3 ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje 7 emocí mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav \cite{COSTANTINI14.591}.
+\subsection{EMOVO} % Grammer checked
+EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny šesti herci, z nichž tři byli muži a tři ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje sedm emocí, mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav \cite{COSTANTINI14.591}.
 
 \section{Předzpracování dat pro rozpoznávání}
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracovány. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozděleny na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je analýza hlavních komponent (PCA) nebo lineární diskriminační analýza (LDA) \cite{konar_chakraborty_2015}.
@@ -205,17 +206,17 @@ Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus 
 
 \chapter{Vybrané základy neuronových sítí}
 
-\section{Vícevrstvý perceptron}
-Vícevrství perceptron (MLP) neboli feed-forward neural network je složen z více vrstev logických regresí (lineárních vrstev) nasledovanými nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva se skládá z aktivačních funkcí \cite{DBLP:books/lib/Bishop07}.
+\section{Vícevrstvý perceptron} % Grammer checked
+Vícevrstvý perceptron (MLP) neboli feed-forward neural network je složen z více lineárních vrstev následovaných nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva je tvořena aktivační funkcí \cite{DBLP:books/lib/Bishop07}.
 
-Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít 2 a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstva výstupní vrstvou. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svojí šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax.
+Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít dvě a více lineárních vrstev. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstvou výstupní. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svoji šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax.
 
 \begin{equation}
 \label{eqn:sigmoid}
 y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} }
 \end{equation}
 
-Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. jakou Neuronovou síť typu vícevrstvý perceptron lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
+Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. Neuronovou síť typu MLP lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
 
 \subsection{Trénování}
 Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu, která minimalizuje ztrátu modelu. Jeden proces učení nazýváme epochou.
@@ -262,17 +263,17 @@ Každý model by měl být, co nejobecnější, měl by dosahovat podobných vý
 Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika, která se používá při hodnocení klasifikátoru, je přesnost udávající poměr mezi správně klasifikovanými vzorky a všemi vzorky. Pro vyhodnocení modelu lze také použít matici záměny, která na jedné ose udává správnou třídu a na druhé předpovězenou třídu. Díky tomu můžeme jednoduše zjistit, jaké třídy si mezi sebou klasifikátor zaměňuje.
 
 % Vybrané koncepty
-\subsection{Křížová entropie}
-Jako hodnotící kritérium pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Lze ji vyjádřit:
+\subsection{Křížová entropie} % Grammer checked
+Jako kriteriální funkce pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Lze ji vyjádřit:
 
 \begin{equation}
 \label{eqn:cross_entropy}
 l = -{\sum_{c}^{C}t_{c}\log p_{c}}
 \end{equation}
 
-kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje zkutečné třídy. Nabývá hodnoty jedna pro správnou třídu a hodnoty nula pro nesprávnou třídu. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
+kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje skutečné třídy. Nabývá hodnoty jedna pro správnou třídu a hodnoty nula pro nesprávnou třídu. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
 
-\subsection{ReLU}
+\subsection{ReLU} % Grammer checked
 Rectified linear activation function (ReLU) je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Lze ji vyjádřit:
 
 \begin{equation}
@@ -280,9 +281,9 @@ Rectified linear activation function (ReLU) je aktivační funkce, jejíž výst
 y = max(0, x)
 \end{equation}
 
-kde $ y $ jsou výstupní hodnoty. Proměnná $ x $ zastupuje vstupní hodnoty. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce, je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na 1 a velmi malá čísla 0. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaná modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
+kde $ y $ jsou výstupní hodnoty. Proměnná $ x $ zastupuje vstupní hodnoty. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na jedna a velmi malá čísla nula. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaní modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
 
-\subsection{Softmax}
+\subsection{Softmax} % Grammer checked
 Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností, kde jsou pravděpodobnosti pro jednotlivé prvky úměrné velikosti všech prvků vektoru. Funkci lze vyjádřit vzorcem:
 
 \begin{equation}
@@ -300,11 +301,11 @@ Jsou ve velké míře používány pro práci s obrázky. Skládají se z konvol
 \subsection{Rekuretní neuronové sítě}
 Rekurentní neuronové sítě (RNN) jsou především používány při řešení úloh s daty závislými na čase. Rekurentní neuronové sítě si pamatují skrytý stav, který je vypočítán ze vstupu a vstupuje společně s následujícím vzorkem do sítě. Síť typu RNN je schopna si pamatovat větší kontext a použít ho při předpovídání. Pokročilejším modelem je Long Short-Term Memory (LSTM), který je schopný si poradit s problémem mizejícího a explodujícího gradientu. RNN lze také použít k rozpoznávání emocí, kdy jsou jednotlivé rámce společně s jejich okolí postupně posílány do sítě. Délka rámce s okolím by měla mít alespoň 250 milisekund, aby se byl model schopný naučit rozpoznávat emoce \cite{DBLP:journals/corr/abs-1912-10458}.
 
-\chapter{Vývoj balíčku pro rozpoznávání emocí}
-Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Byly vytvořeny moduly: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihivny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK pro načítání souborů vytvořené pomocí sady nástrojů HTK.
+\chapter{Vývoj balíčku pro rozpoznávání emocí} % Grammer checked
+Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Mezi vytvořené moduly patří: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihovny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK pro načítání souborů vytvořené pomocí sady nástrojů HTK.
 
-\section{Výběr datových sad}
-Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají zastoupení 7 společných emocí, mezi které patří emoce: neutrální, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupeny obě pohlaví. Informace o datových sadách byly shrnuty v tabulce \ref{tab:overview}).
+\section{Výběr datových sad} % Grammer checked
+Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají společných sedm emocí, mezi které patří emoce: neutrální, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupeny obě pohlaví. Informace o datových sadách byly shrnuty v tabulce \ref{tab:overview}).
 
 \begin{table}[ht]
 \centering
@@ -323,10 +324,10 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 \end{table}
 \FloatBarrier
 
-Celkem tedy byly získány 4 datové sady o 2 jazycích se zastoupením 7 emocí. Dohromady vzniklá datová sada má celkem přibližně dobu trvání 4 hodin.
+Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližně dobu trvání čtyř hodin.
 
-\section{Předpříprava dat}
-Data byla nejdříve předzpracována, byl sjednocen jejich formát a byla převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \ref{fig:ffmpeg}.
+\section{Předpříprava dat} % Grammer checked
+Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \ref{fig:ffmpeg}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{ffmpeg_command.png}}
@@ -335,7 +336,7 @@ Data byla nejdříve předzpracována, byl sjednocen jejich formát a byla přev
 \end{figure}
 \FloatBarrier
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_confiģ}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_confiģ}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
@@ -351,7 +352,7 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byl použita sada
 \end{figure}
 \FloatBarrier
 
-Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena základní třída Convertor, z které konkrétní převaděče dědili. Pro sjednocení formátu byla vytvořena třída AudioFormatConverter a třída MFCCConverter pro převod na příznaky MFCC. Vztahy mezi převaděči jsou znázorněni na UML diagramu \ref{fig:convertor}.
+Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena základní třída Convertor, z které konkrétní převaděče dědí. Pro sjednocení formátu byla vytvořena třída AudioFormatConverter a třída MFCCConverter pro převod na příznaky MFCC. Vztahy mezi převaděči jsou znázorněny na UML diagramu \ref{fig:convertor}.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{convertors.png}}
@@ -360,8 +361,8 @@ Třídy pro převod byly implementovány v modulu conversors. Byla vytvořena z�
 \end{figure}
 \FloatBarrier
 
-\section{Příprava datových sad pro trénování}
-Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními úkoly této třídy bylo načíst data a z anotací získat třídy emocí. Třída Dataset dědí od třídy Directory z modulu files, která umožňuje načíst získat cesty k souborům ve složce. Vztah mezi třídami je znázorněn na diagramu \ref{fig:datasets}.
+\section{Příprava datových sad pro trénování} % Grammer checked
+Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními úkoly této třídy bylo načíst data a z anotací získat třídy emocí. Třída Dataset dědí od třídy Directory z modulu files, která umožňuje získat cesty k souborům ve složce. Vztah mezi třídami je znázorněn na diagramu \ref{fig:datasets}.
 
 \begin{figure}[h!]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-dataset.png}}
@@ -370,7 +371,7 @@ Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními ú
 \end{figure}
 \FloatBarrier
 
-Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data na základě cesty k souboru načte vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny byly vytvořeny třídy dědící od třídy UnifiedLabel (viz Obr. \ref{fig:label}), které navíc anotace pro vzorek převedly na stejné značení.
+Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data načte na základě cesty k souboru vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny, byly vytvořeny třídy dědící od třídy UnifiedLabel (viz Obr. \ref{fig:label}), které navíc anotace pro vzorek převedly na stejné značení.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-label.png}}
@@ -388,7 +389,7 @@ Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující 
 \end{figure}
 \FloatBarrier
 
-Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer (viz Obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady, na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně třídy train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
+Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer (viz Obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady. Na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně pomocí funkce train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{prepare.png}}
@@ -397,7 +398,7 @@ Dále byla data rozdělena do trénovacích, validačních a testovacích setů.
 \end{figure}
 \FloatBarrier
 
-Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena svoje složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Struktura složky je znázorněna na obrátku \ref{fig:file_structure}. Pro ukládání a načítání informací z ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz Obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly ulož údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
+Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena vlastní složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Struktura složky je znázorněna na obrázku \ref{fig:file_structure}. Pro ukládání a načítání informací ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz Obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly uloženy údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=.25]{files-info.png}}
@@ -413,8 +414,8 @@ Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena sv
 \end{figure}
 \FloatBarrier
 
-\section{Načítání dat}
-Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá, jsou velikosti pravého a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídali délce vzorů nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
+\section{Načítání dat} % Grammer checked
+Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá, patří velikosti pravého a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídaly délce vzorků nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.125]{dataset_arrangement.png}}
@@ -425,7 +426,7 @@ Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, kt
 
 kde písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotlivé nahrávky, které mohou mít různou délku. Písmeno $ N $ udává počet vzorků a $ M $ počet uložených nahrávek. $ L $ a $ R $ značí velikost pravého a levého okraje. Písmeno $ F $ odpovídá počtu příznaků pro jeden vzorek.
 
-Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (viz Obr. \ref{fig:numpy_dataset}), které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden vzorek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají a to je také důvod, proč je lepší mít třídu rozdělenou.
+Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (viz Obr. \ref{fig:numpy_dataset}), které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden vzorek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají, a to je také důvod, proč je lepší mít třídu rozdělenou.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=.185]{datasets.png}}
