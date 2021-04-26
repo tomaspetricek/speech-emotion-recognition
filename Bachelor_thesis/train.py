@@ -119,21 +119,27 @@ class Results:
         self.stats = stats
         self.classes_verbose = classes_verbose
 
-        self.frame_acc_fig = self._plot(
+        self.frame_acc_fig, frame_acc_ax = plt.subplots()
+        self._plot(
+            frame_acc_ax,
             items=self.stats.frame_accuracies,
             title="Přesnost modelu pro vzorky",
             y_label="přesnost",
             x_label="epocha"
         )
 
-        self.sample_acc_fig = self._plot(
+        self.sample_acc_fig, sample_acc_ax = plt.subplots()
+        self._plot(
+            sample_acc_ax,
             items=self.stats.sample_accuracies,
             title="Přesnost modelu pro náhrávky",
             y_label="přesnost",
             x_label="epocha"
         )
 
-        self.loss_fig = self._plot(
+        self.loss_fig, loss_ax = plt.subplots()
+        self._plot(
+            loss_ax,
             items=self.stats.losses,
             title="Ztráta modelu",
             y_label="ztráta",
@@ -143,7 +149,9 @@ class Results:
         self.conf_matrices_figs = []
         for label, conf_matrix in self.stats.conf_matrices.items():
             title = "Matice záměn pro {}".format(label)
-            fig = self._plot_conf_matrix(
+            fig, ax = plt.subplots()
+            self._plot_conf_matrix(
+                ax,
                 conf_matrix,
                 title=title,
                 y_label="předpovězené třídy",
@@ -157,34 +165,32 @@ class Results:
         for plot in figs:
             plot.show()
 
-    def _plot(self, items, title, y_label, x_label):
-        fig = plt.figure()
+    def _plot(self, ax, items, title, y_label, x_label):
 
         labels = list()
+        n_epochs= None
         for label, item in items.items():
             if item:
-                plt.plot(item)
+                ax.plot(item)
                 labels.append(label)
+                n_epochs = len(item)
 
-        plt.title(title)
-        plt.ylabel(y_label)
-        plt.xlabel(x_label)
-        plt.legend(labels, loc='upper left')
-        return fig
+        ax.set_title(title)
+        ax.set_xlabel(y_label)
+        ax.set_ylabel(x_label)
+        ax.legend(labels, loc='upper left')
+        plt.xticks(np.arange(n_epochs), np.arange(1, n_epochs + 1))
 
-    def _plot_conf_matrix(self, conf_matrix, title, y_label, x_label):
+    def _plot_conf_matrix(self, ax, conf_matrix, title, y_label, x_label):
         classes = self.classes_verbose
         df_cm = pd.DataFrame(conf_matrix, classes, classes)
 
-        fig = plt.figure()
-        sns.heatmap(df_cm, annot=True, fmt='g')
+        sns.heatmap(df_cm, ax=ax, annot=True, fmt='g')
 
-        plt.title(title)
-        plt.xlabel(y_label)
-        plt.ylabel(x_label)
+        ax.set_title(title)
+        ax.set_xlabel(y_label)
+        ax.set_ylabel(x_label)
         plt.tight_layout()
-
-        return fig
 
     def save(self, dirname):
         figs = [self.frame_acc_fig, self.sample_acc_fig, self.loss_fig] + self.conf_matrices_figs
@@ -339,7 +345,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/int-7-re-90-10-10"   # "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 25
+    left_margin = right_margin = 5
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -370,7 +376,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 256   # 32   # 256   # 128
+    batch_size = 256
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -422,5 +428,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_01-b-baseline-batch_256"
+    experiment_id = "exp_05-b-margin_5"
     main(experiment_id)
