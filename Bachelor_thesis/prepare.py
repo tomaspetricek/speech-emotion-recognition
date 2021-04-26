@@ -84,7 +84,7 @@ class Preparer:
 
         # convert to numpy array
         frames = np.concatenate(samples, axis=0)
-        labels = np.array(labels)
+        labels = np.array(labels).flatten()
 
         sample_filename = "samples.npy"
         samples_path = os.path.join(set_dirname, sample_filename)
@@ -117,11 +117,11 @@ class Preparer:
         DatasetInfoFile(path=info_path).write(n_features, n_classes, n_samples)
 
         X_train = []
-        y_train = np.array([])
+        y_train = np.array([], dtype=np.int32)
         X_test = []
-        y_test = np.array([])
+        y_test = np.array([], dtype=np.int32)
         X_val = []
-        y_val = np.array([])
+        y_val = np.array([], dtype=np.int32)
 
         for dataset_index in range(len(self.datasets)):
             samples = self.samples[dataset_index]
@@ -181,7 +181,7 @@ def main():
         # conversion_table=THREE_EMOTIONS_CONVERSION_TABLE,
     )
 
-    result_dir = "prepared_data/int-re-7-90-10-10"
+    result_dir = "prepared_data/int-7-re-90-10-10"
     os.mkdir(result_dir)
     preperer(result_dir)
 

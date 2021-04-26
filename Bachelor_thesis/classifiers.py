@@ -63,22 +63,16 @@ class FeedForwardNet(nn.Module):
         out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
-        self.layers.append(nn.Dropout(0.25))
 
         in_s = out_s
         out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
-        self.layers.append(nn.Dropout(0.25))
 
         in_s = out_s
         out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
         self.layers.append(nn.ReLU())
-        self.layers.append(nn.BatchNorm1d(out_s))
-        self.layers.append(nn.Dropout(0.25))
 
         # END - HIDDEN
 

@@ -162,8 +162,9 @@ class Results:
 
         labels = list()
         for label, item in items.items():
-            plt.plot(item)
-            labels.append(label)
+            if item:
+                plt.plot(item)
+                labels.append(label)
 
         plt.title(title)
         plt.ylabel(y_label)
@@ -336,23 +337,23 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/en-7-re-90-10"
+    dataset_dir = "prepared_data/int-7-re-90-10-10"   # "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 30
+    left_margin = right_margin = 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="train: anglický")
+    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="trénovací sada")
 
-    val_dir = os.path.join(dataset_dir, "test")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="val: anglický")
+    val_dir = os.path.join(dataset_dir, "val")
+    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="validační sada")
 
-    test_dir = "prepared_data/it-7-re/whole"
-    test_dataset_it = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="test: italský")
+    test_dir = os.path.join(dataset_dir, "test")
+    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="testovací sada")
 
-    test_datasets = [test_dataset_it]
+    test_datasets = [test_dataset]
 
     input_size = n_features * (left_margin + 1 + right_margin)
 
@@ -369,7 +370,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 256   # 128
+    batch_size = 256   # 32   # 256   # 128
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -387,13 +388,13 @@ def main(result_dir):
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)    # weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
 
-    dataset_names = [train_dataset.name, val_dataset.name, test_dataset_it.name]
+    dataset_names = [train_dataset.name, val_dataset.name, test_dataset.name]
     stats = Stats(dataset_names)
 
     log_filename = os.path.join(result_dirname, "train.log")
     begin_logging(log_filename)
 
-    n_epochs = 30
+    n_epochs = 10
 
     print("Optimizer:")
     print(optimizer)
@@ -421,5 +422,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_22-final"
+    experiment_id = "exp_01-b-baseline-batch_256"
     main(experiment_id)
