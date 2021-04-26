@@ -345,7 +345,7 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 def main(result_dir):
     dataset_dir = "prepared_data/int-7-re-90-10-10"   # "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 5
+    left_margin = right_margin = 30
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -376,7 +376,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 256
+    batch_size = 256   # 32
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -428,5 +428,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_05-b-margin_5"
+    experiment_id = "exp_18-b-4_layer-width_128"
     main(experiment_id)
