@@ -24,27 +24,28 @@ class Preparer:
     VAL_DIR = "val"
     WHOLE_DIR = "whole"
 
-    def __init__(self, dataset, test_size=None, val_size=None, conversion_table=None, scaler=None):
-        self.dataset = dataset
+    def __init__(self, datasets, test_size=None, val_size=None, conversion_table=None):
+        self.datasets = datasets
         self.val_size = val_size
         self.test_size = test_size
         self.samples = self.labels = None
         self.conversion_table = conversion_table
-        self.scaler = scaler
 
     def load_data(self):
         """
         Load in datasets and returns X and y as numpy arrays.
         """
+        self.samples = []
+        self.labels = []
 
-        # get samples
-        samples = self.dataset.samples
-        labels = self.dataset.labels
+        for dataset in self.datasets:
+            # get samples
+            samples = dataset.samples
+            labels = dataset.labels
 
-        # convert to numpy array
-        self.samples = samples
+            self.samples.append(samples)
 
-        self.labels = np.array(labels).flatten()
+            self.labels.append(np.array(labels).flatten())
 
     def convert_labels(self):
         converted_labels = []
@@ -85,13 +86,6 @@ class Preparer:
         frames = np.concatenate(samples, axis=0)
         labels = np.array(labels)
 
-        # scale samples
-        if self.scaler:
-            if set_dir == self.TRAIN_DIR:
-                frames = self.scaler.fit_transform(frames)
-            else:
-                frames = self.scaler.transform(frames)
-
         sample_filename = "samples.npy"
         samples_path = os.path.join(set_dirname, sample_filename)
         np.save(samples_path, frames)
@@ -110,81 +104,86 @@ class Preparer:
         if self.conversion_table:
             self.convert_labels()
 
+        dataset_index = 0
         # save dataset info
-        n_classes = len(np.unique(self.labels))
-        n_features = self.samples[0].shape[1]
-        n_samples = len(self.samples)
+        n_classes = len(np.unique(self.labels[dataset_index]))
+        n_features = self.samples[dataset_index][0].shape[1]
+
+        n_samples = 0
+        for samples in self.samples:
+            n_samples += len(samples)
 
         info_path = os.path.join(result_dirname, "info.txt")
         DatasetInfoFile(path=info_path).write(n_features, n_classes, n_samples)
 
-        if self.test_size:
-            X_train_full, y_train_full, X_test, y_test = self.split_data(self.samples, self.labels, self.test_size)
+        X_train = []
+        y_train = np.array([])
+        X_test = []
+        y_test = np.array([])
+        X_val = []
+        y_val = np.array([])
 
-            if self.val_size:
-                X_train, y_train, X_val, y_val = self.split_data(X_train_full, y_train_full, self.val_size)
+        for dataset_index in range(len(self.datasets)):
+            samples = self.samples[dataset_index]
+            labels = self.labels[dataset_index]
 
-                # save train set
-                self.save_set(X_train, y_train, result_dirname, self.TRAIN_DIR)
+            X_train_local, y_train_local, X_test_full, y_test_full = self.split_data(samples, labels, self.test_size)
 
-                # save val set
-                self.save_set(X_val, y_val, result_dirname, self.VAL_DIR)
-            else:
-                # save train set
-                self.save_set(X_train_full, y_train_full, result_dirname, self.TRAIN_DIR)
+            X_test_local, y_test_local, X_val_local, y_val_local = self.split_data(X_test_full, y_test_full, self.val_size)
 
-            # save test set
-            self.save_set(X_test, y_test, result_dirname, self.TEST_DIR)
-        else:
-            self.save_set(self.samples, self.labels, result_dirname, self.WHOLE_DIR)
+            # add sets
+            X_train = X_train + X_train_local
+            y_train = np.concatenate((y_train, y_train_local))
+
+            X_test = X_test + X_test_local
+            y_test = np.concatenate((y_test, y_test_local))
+
+            X_val = X_val + X_val_local
+            y_val = np.concatenate((y_val, y_val_local))
+
+        # save test set
+        self.save_set(X_test, y_test, result_dirname, self.TEST_DIR)
+
+        # save train set
+        self.save_set(X_train, y_train, result_dirname, self.TRAIN_DIR)
+
+        # save val set
+        self.save_set(X_val, y_val, result_dirname, self.VAL_DIR)
 
 def main():
-    # # load ravdess
-    # ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
-    # ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
-    # #
-    # # load tess
-    # tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
-    # tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
+    # load ravdess
+    ravdess_path = DATASET_PATH.format(language="english", name="RAVDESS", form="mfcc")
+    ravdess_mfcc_unified = Dataset(ravdess_path, MFCCData(), RAVDESSUnifiedLabel())
     #
-    # # load savee
-    # savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
-    # savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
-    #
-    # # load emovo
-    # emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
-    # emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
-    # # dataset = emovo_mfcc_unified
-    #
-    # # combine datasets
-    # ravdess_mfcc_unified.combine(savee_mfcc_unified, tess_mfcc_unified)
-    # dataset = ravdess_mfcc_unified
+    # load tess
+    tess_path = DATASET_PATH.format(language="english", name="TESS", form="mfcc")
+    tess_mfcc_unified = Dataset(tess_path, MFCCData(), TESSUnifiedLabel())
 
-    call_center_path = DATASET_PATH.format(language="czech", name="CallCenters", form="mfcc")
-    call_center_unified = Dataset(call_center_path, MFCCData(), CallCentersUnifiedLabel())
-    dataset = call_center_unified
+    # load savee
+    savee_path = DATASET_PATH.format(language="english", name="SAVEE", form="mfcc")
+    savee_mfcc_unified = Dataset(savee_path, MFCCData(), SAVEEUnifiedLabel())
 
-    # scaler = NDScaler(StandardScaler())
+    # load emovo
+    emovo_path = DATASET_PATH.format(language="italian", name="EMOVO", form="mfcc")
+    emovo_mfcc_unified = Dataset(emovo_path, MFCCData(), EMOVOUnifiedLabel())
 
-    with open("prepared_data/int-7-stdsc-90-10/scaler.obj", 'rb') as file:
-        scaler = pickle.load(file)
+    datasets = [
+        ravdess_mfcc_unified,
+        tess_mfcc_unified,
+        savee_mfcc_unified,
+        emovo_mfcc_unified
+    ]
 
     preperer = Preparer(
-        dataset=dataset,
-        # test_size=0.1,
+        datasets=datasets,
+        test_size=0.2,
+        val_size=0.5
         # conversion_table=THREE_EMOTIONS_CONVERSION_TABLE,
-        scaler=scaler
     )
 
-    result_dir = "prepared_data/cz-7-stdsc"
+    result_dir = "prepared_data/int-re-7-90-10-10"
     os.mkdir(result_dir)
     preperer(result_dir)
-
-    # scaler_fitted = preperer.scaler
-    # scaler_filename = os.path.join(result_dir, "scaler.obj")
-    #
-    # with open(scaler_filename, "wb") as file:
-    #     pickle.dump(scaler_fitted, file)
 
 
 if __name__ == "__main__":
