@@ -492,10 +492,12 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 \FloatBarrier
 
 \chapter{Experimenty}
-Bylo provedeno několik experimentů pro vyladění hyperparametrů modelu. Jako první byl proveden výchozí experiment. Trénovací a validační sady byly vytvořeny z anglických datových sad a byly rozděleny v poměru 90 \% a 10 \%. 
-Italská datová sada EMOVO byla použita jako testovací datová sada. Pro získání ztráty modelu byla jako kriteriální funkce zvolena křížová entropie. Byl zvolen algoritmus Adaptive Momentum (Adam) pro optimalizaci modelu a míra učení byla nastavena na hodnotu 0,001. Zvolený model se skládal ze tří lineárních vrstev o šířce 128 neuronů. Ve skryté vrstvě byla použita aktivační funkce ReLU. Model byl trénován 10 epoch s velikostí jedné dávky 32 vzorků. Velikost pravého a levého okolí byla rovna 25 vzorkům. Bylo klasifikováno 7 emocí: hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav.
+Bylo provedeno několik experimentů pro vyladění hyperparametrů modelu. Jako první byl proveden výchozí experiment. Trénovací, validační a testovací sady byly vytvořeny ze všech vybraných anglických datových sad a italské datové sady. Z každé vybrané datové sady byly rovnoměrně rozděleny vzorky podle tříd do sad v poměru 80 \% nahrávek přišlo do trénovací sady, 10 \% do sady testovací a 10 \% do sady validančí.
 
-Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala až k hodně 66 \% a na trénovací sadě kolísala kolem 57 \%. Ztráta modelu na trénovací sadě postupně klesala a u validační sady se opět příliš neměnila. Naopak přesnost pro nahrávky byla pro validační sadu poměrně vysoká a dosáhla 86 \%. Úspěch dokládá i rozložení předpovědí v matici záměn, kde je většina předpovědí umístěna na hlavní diagonále.
+\section{Výchozí model}
+Jako první byl vytvořen výchozí model, který slouží k porovnání výkonu mezi modely. Pro získání ztráty modelu byla jako kriteriální funkce zvolena křížová entropie. Byl zvolen algoritmus Adaptive Momentum (Adam) pro optimalizaci modelu a míra učení byla nastavena na hodnotu 0,001. Model se skládal ze tří skrytých lineárních vrstev o šířce 128 neuronů. Ve skryté vrstvě byla použita aktivační funkce ReLU. Model byl trénován 10 epoch s velikostí jedné dávky 256 vzorků. Velikost pravého a levého okolí byla rovna 25 vzorkům. Bylo klasifikováno 7 emocí: hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav.
+
+Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala až k hodně 83,1 \% a na trénovací sadě kolísala kolem 59 \%. Ztráta modelu na trénovací sadě postupně klesala. U validační a testovací sady ztráta mírně stoupala. Přesnost pro nahrávky dosáhla kolem 87 \% na validační a testovací sadě. Úspěch dokládá i rozložení předpovědí v matici záměn, kde je většina předpovědí umístěna na hlavní diagonále.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{baseline-conf_matrix-val.png}}
@@ -503,8 +505,6 @@ Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala a�
 \label{fig}
 \end{figure}
 \FloatBarrier
-
-Na druhou stranu přesnost pro nahrávky na testovací sadě dosáhla pouze 26 \%. Mezi nejlépe klasifikované třídy patřili strach a hněv, kde byla přibližně polovina předpovědí umístěna na hlavní diagonále.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{baseline-conf_matrix-test.png}}
@@ -516,44 +516,58 @@ Na druhou stranu přesnost pro nahrávky na testovací sadě dosáhla pouze 26 \
 Následně bylo provedeno několik pokusů se snahou vyladit hyperparametry modelu. Byla měněna především architektura sítě, počet a šířka vrstev. Upravovány byly také velikosti okolí vzorku. Trénování probíhalo během 10 epoch, jelikož bylo zjištěno u výchozího pokusu, že tento počet postačí pro získání představy o výkonu modelu. Kriteriální a optimalizační funkce zůstali stejné.
 
 \section{Změny počtu skrytých vrstev}
-Byly provedeny 3 experimenty, jejíž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost na validační sadě také roste s počtem skrytých vrstev. Nicméně s ní vrůstá i ztráta, která by měla naopak klesat. Rozdíl nárůstu ztráty mezi jednotlivými modely není až tolik vysoký, ale přesto vypadá, že počet 3 až 4 vrstev je optimální. Při počtu dvou vrstev se model nedoučuje a při počtu pěti vrstev se naopak přeučuje.
+Byly provedeny tři experimenty, jejíž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost pro vzorky na validační a testovací sadě také roste s počtem skrytých vrstev. Nicméně s ní vrůstá i ztráta, která by měla naopak klesat. Průběh ztráty u modelů se třemi a více vrstvami se příliš nemění. Při počtu dvou vrstev se model učí pomaleji, ale zároveň neroste v takové míře ztráta.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_vsrtvy.png}}
+\centerline{\includegraphics[scale=.5]{training_course-layers.png}}
 \caption{Přehled průběhu trénování}
 \label{fig}
 \end{figure}
 \FloatBarrier
 
 \section{Změny velikosti okolí vzorku}
-Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny 4 pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá i přesnost a klesá ztráta modelu. U validačním datové sady přesnost stoupá stejným způsobem jenom pomaleji. Ztráta klesá od velikosti okolí 5 až k velikosti 15, z toho lze usoudit, že optimální velikost okolí je mezi 15 a 30 vzorky.
+Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny 4 pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá i přesnost a klesá ztráta modelu. U validační a testovací sady přesnost pro vzorky stoupá stejným způsobem jenom pomaleji. Zároveň však stoupá ztráta modelu.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_okoli.png}}
+\centerline{\includegraphics[scale=.5]{training_course-margin.png}}
 \caption{Přehled průběhu trénování}
 \label{fig}
 \end{figure}
 \FloatBarrier
 
 \section{Změny šířky skrytých vrstev}
-Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskutečnily se 4 experimenty, během kterých nabývala šířka vrstev hodnot od 16 do 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Modely s šířkami 64 a 128 u výchozího modelu dosahují přesnosti kolem 60 \%. Poslední pár tvoří modely s šířkou 256 a 512 neuronů, které docílili přesnosti přibližně 80 \%. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů, pro modely se šířkou 128 a 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
+Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskutečnily se 4 experimenty, během kterých nabývala šířka vrstev hodnot od 16 do 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Dále s přibývající šířkou výsledná přesnost stoupá přibližně o 10 \%, kromě modelu s šířkou 256 a 512, kde je rozdíl mezi přesností podstatně menší.  Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů. Pro model se šířkou 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_sirka.png}}
+\centerline{\includegraphics[scale=.5]{training_course-width.png}}
 \caption{Přehled průběhu trénování}
 \label{fig}
 \end{figure}
 \FloatBarrier
+
+\section{Použití regularizace}
+Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo v této části vyzkoušeno několik způsobů regularizace s cílem zamezení přeučování.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+U prvního experimentu byly přidány za aktivační funkce ve skryté vrstvě drop out vrstvy s pravděpodobností 50 \%, že se výstup vynuluje. Tento model dosahoval nižší přesnosti pro vzorek na trénovacích datech než výchozí model a ztráta klesala pomaleji. Nicméně na validačních datech měla přesnost pro vzorky tendenci růst a dosáhla lepší přesnosti než výchozí model. Z grafu pro ztrátu je také vidět, že ztráta v průběhu trénování klesala. 
+
+Pro další pokus byly skryté vrstvy výchozího modelu rozšířeny o vrstvy s normalizací dávek. Normalizace byly opět umístěny za aktivační funkce. Model dosahoval velice podobných výsledků ztráty a přesnosti na trénovacích datech. Nicméně průběhy trénovaní na validační sadě byly různé. Přesnost modelu dosáhla o 5 \% více než na výchozím modelu a po celou dobu trénování rostla. Míra růstu ztráty byla podstatně nižší. 
+
+U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná drop out vrstvou. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s drop out vrstvami. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosahla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s drop out vrstvami.
+
+Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a drop out vrstvami.
+
 
 \section{Omezení počtu emocí}
 V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřili spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. U přesnosti na validačních datech je to velice podobné, nicméně z grafu ztráty lze usoudit, že by bylo vhodné pro klasifikaci do méně tříd použít menší model, jelikož ztráta roste.
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{prubeh_trenovani_sekce_snizeni.png}}
-\caption{Přehled průběhu trénování}
-\label{fig}
-\end{figure}
-\FloatBarrier
+
 
 Na grafech matic záměn pro lze zpozorovat, že jsou nově vytvořené třídy velice nevyvážené. Neutrální stav má nejméně vzorků a nejvíce vzorků mají negativní emoce. I přesto bylo dosaženo 88 \% na přesnosti na validační sadě pro celé nahrávky. U testovací italské datové sady docházelo k záměně z velké části za emoce negativní.
 
