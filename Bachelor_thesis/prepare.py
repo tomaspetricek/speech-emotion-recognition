@@ -49,9 +49,13 @@ class Preparer:
 
     def convert_labels(self):
         converted_labels = []
-        for label in self.labels:
-            converted_label = self.conversion_table[label]
-            converted_labels.append(converted_label)
+        for labels_dataset in self.labels:
+            converted_labels_dataset = []
+            for label in labels_dataset:
+                converted_label = self.conversion_table[label]
+                converted_labels_dataset.append(converted_label)
+
+            converted_labels.append(np.array(converted_labels_dataset))
 
         self.labels = converted_labels
 
@@ -177,11 +181,11 @@ def main():
     preperer = Preparer(
         datasets=datasets,
         test_size=0.2,
-        val_size=0.5
-        # conversion_table=THREE_EMOTIONS_CONVERSION_TABLE,
+        val_size=0.5,
+        conversion_table=THREE_EMOTIONS_CONVERSION_TABLE,
     )
 
-    result_dir = "prepared_data/int-7-re-90-10-10"
+    result_dir = "prepared_data/int-3-re-80-10-10"
     os.mkdir(result_dir)
     preperer(result_dir)
 

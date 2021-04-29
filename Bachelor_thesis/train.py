@@ -343,9 +343,9 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/int-7-re-90-10-10"   # "prepared_data/en-7-re-90-10"
+    dataset_dir = "prepared_data/int-3-re-80-10-10"   # "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 50
+    left_margin = right_margin = 50    # 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -400,7 +400,7 @@ def main(result_dir):
     log_filename = os.path.join(result_dirname, "train.log")
     begin_logging(log_filename)
 
-    n_epochs = 30
+    n_epochs = 10
 
     print("Optimizer:")
     print(optimizer)
@@ -419,7 +419,7 @@ def main(result_dir):
     model_filename = os.path.join(result_dirname, "model.pt")
     model.save(model_filename)
 
-    result = Results(stats, ALL_EMOTIONS_VERBOSE)
+    result = Results(stats, THREE_EMOTIONS_VERBOSE)
     result.show()
     result.save(result_dirname)
 
@@ -428,5 +428,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_20-b-4_layer-width_128-margin_50-epoch_30"
+    experiment_id = "exp_23-b-final-3_emotions-4_layers-50_margin"
     main(experiment_id)

@@ -58,7 +58,6 @@ class FeedForwardNet(nn.Module):
         self.layers.append(nn.ReLU())
 
         # BEGIN - HIDDEN
-
         in_s = out_s
         out_s = hidden_layer_size
         self.layers.append(nn.Linear(in_s, out_s))
