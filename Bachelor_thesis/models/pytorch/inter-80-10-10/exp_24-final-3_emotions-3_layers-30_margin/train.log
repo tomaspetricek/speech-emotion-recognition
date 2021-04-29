@@ -1,0 +1,78 @@
+Optimizer:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    weight_decay: 0
+)
+Criterion:
+CrossEntropyLoss()
+Model:
+FeedForwardNet(
+  (layers): ModuleList(
+    (0): Linear(in_features=2379, out_features=128, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=128, out_features=128, bias=True)
+    (3): ReLU()
+    (4): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): Dropout(p=0.25, inplace=False)
+    (6): Linear(in_features=128, out_features=128, bias=True)
+    (7): ReLU()
+    (8): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): Dropout(p=0.25, inplace=False)
+    (10): Linear(in_features=128, out_features=128, bias=True)
+    (11): ReLU()
+    (12): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (13): Dropout(p=0.25, inplace=False)
+    (14): Linear(in_features=128, out_features=3, bias=True)
+  )
+)
+N epochs:  10
+Batch size:  256
+Left margin:  30
+Right margin:  30
+------------------------------------------------------------------------------------
+     epoch      |      name      |      loss      |   acc_frames   |  acc_samples   
+------------------------------------------------------------------------------------
+       1        | trénovací sada |     0.666      |     0.688      |
+       1        | validační sada |     0.613      |     0.719      |     0.812      
+       1        | testovací sada |     0.600      |     0.719      |     0.823      
+------------------------------------------------------------------------------------
+       2        | trénovací sada |     0.546      |     0.748      |
+       2        | validační sada |     0.564      |     0.739      |     0.834      
+       2        | testovací sada |     0.551      |     0.747      |     0.832      
+------------------------------------------------------------------------------------
+       3        | trénovací sada |     0.504      |     0.769      |
+       3        | validační sada |     0.550      |     0.744      |     0.864      
+       3        | testovací sada |     0.542      |     0.749      |     0.864      
+------------------------------------------------------------------------------------
+       4        | trénovací sada |     0.477      |     0.783      |
+       4        | validační sada |     0.540      |     0.753      |     0.859      
+       4        | testovací sada |     0.533      |     0.759      |     0.863      
+------------------------------------------------------------------------------------
+       5        | trénovací sada |     0.457      |     0.792      |
+       5        | validační sada |     0.534      |     0.761      |     0.874      
+       5        | testovací sada |     0.531      |     0.763      |     0.874      
+------------------------------------------------------------------------------------
+       6        | trénovací sada |     0.443      |     0.799      |
+       6        | validační sada |     0.548      |     0.756      |     0.874      
+       6        | testovací sada |     0.536      |     0.763      |     0.878      
+------------------------------------------------------------------------------------
+       7        | trénovací sada |     0.430      |     0.805      |
+       7        | validační sada |     0.534      |     0.760      |     0.874      
+       7        | testovací sada |     0.527      |     0.766      |     0.881      
+------------------------------------------------------------------------------------
+       8        | trénovací sada |     0.420      |     0.810      |
+       8        | validační sada |     0.546      |     0.759      |     0.876      
+       8        | testovací sada |     0.532      |     0.768      |     0.878      
+------------------------------------------------------------------------------------
+       9        | trénovací sada |     0.413      |     0.814      |
+       9        | validační sada |     0.560      |     0.756      |     0.879      
+       9        | testovací sada |     0.540      |     0.763      |     0.883      
+------------------------------------------------------------------------------------
+       10       | trénovací sada |     0.406      |     0.817      |
+       10       | validační sada |     0.549      |     0.761      |     0.872      
+       10       | testovací sada |     0.537      |     0.766      |     0.878      
+------------------------------------------------------------------------------------

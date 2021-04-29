@@ -428,5 +428,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "exp_23-b-final-3_emotions-4_layers-50_margin"
+    experiment_id = "inter-80-10-10/exp_27-final-3_emotions-3_layers-50-margin-128_width"
     main(experiment_id)
