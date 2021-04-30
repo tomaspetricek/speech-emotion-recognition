@@ -545,8 +545,36 @@ Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskute
 \end{figure}
 \FloatBarrier
 
+\section{Omezení počtu emocí}
+V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřila spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. V grafech pro validační sadu lze zpozorovat, že přesnost pro vzorky s ubývajícím počtem emocí roste, ale její průběh je konstantní. Ztráta u jednotlivých modelů lineárně roste.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
+\caption{Přehled průběhu trénování}
+\label{fig}
+\end{figure}
+\FloatBarrier
+
+Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyřech tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část nahrávek umístěna do negativní třídy (viz Obr. \ref{fig:3_emotions-conf_matrix-val}). 
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační data ke klasifikaci 3 emocí}
+\label{fig:3_emotions-conf_matrix-val}
+\end{figure}
+\FloatBarrier
+
+Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz Obr. \ref{fig:4_emotions-conf_matrix-val}). O trochu méně nahrávek bylo umístěno v neutrální třídě.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{4_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační data ke klasifikaci 4 emocí}
+\label{fig:4_emotions-conf_matrix-val}
+\end{figure}
+\FloatBarrier
+
 \section{Použití regularizace}
-Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo v této části vyzkoušeno několik způsobů regularizace s cílem zamezení přeučování.
+Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem zamezení přeučování.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
@@ -563,23 +591,19 @@ U posledního experimentu byla použita kombinace předchozích technik. Za akti
 
 Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a drop out vrstvami.
 
+\section{Finální modely}
+Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a drop out vrstvami ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \ref{fig:final_training_course}.
 
-\section{Omezení počtu emocí}
-V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřili spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. U přesnosti na validačních datech je to velice podobné, nicméně z grafu ztráty lze usoudit, že by bylo vhodné pro klasifikaci do méně tříd použít menší model, jelikož ztráta roste.
+První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky 77,4 \% na trénovací sadě, 73,5 \% na validančí sadě a 74,5 \% na testovací sadě. Byla získána přesnost pro nahrávky 83,2 \% na validační sadě a 84,7 \% na sadě testovací.
 
-Na grafech matic záměn pro lze zpozorovat, že jsou nově vytvořené třídy velice nevyvážené. Neutrální stav má nejméně vzorků a nejvíce vzorků mají negativní emoce. I přesto bylo dosaženo 88 \% na přesnosti na validační sadě pro celé nahrávky. U testovací italské datové sady docházelo k záměně z velké části za emoce negativní.
+Další model se skládal ze tří skrytých vrstev o šířce 128 neuronů s velikostí 30 pravého a levého okolí. Při klasifikaci do čtyř a sedmi tříd model vykazoval dobré výsledky, které byly překonány posledním modelem.
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
-\caption{Matice záměn pro validační data}
-\label{fig}
-\end{figure}
-\FloatBarrier
+Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř s krytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10 epoše, kdy byly přesnosti pro vzorky na trénovací sadě 79 \%, validační sadě 73,7 \% a na testovací sadě 74 \%. Přesnost pro nahrávky vystoupala u validační sady na 91,7 \% a u testovací sady na 92,3 \%. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně, kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na 75,8 \%, na sadě validační na 69,3 \% a na testovací sadě 68 \%. Bylo dosaženo přesnosti pro nahrávky 90,4 \% na sadě validanční a 88,5 \% na sadě testovací.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-test.png}}
-\caption{Matice záměn pro testovací data}
-\label{fig}
+\centerline{\includegraphics[scale=.5]{training_course-final.png}}
+\caption{Přehled průběhu trénování}
+\label{fig:final_training_course}
 \end{figure}
 \FloatBarrier
 
