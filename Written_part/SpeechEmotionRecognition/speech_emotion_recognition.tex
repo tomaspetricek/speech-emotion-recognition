@@ -258,15 +258,19 @@ Při trénování modelu je možné se setkat s nedoučováním a přeučování
 Regularizace označuje množinu technik, které zabraňují vytvoření příliš složitého modelu. Často jsou používány regularizace typu L1 a L2, které jsou umístěny v algoritmu pro upravovaní parametrů modelu. Je možné použít také techniky, které jsou součástí modelu samotného jako jsou drop out vrstvy nebo vrstvy normalizace dávek \cite{burkov2019hundred}.
 
 \section{Hodnocení výkonu modelu}
+Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikace lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost, preciznost, úplnost nebo matice záměn.
+
+\subsection{Matice záměn}
+Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné byly by hodnoty větší než nula na hlavní diagonále matice.
+
 \subsection{Přesnost}
+Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu všech vzorků. Často se hodnota násobí sty, aby výsledek vyšel v procentech.
+
 
 \subsection{Hyperparametry}
 Každý model má také své hyperparametry, které se používají ve fázi učení \cite{leonel_2019}. Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
 
-\subsection{Hodnocení}
-Každý model by měl být, co nejobecnější, měl by dosahovat podobných výsledků jak na trénovacích datech tak na jakýkoli jiných. Když model nedostatečně zobecňuje, tak říkáme, že se nedoučuje. Naopak když se model učí v přílišném detailu, tak říkáme, že se přeučuje. Data jsou proto rozdělena na sadu trénovací a testovací. Model je natrénován na sadě trénovací a otestován na sadě testovací. Dobrý model je úspěšný v podobné míře na obou datových sadách. Trénovací sadu lze dále rozdělit také na sadu trénovací a validační. Validační sada se používá při trénování modelu. Na výsledcích této sady můžeme poznat dříve, jestli se model přeučuje nebo naopak, jestli se učí dostatečně. Při testování na testovací nebo validační sadě se parametry modelu nemění.
-
-Další způsob, jak ohodnotit model, jsou různé metriky. Důležitá metrika, která se používá při hodnocení klasifikátoru, je přesnost udávající poměr mezi správně klasifikovanými vzorky a všemi vzorky. Pro vyhodnocení modelu lze také použít matici záměny, která na jedné ose udává správnou třídu a na druhé předpovězenou třídu. Díky tomu můžeme jednoduše zjistit, jaké třídy si mezi sebou klasifikátor zaměňuje.
+\section{Vybrané koncepty}
 
 % Vybrané koncepty
 \subsection{Křížová entropie} % Grammer checked
