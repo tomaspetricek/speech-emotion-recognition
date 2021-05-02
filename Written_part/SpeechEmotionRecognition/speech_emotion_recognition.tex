@@ -249,7 +249,10 @@ x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t)
 kde proměnná $ x_{t+1} $ je hodnota aktualizovaného parametru sítě a $ x_t $ je hodnota původního parametru sítě. Hodnota gradientu pro parametr x je $ \frac{d}{dx} $. Ztráta parametru $ x_t $ je označena $ J $.
 
 \section{Rozdělení na datové sady}
+Po získání datové sady je většinou sada rozdělena na tři částí: trénovací, validační a testovací. Trénovací sada je většinou největší a slouží k trénování modelu. Validační a testovací sady jsou menší a slouží k vyhodnocení modelu. Při rozdělování menších datových sad je často použito 70 \% pro trénování, 15 \% pro validaci a 15 \% pro testování. Při rozdělování větších datových sad je možné použít větší část 95 \% pro trénování a zbytek pro validaci a testování. Datová sada je tímto způsobem rozdělena, aby se model naučil dobře zobecňovat. Můžeme to poznat tak, že model dosahuje podobných výsledků na všech datových sadách. Validační datová sada se používá pro zvolení vhodného modelu a příhodných hyperparametrů. Testovací datová sada je použita v posledních částech vývoje modelu, kdy jsou na ní zjištěny konečné výsledky modelu \cite{burkov2019hundred}.
+
 \section{Přeučování a nedoučování}
+Při trénování modelu je možné se setkat se 
 \section{Regularizace}
 \section{Hodnocení}
 \subsection{Přesnost}
