@@ -218,7 +218,7 @@ y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} }
 
 Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. Neuronovou síť typu MLP lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
 
-\subsection{Trénování}
+\section{Trénování}
 Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu, která minimalizuje ztrátu modelu. Jeden proces učení nazýváme epochou.
 
 Při dopředném průchodu lineární vrstvou jsou vstupní příznaky $ y_i $ přeměněny na výstupní příznaky $ x_j $ pomocí lineární kombinace, kterou lze vyjádřit:
@@ -255,7 +255,9 @@ Po získání datové sady je většinou sada rozdělena na tři částí: trén
 Při trénování modelu je možné se setkat s nedoučováním a přeučováním. K nedoučování dochází, když model dosahuje nízkých výsledků na trénovací sadě. Nedoučování může být způsobeno na příklad přílišnou jednoduchostí modelu nebo zvolení nevhodných příznaků pro učení. Při přeučování dochází k opačnému jevu, kdy model velice dobře rozpoznává vzorky z trénovací sady, ale velice špatně vzorky ostatní. Mezi hlavní důvody pro vznik přeučování patří přílišná složitost modelu nebo nadměrné množství příznaků ale malou trénovací sadu. Přeučování na datové sadě můžeme poznat na příklad na validanční sadě, kdy ztráta modelu stoupá. Mezi nejčastější techniky používané proti přeučování patří použité jednoduššího modelu, zmenšení počtu vstupních příznaků, přidání trénovacích dat nebo použití regularizace \cite{burkov2019hundred}.
 
 \section{Regularizace}
-\section{Hodnocení}
+Regularizace označuje množinu technik, které zabraňují vytvoření příliš složitého modelu. Často jsou používány regularizace typu L1 a L2, které jsou umístěny v algoritmu pro upravovaní parametrů modelu. Je možné použít také techniky, které jsou součástí modelu samotného jako jsou drop out vrstvy nebo vrstvy normalizace dávek \cite{burkov2019hundred}.
+
+\section{Hodnocení výkonu modelu}
 \subsection{Přesnost}
 
 \subsection{Hyperparametry}
