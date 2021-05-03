@@ -266,9 +266,8 @@ Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny spr�
 \subsection{Přesnost}
 Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu všech vzorků. Často se hodnota násobí sty, aby výsledek vyšel v procentech.
 
-
 \subsection{Hyperparametry}
-Každý model má také své hyperparametry, které se používají ve fázi učení \cite{leonel_2019}. Hyperparametry mohou měnit strukturu modelu, na příklad u hlubokých neuronových sítí to může být počet a šířka skrytých vrstev nebo aktivační funkce ve skryté vrstvě modelu. Další hyperparametry ovlivňují samotné učení mezi ně patří na příklad míra učení, regularizace nebo počet trénovacích epoch. Míra učení udává míru změny parametrů modelu při jejich aktualizaci. Regularizace zabraňuje přeučení.
+Hyperparametry jsou parametry ovlivňující učení modelu. Na rozdíl od parametrů modelu se je nelze naučit z trénovacích dat \cite{geron2019hands}. Můžeme je dělit podle toho, jestli jsou používány při návrhu neuronové sítě nebo při samotném trénování. Při návrhu neuronové sítě lze na příklad upravovat počet a šířka skrytých vrstev. Mezi hyperparametry používané při trénování modelu lze zařadit míru učení, počet trénovacích epoch nebo velikost dávky \cite{dagli_2021}.
 
 \section{Vybrané koncepty}
 
@@ -346,7 +345,7 @@ Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data přev
 \end{figure}
 \FloatBarrier
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_confiģ}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_config}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační (delta delta) koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
