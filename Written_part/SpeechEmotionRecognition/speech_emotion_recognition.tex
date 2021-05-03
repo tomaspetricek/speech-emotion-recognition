@@ -260,6 +260,22 @@ Regularizace označuje množinu technik, které zabraňují vytvoření příli�
 \section{Hodnocení výkonu modelu}
 Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikace lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost, preciznost, úplnost nebo matice záměn.
 
+\subsection{Dropout}
+Princip dropout spočívá v náhodném vypínání neuronů ve vrstvě během trénování. Dropout bere jako parametr pravděpodobnost vypnutí jednoho neuronu. Čím vyšší je pravděpodobnost vypnutí, tím je vyšší účinek regularizace \cite{burkov2019hundred}.
+
+\subsection{Normalizace dávky}
+Normalizace dávky spočívá v normalizaci výstupu z předešlé vrstvy modelu před vstupem do následující. Použití normalizace může vést k rychlejšímu a stabilnějšímu trénování \cite{burkov2019hundred}. Vztah pro výpočet normalizace dávky lze vyjádřit pomocí následujícího vzorce:
+
+\begin{equation}
+\label{eqn:batch_mean}
+z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}}
+\end{equation}
+
+kde $ z_i $ je normalizovaný vzorek. Hodnota $ \mu_b $ označuje průměr dávky a $ \sigma^2_b $ znázorňuje rozptyl dávky. Parametr $ x_i $ je jeden vzorek dávky.
+
+
+
+
 \subsection{Matice záměn}
 Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
 
