@@ -261,10 +261,27 @@ Regularizace označuje množinu technik, které zabraňují vytvoření příli�
 Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikace lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost, preciznost, úplnost nebo matice záměn.
 
 \subsection{Matice záměn}
-Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné byly by hodnoty větší než nula na hlavní diagonále matice.
+Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=.7]{conf_matrix-example.png}}
+\caption{Matice záměn pro dvě třídy}
+\label{fig:conf_matrix-example}
+\end{figure}
+\FloatBarrier
+
+kde TP a TN jsou počty správně klasifikovaných pozitivních a negativní tříd. FP a FN jsou množství nesprávně přiřazených pozitivních a negativních tříd.
 
 \subsection{Přesnost}
-Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu všech vzorků. Často se hodnota násobí sty, aby výsledek vyšel v procentech.
+Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu všech vzorků. Často se hodnota násobí sty, aby výsledek vyšel v procentech. Přesnost pro dvě třídy lze znázornit následujícím vzorcem \ref{eqn:accuracy}:
+
+\begin{equation}
+\label{eqn:accuracy}
+acc = \frac{TP + TN}{TP + TN + FP + FN}
+% přesnost = \frac{pravdivé pozitivní + pravdivé negativní}{pravdivé % pozitivní + pravdivé negativní + nepravdivé negativní + pravdivé % negativní}
+\end{equation}
+
+kde TP a TN jsou počty správně klasifikovaných pozitivních a negativní tříd. FP a FN jsou množství nesprávně přiřazených pozitivních a negativních tříd. 
 
 \subsection{Hyperparametry}
 Hyperparametry jsou parametry ovlivňující učení modelu. Na rozdíl od parametrů modelu se je nelze naučit z trénovacích dat \cite{geron2019hands}. Můžeme je dělit podle toho, jestli jsou používány při návrhu neuronové sítě nebo při samotném trénování. Při návrhu neuronové sítě lze na příklad upravovat počet a šířka skrytých vrstev. Mezi hyperparametry používané při trénování modelu lze zařadit míru učení, počet trénovacích epoch nebo velikost dávky \cite{dagli_2021}.

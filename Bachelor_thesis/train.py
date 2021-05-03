@@ -40,6 +40,7 @@ def create_model(input_size, hidden_sizes, output_size):
 
     return model
 
+
 class Stats:
     def __init__(self, dataset_names):
         self.dataset_names = dataset_names
@@ -112,6 +113,7 @@ class StatsPrinter:
 
         print(self.divider)
 
+
 class Results:
     PLOT_DPI = 200
 
@@ -168,7 +170,7 @@ class Results:
     def _plot(self, ax, items, title, y_label, x_label):
 
         labels = list()
-        n_epochs= None
+        n_epochs = None
         for label, item in items.items():
             if item:
                 ax.plot(item)
@@ -200,6 +202,7 @@ class Results:
             filename = title + ".png"
             path = os.path.join(dirname, filename)
             fig.savefig(path, dpi=self.PLOT_DPI)
+
 
 class Trainer:
 
@@ -331,6 +334,7 @@ def begin_logging(filename):
     logger.addHandler(handler)
     sys.stdout.write = logger.info
 
+
 def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=None):
     info_path = os.path.join(directory, "info.txt")
     n_samples, sample_lengths, sample_filename, label_filename = SetInfoFile(info_path).read()
@@ -343,9 +347,9 @@ def prepare_dataset(directory, dataset_class, left_margin, right_margin, name=No
 
 
 def main(result_dir):
-    dataset_dir = "prepared_data/int-4-re-80-10-10"   # "prepared_data/en-7-re-90-10"
+    dataset_dir = "prepared_data/int-4-re-80-10-10"  # "prepared_data/en-7-re-90-10"
 
-    left_margin = right_margin = 30    # 25
+    left_margin = right_margin = 30  # 25
 
     info_path = os.path.join(dataset_dir, "info.txt")
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
@@ -376,7 +380,7 @@ def main(result_dir):
     else:
         pin_memory = False
 
-    batch_size = 256   # 32
+    batch_size = 256  # 32
 
     # prepare torch dataloaders
     train_loader = DataLoader(
@@ -391,7 +395,7 @@ def main(result_dir):
 
     learning_rate = 0.001
     weight_decay = 1e-4
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)    # weight_decay=weight_decay)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)  # weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss()
 
     dataset_names = [train_dataset.name, val_dataset.name, test_dataset.name]
