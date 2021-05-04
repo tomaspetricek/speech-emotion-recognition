@@ -200,7 +200,7 @@ Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které
 
 Často se při klasifikaci ke vzorku přidávají i vzorky z okolí pro zvýšení kontextu, který může zlepšit výsledky rozpoznávaní. Důvodem je, že emoce ovlivňují dlouhodobé charakteristiky řeči. Přesný počet rámců, který by se měl vzít není určen. Na příklad při použít neuronové sítě typu RNN lze pro zachycení kontextu použít kolem maximálně 10 ramců, jinak model začne trpět problémem mizejícího gradientu. Dalším způsobem, jak klasifikovat emoce je podle statických příznaků jako je maximum, minimum nebo časová délka \cite{konar_chakraborty_2015}.
 
-Při trénování se používá často cross validace, kdy se trénovací a validační sada mění a je vytvořeno několik modelů, kterých výsledky jsou zprůměrovány a je tak dosaženo smysluplnějších výsledkům. U rozpoznávání emocí je používáno především, protože jsou datové sady po většině menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost. Vážená přesnost zohledňuje případný jiný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy \cite{konar_chakraborty_2015}.
+Při trénování se používá často křížová validace, kdy se trénovací a validační sada mění a je vytvořeno několik modelů, kterých výsledky jsou zprůměrovány a je tak dosaženo smysluplnějších výsledkům. U rozpoznávání emocí je používáno především, protože jsou datové sady po většině menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost. Vážená přesnost zohledňuje případný jiný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy \cite{konar_chakraborty_2015}.
 
 Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus strojového učení, která by se používal. Nicméně nejčastěji používané algoritmy jsou Skryté Markovovy modely (HMM), Gaussian Mixture Model (GMM), Support Vector Machines (SVM), a umělé neuronové sítě (ANN) \cite{DBLP:journals/speech/AkcayO20}.
 
@@ -272,9 +272,6 @@ z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}}
 \end{equation}
 
 kde $ z_i $ je normalizovaný vzorek. Hodnota $ \mu_b $ označuje průměr dávky a $ \sigma^2_b $ znázorňuje rozptyl dávky. Parametr $ x_i $ je jeden vzorek dávky.
-
-
-
 
 \subsection{Matice záměn}
 Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
