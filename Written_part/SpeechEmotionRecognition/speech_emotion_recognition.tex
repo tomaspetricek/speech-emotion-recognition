@@ -121,6 +121,11 @@ Práce se zabývá aktuálním tématem a výsledky mohou vést k rozšíření 
 
 \chapter{Základy rozpoznávání emocí}
 
+\section{Emoce} % Grammer checked
+V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory, jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit \cite{DBLP:journals/speech/AkcayO20}.
+
+Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
+
 \section{Současné poznání}
 % Popis přístupů - co se na to používalo, co se používá teď nejlepší úspěchy
 % Používané datasety
@@ -131,12 +136,7 @@ Dále není v rozpoznávání určeno, které emoce rozpoznávat a jestli pro ro
 Bylo provedeno mnoho pokusů pro rozpoznávání za použití různých modelů, datových sad, příznaků na různých jazycích. Parthasarathy a
 Tashev porovnali neuronové sítě typu DNNs, RNNs a 1D-CNN na čínských datových sadách. S 1D-CNN dosáhli výsledků 56 \% procent. Kannan Venkataramanan a Haresh Rengaraj Rajamohan provedli několik pokusů na datové sadě RAVDESS. Použili různé příznaky pro rozpoznávání jako MFCC nebo log Mel spektrogramy a vyzkoušeli modely jako různé varianty CNN a HMM. Nejlepší model 2D CNN s globalním average poolingem dosáhl 70 \% na validačních datech a 66 \% testovacích datech při rozpoznávání emocí do 14 kategorií \cite{DBLP:journals/corr/abs-1912-10458}.
 
-\section{Emoce} % Grammer checked
-V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory, jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit \cite{DBLP:journals/speech/AkcayO20}.
-
-Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
-
-\chapter{Datové sady}
+\section{Datové sady}
 K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána.
 
 Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Mezi  \cite{konar_chakraborty_2015}.
@@ -178,8 +178,6 @@ BAUM-1 Speech Database & turečtina                        & 12         & 31    
 \label{tab:overview-datasets}
 \end{table}
 \FloatBarrier
-
-\section{Vybrané datové sady}
 
 \subsection{RAVDESS} % Grammer checked
 RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z nichž bylo dvanáct žen a dvanáct mužů, což činí datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují osm emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil dvě tvrzení ve dvou úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nahrávek se pohybují kolem třech minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
@@ -372,14 +370,6 @@ p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}}
 \end{equation}
 
 kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá skóre výstupní vrstvy neuronové sítě. Hodnoty $ i $ a $ c $ odpovídají indexu příchozího skóre a $ C $ počtu klasifikovaných tříd. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady \cite{brownlee_2020_Softmax}.
-
-% používané architektury
-% Markovi nepopisovat - nejsou neuronovky
-\subsection{Konvoluční neuronové sítě}
-Jsou ve velké míře používány pro práci s obrázky. Skládají se z konvolučních vrstev. Každá konvoluční vrstva obsahuje sadu filtrů, jejichž parametry se síť učí \cite{DBLP:journals/corr/abs-1912-10458}.
-
-\subsection{Rekuretní neuronové sítě}
-Rekurentní neuronové sítě (RNN) jsou především používány při řešení úloh s daty závislými na čase. Rekurentní neuronové sítě si pamatují skrytý stav, který je vypočítán ze vstupu a vstupuje společně s následujícím vzorkem do sítě. Síť typu RNN je schopna si pamatovat větší kontext a použít ho při předpovídání. Pokročilejším modelem je Long Short-Term Memory (LSTM), který je schopný si poradit s problémem mizejícího a explodujícího gradientu. RNN lze také použít k rozpoznávání emocí, kdy jsou jednotlivé rámce společně s jejich okolí postupně posílány do sítě. Délka rámce s okolím by měla mít alespoň 250 milisekund, aby se byl model schopný naučit rozpoznávat emoce \cite{DBLP:journals/corr/abs-1912-10458}.
 
 \chapter{Vývoj balíčku pro rozpoznávání emocí} % Grammer checked
 Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Mezi vytvořené moduly patří: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihovny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK pro načítání souborů vytvořené pomocí sady nástrojů HTK.
