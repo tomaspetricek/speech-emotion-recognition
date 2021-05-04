@@ -11,6 +11,7 @@
 \usepackage{placeins}
 
 \usepackage{makeidx}
+\usepackage{multirow}
 \makeindex
 
 % fonty
@@ -666,11 +667,31 @@ Na základě těchto výsledků jsem se pro další pokusy rozhodl použít mode
 \section{Finální modely}
 Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a drop out vrstvami ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \ref{fig:final_training_course}.
 
-První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky 77,4 \% na trénovací sadě, 73,5 \% na validančí sadě a 74,5 \% na testovací sadě. Byla získána přesnost pro nahrávky 83,2 \% na validační sadě a 84,7 \% na sadě testovací.
+První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky 77,4 \% na trénovací sadě, 73,4 \% na validančí sadě a 75,4 \% na testovací sadě. Byla získána přesnost pro nahrávky 83,2 \% na validační sadě a 84,7 \% na sadě testovací.
 
 Další model se skládal ze tří skrytých vrstev o šířce 128 neuronů s velikostí 30 pravého a levého okolí. Při klasifikaci do čtyř a sedmi tříd model vykazoval dobré výsledky, které byly překonány posledním modelem.
 
-Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř s krytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10 epoše, kdy byly přesnosti pro vzorky na trénovací sadě 79 \%, validační sadě 73,7 \% a na testovací sadě 74 \%. Přesnost pro nahrávky vystoupala u validační sady na 91,7 \% a u testovací sady na 92,3 \%. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně, kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na 75,8 \%, na sadě validační na 69,3 \% a na testovací sadě 68 \%. Bylo dosaženo přesnosti pro nahrávky 90,4 \% na sadě validanční a 88,5 \% na sadě testovací.
+Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř s krytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10 epoše, kdy byly přesnosti pro vzorky na trénovací sadě 79 \%, validační sadě 73,7 \% a na testovací sadě 73,6 \%. Přesnost pro nahrávky vystoupala u validační sady na 91,7 \% a u testovací sady na 92,3 \%. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně, kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na 75,8 \%, na sadě validační na 69,3 \% a na testovací sadě 68 \%. Bylo dosaženo přesnosti pro nahrávky 90,4 \% na sadě validanční a 88,5 \% na sadě testovací.
+
+\begin{table}
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{|l|l|l|l|l|l|} 
+\hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{počet tříd}} & \multicolumn{1}{c|}{trénovací sada} & \multicolumn{2}{c|}{validační sad} & \multicolumn{2}{c|}{testovací sada} \\ 
+\cline{2-6}
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{přesnost pro vzorek} & \multicolumn{1}{c|}{přesnost pro vzorek} & \multicolumn{1}{c|}{přesnost pro nahrávku} & \multicolumn{1}{c|}{přesnost pro vzorek} & \multicolumn{1}{c|}{přesnost pro nahrávku} \\ 
+\hline
+3 & 77,4 \% & 73,4 \% & 83,2 \% & 75,4 \% & 84,7 \% \\ 
+\hline
+4 & 79 \% & 73,7 \% & 91,7 \% & 73,6 \% & 92,3 \% \\ 
+\hline
+7 & 75,8 \% & 69,3 \% & 90,4 \% & 68 \% & 88,5 \% \\
+\hline
+\end{tabular}}
+\caption{Přehled nejlepších výsledků finálních modelů}
+\label{tab:best_results}
+\end{table}
+\FloatBarrier
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-final.png}}
@@ -687,7 +708,7 @@ V jazyku Python byl vytvořen balíček pro rozpoznávání emocí. Skládal se 
 
 Jako klasifikátor byla zvolena neuronová síť typu MLP. Model byl vytvořen a natrénován pomocí frameworku PyTorch. Prvotně byl vytvořen výchozí model. Následně bylo provedeno a zdokumentováno několik experimentů s cílem vylepšit hyperparametry výchozího modelu. U většiny experimentů měl model tendenci se přeučovat na trénovacích datech, a proto se osvědčilo umístit do skryté vrstvy regularizační vrstvy, které zabraňovaly přeučování.
 
-Na základě proběhlých experimentů byly vytvořeny tři finální modely pro různý počet emocí. Model pro klasifikaci tří emocí dosáhl 77,4 \% přesnosti pro vzorky a 84,7 \% přesnosti pro nahrávky. Při klasifikaci do čtyř tříd dosáhl model na testovací sadě přesnosti pro vzorky 74 \% a 92,3 \% přesnosti pro nahrávky. Klasifikátor do sedmi tříd dosáhl na testovací sadě přesnosti pro vzorky 68 \% a přesnosti pro nahrávky 88,5 \%.
+Na základě proběhlých experimentů byly vytvořeny tři finální modely pro různý počet emocí. Model pro klasifikaci tří emocí dosáhl 75,4 \% přesnosti pro vzorky a 84,7 \% přesnosti pro nahrávky. Při klasifikaci do čtyř tříd dosáhl model na testovací sadě přesnosti pro vzorky 73,6 \% a 92,3 \% přesnosti pro nahrávky. Klasifikátor do sedmi tříd dosáhl na testovací sadě přesnosti pro vzorky 68 \% a přesnosti pro nahrávky 88,5 \%.
 
 Pro zlepšení výsledků klasifikace by nejvíce pomohlo rozšíření datové sady pro trénování. Pomocí regularizačních vrstev lze do jisté míry přeučování modelu zabránit, ale míru přesnosti modelu omezuje nízký počet a různorodost dat. Dalším způsobem, jak vylepšit výsledky klasifikace, je vyzkoušet jiné typy neuronových sítí. V úvahu na příklad přicházejí neuronové sítě typu CNN nebo RNN. V obou případech lze téměř bez změn přidat funkcionalitu do balíčku pro rozpoznávání emocí.
 
