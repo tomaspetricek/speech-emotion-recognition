@@ -183,7 +183,7 @@ Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické p�
 
 Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Patří mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii a na druhé straně znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku \cite{DBLP:journals/speech/AkcayO20}.
 
-Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z časové oblasti do oblasti frekvenční a mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Příznaky Mel Frequency Cepstral Coefficients (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří Linear Prediction Cepstral Coefficients(LPCC), Log-Frequency Power Coefficients (LFPC) nebo Gammatone Frequency Cepstral Coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
+Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z časové oblasti do oblasti frekvenční a mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří Linear Prediction Cepstral Coefficients(LPCC), Log-Frequency Power Coefficients (LFPC) nebo Gammatone Frequency Cepstral Coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
 
 Chvění, mihotání nebo poměr harmonie ku hluku (HNR) jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. Poměr harmonie ku hluku udává poměr mezi hlukem a frekvenčním spektrem samohlásek \cite{DBLP:journals/speech/AkcayO20}.
 
@@ -381,7 +381,7 @@ Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data přev
 \end{figure}
 \FloatBarrier
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_config}). MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační koeficienty. Při FFT by měla být použita Hammingova okénkovací funkce a velikost okénka je nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_config}).
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
@@ -389,6 +389,8 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sad
 \label{fig:htk_config}
 \end{figure}
 \FloatBarrier
+
+MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a akcelerační koeficienty. Dále lze vyčíst, že pro okénkování byla použita Hammingova okénkovací funkce a velikost okénka byla nastavena na 25 ms. Převod byl uskutečněn pomocí příkazu HCOPY na obrázku \ref{fig:htk}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
