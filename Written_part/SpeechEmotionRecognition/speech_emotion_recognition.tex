@@ -136,13 +136,48 @@ V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emo
 
 Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
 
-\chapter{Datové sady} % Grammer checked
-K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána. Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}. Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
+\chapter{Datové sady}
+K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána.
+
+Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Mezi  \cite{konar_chakraborty_2015}.
+
+Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}.
+
+Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
 
 Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
 
-% Not grammatically checked
-Mezi často používané a bezplatné datové sady patří Danish Emotional Speech (DES) database, Berlin Emotional Speech (BES) database, Speech Under Simulated and Actual Stress (SUSAS) database nebo eNTERFACE datová sada \cite{konar_chakraborty_2015}.
+V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad. Z tabulky je patrné, že nejvíce datových sad je předstíraných a nejméně je sad vybuzených. Poměrně velké zastoupení mají anglické datové sady.
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{lllllll}
+\hline
+název                  & jazyk                            & počet tříd & počet mluvčích & pohlaví mluvčích & typ         \\
+\hline
+RAVDESS                & angličtina                       & 5,7        & 24             & obě              & předstíraná \\
+SAVEE                  & angličtina                       & 7          & 14             & muži             & předstíraná \\
+TESS                   & angličtina                       & 6          & 2              & ženy             & předstíraná \\
+CHEAVD                 & mandariština                     & 8          & 238            & obě              & předstíraná \\
+DES                    & dánština                         & 5          & 4              & obě              & předstíraná \\
+EESDB                  & mandariština                     & 7          & 16             & obě              & předstíraná \\
+EMA                    & angličtina                       & 4          & 3              & obě              & předstíraná \\
+EMOVO                  & italština                        & 7          & 6              & obě              & předstíraná \\
+eNTERFACE’05           & angličtina                       & 6          & 42             & obě              & vybuzená    \\
+Keio-ESD               & japonština                       & 47         & 71             & muži             & předstíraná \\
+RECOLA Speech Database & francouzština                    & 7          & 46             & obě              & přirozená   \\
+SAMAINE Database       & angličtina, řečtina, hebrejština & 5          & 150            & není známo       & přirozená   \\
+VAM                    & němčina                          & 3          & 47             & není známo       & přirozená   \\
+TUM AVIC Database      & angličtina                       & 5          & 21             & obě              & přirozená   \\
+AFEW Database          & angličtina                       & 7          & 330            & není známo       & přirozená   \\
+TURES                  & turečtina                        & 9          & 582            & obě              & předstíraná \\
+BAUM-1 Speech Database & turečtina                        & 12         & 31             & obě              & předstíraná \\
+\hline
+\end{tabular}}
+\caption{Přehled volně dostupných datových sad}
+\label{tab:overview-datasets}
+\end{table}
+\FloatBarrier
 
 \section{Vybrané datové sady}
 
@@ -176,7 +211,7 @@ Může být použita také normalizace, která zmírňuje rozdíly v řečí mez
 \subsection{Odstranění šumu}
 Dále mohou být použity techniky na odstranění šumu, který se může během nahrávání do nahrávky dostat. Mezi nejčastěji používané techniky patří nejmenší střední kvadratická chyba (MMSE) a logaritmická spektrální amplituda MMSE \cite{DBLP:journals/speech/AkcayO20}.
 
-\section{Příznaky}
+\section{Výběr příznaků}
 Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybraný pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodili přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné tak lokální příznaky pro rozpoznávání. Mezi souhrnné  příznaky patří na střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu \cite{DBLP:journals/speech/AkcayO20}.
 
 Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické příznaky, spektrální příznaky, příznaky založené na kvalitě hlasu nebo příznaky založené na Teager Energy Operator (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické příznaky a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
