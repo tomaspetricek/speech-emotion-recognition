@@ -254,7 +254,7 @@ Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí m�
 
 \begin{equation}
 \label{eqn:sigmoid}
-y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} }
+y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} },
 \end{equation}
 
 Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. Neuronovou síť typu MLP lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
@@ -266,14 +266,14 @@ Při dopředném průchodu lineární vrstvou jsou vstupní příznaky $ y_i $ p
 
 \begin{equation}
 \label{eqn:linear_layer}
-x_j = b_j + \sum_{i}^{N} y_i w_{ij}
+x_j = b_j + \sum_{i}^{N} y_i w_{ij},
 \end{equation}
 
 kde proměnná $ i $ odpovídá indexu příznaku z předchozí vrstvy. $ N $ je celkový počet neuronů předchozí vrstvy. Proměnné $ w_{ij} $ a $ b_j $ reprezentují parametry lineární vrstvy \cite{MATEJU2021327}. Dále jsou příznaky aktivovány nelineární funkcí, kterou lze obecně vyjádřit:
 
 \begin{equation}
 \label{eqn:activation}
-z_j = h(x_j)
+z_j = h(x_j),
 \end{equation}
 
 kde $ x_j $ jsou vstupní příznaky z předchozí vrstvy. Proměnná $ h $ je nelineární diferencovatelná aktivační funkce a $ z_j $ jsou výstupní příznaky \cite{DBLP:books/lib/Bishop07}.
@@ -284,7 +284,7 @@ Při zpětné propagaci se ztráta modelu propaguje zpět sítí pomocí řetíz
 
 \begin{equation}
 \label{eqn:gradient_descent}
-x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t)
+x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t),
 \end{equation}
 
 kde proměnná $ x_{t+1} $ je hodnota aktualizovaného parametru sítě a $ x_t $ je hodnota původního parametru sítě. Hodnota gradientu pro parametr x je $ \frac{d}{dx} $. Ztráta parametru $ x_t $ je označena $ J $.
@@ -306,7 +306,7 @@ Normalizace dávky spočívá v normalizaci výstupu z předešlé vrstvy modelu
 
 \begin{equation}
 \label{eqn:batch_mean}
-z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}}
+z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}},
 \end{equation}
 
 kde $ z_i $ je normalizovaný vzorek. Hodnota $ \mu_b $ označuje průměr dávky a $ \sigma^2_b $ znázorňuje rozptyl dávky. Parametr $ x_i $ je jeden vzorek dávky.
@@ -331,7 +331,7 @@ Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu
 
 \begin{equation}
 \label{eqn:accuracy}
-acc = \frac{TP + TN}{TP + TN + FP + FN}
+acc = \frac{TP + TN}{TP + TN + FP + FN},
 % přesnost = \frac{pravdivé pozitivní + pravdivé negativní}{pravdivé % pozitivní + pravdivé negativní + nepravdivé negativní + pravdivé % negativní}
 \end{equation}
 
@@ -348,7 +348,7 @@ Jako kriteriální funkce pro klasifikaci do více tříd lze použít křížov
 
 \begin{equation}
 \label{eqn:cross_entropy}
-l = -{\sum_{c}^{C}t_{c}\log p_{c}}
+l = -{\sum_{c}^{C}t_{c}\log p_{c}},
 \end{equation}
 
 kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje skutečné třídy. Nabývá hodnoty jedna pro správnou třídu a hodnoty nula pro nesprávnou třídu. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
@@ -358,7 +358,7 @@ Rectified linear activation function (ReLU) je aktivační funkce, jejíž výst
 
 \begin{equation}
 \label{eqn:relu}
-y = max(0, x)
+y = max(0, x),
 \end{equation}
 
 kde $ y $ jsou výstupní hodnoty. Proměnná $ x $ zastupuje vstupní hodnoty. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na jedna a velmi malá čísla nula. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaní modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
@@ -368,7 +368,7 @@ Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností
 
 \begin{equation}
 \label{eqn:softmax}
-p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}}
+p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}},
 \end{equation}
 
 kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá skóre výstupní vrstvy neuronové sítě. Hodnoty $ i $ a $ c $ odpovídají indexu příchozího skóre a $ C $ počtu klasifikovaných tříd. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady \cite{brownlee_2020_Softmax}.
