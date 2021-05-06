@@ -109,7 +109,7 @@ backend=biber
 \end{abbrList}
 
 \chapter{Úvod} % Grammer checked
-Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychologický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět \cite{DBLP:journals/speech/AkcayO20}.
+Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět \cite{DBLP:journals/speech/AkcayO20}.
 
 Nicméně i přesto, že jsme schopni vyjádřit své emoce, tak to neznamená, že se pochopíme. Emoce jsou subjektivní a každý z nás je může vnímat trochu jinak. Tato vlastnost emocí neusnadňuje ani vývoj systémů pro jejich rozpoznávání. Zatím nebyl nalezen způsob, jak emoce měřit. Proto lidé usilují o vyvinutí systémů schopných rozpoznávat emoce bez explicitně zadaných instrukcí.
 
@@ -126,10 +126,10 @@ Práce se zabývá aktuálním tématem a výsledky mohou vést k rozšíření 
 \section{Emoce} % Grammer checked
 V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emoce popisují náš vnitřní stav a jejich tvorba je ovlivněna mnoha faktory, jako je osobní zkušenost, fyzické, jednací a komunikační reakce. Pro úlohu rozpoznávání emocí je důležité vědět, jak lze emoce rozdělit \cite{DBLP:journals/speech/AkcayO20}.
 
-Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
+Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozděluje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že na rozdíl od prostorového modelu je intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
 
-\section{Rozpoznávání emocí}
-Postup vývoje systému pro rozpoznávání řeči je znázorněn na obrázku \ref{fig:ser_pipeline}. Při vývoji typického systému pro rozpoznávání emocí z řeči je nejprve vybrána anotovaná datová sada. Data ze sady jsou nejdříve předzpracována. Dále jsou z nich vytaženy příznaky pro rozpoznávání a jsou z nich vybrány nejvhodnější pro rozpoznávání. Pomocí anotovaných příznaků lze natrénovat model strojového učení z kategorie učení s učitelem. Výsledný model je buď typu klasifikátor, pokud jsou emoce děleny diskrétně nebo regresor v případě, že jsou děleny prostorově. Výsledkem klasifikace nebo regrese jsou předpovědi.
+\section{Rozpoznávání emocí} % Grammer checked
+Postup vývoje systému pro rozpoznávání řeči je znázorněn na obrázku \ref{fig:ser_pipeline}. Při vývoji typického systému pro rozpoznávání emocí z řeči je nejprve vybrána anotovaná datová sada. Data ze sady jsou nejdříve předzpracována. Dále jsou z nich vytaženy příznaky pro rozpoznávání a jsou z nich vybrány nejvhodnější pro rozpoznávání. Pomocí anotovaných příznaků lze natrénovat model strojového učení z kategorie učení s učitelem. Výsledný model je buď typu klasifikátor, pokud jsou emoce děleny diskrétně nebo regresor v případě, že jsou děleny prostorově. Výsledkem klasifikace nebo regrese jsou předpovědi \cite{konar_chakraborty_2015}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{speech_emotion_recognition-pipeline.png}}
@@ -138,19 +138,17 @@ Postup vývoje systému pro rozpoznávání řeči je znázorněn na obrázku \r
 \end{figure}
 \FloatBarrier
 
-\section{Současné poznání}
-% Popis přístupů - co se na to používalo, co se používá teď nejlepší úspěchy
-% Používané datasety
-Při rozpoznávání emocí z řeči není určeno, které emoce rozpoznávat a jestli pro rozpoznávání používat diskrétní nebo prostorový model. Nicméně při použití diskrétního modelu jsou vymezeny takzvané velké n emoce, mezi než patří na příklad: hněv, strach, smutek nebo radost \cite{konar_chakraborty_2015}.
+\section{Současné poznání} % Grammer checked
+Při rozpoznávání emocí z řeči není určeno, které emoce rozpoznávat a jestli pro rozpoznávání používat diskrétní nebo prostorový model. Nicméně při použití diskrétního modelu jsou vymezeny takzvané velké n emoce mezi než patří na příklad: hněv, strach, smutek nebo radost \cite{konar_chakraborty_2015}.
 
-V současné době existuje mnoho datových sad. Datové sady se od sebe liší především vznikem, počtem emocí a jazykem. Podle způsobu vzniku jsou datové sady děleny na předstírané, vybuzené a přirozené. Mezi používané hojně používané předstírané datové sady patří Danish Emotional Speech dataset (DES) \cite{DBLP:conf/interspeech/EngbergHAD97}, Berlin Emotional Speech database (BES) \cite{bes_dataset}, Speech Under Simulated and Actual Stress (SUSAS) database \cite{DBLP:conf/interspeech/HansenB97} nebo Ryerson Audio-Visual Database of Emotional Speech and Song database (RAVDESS) \cite{Livingstone2018}. Mezi vybuzené datové sady patří eNTERFACE \cite{DBLP:conf/icde/MartinKMP06}. Většina datových sad má do jedné hodiny délky a nahrávky jsou namluveny kolem deseti mluvčích. Nicméně v rozpoznává řečí je typicky potřeba datová sada s několika sty hodin a větší různorodost mluvčích \cite{konar_chakraborty_2015}.
+V současné době existuje mnoho datových sad. Datové sady se od sebe liší především vznikem, počtem emocí a jazykem. Podle způsobu vzniku jsou datové sady děleny na předstírané, vybuzené a přirozené. Mezi hojně používané předstírané datové sady patří Danish Emotional Speech dataset (DES) \cite{DBLP:conf/interspeech/EngbergHAD97}, Berlin Emotional Speech database (BES) \cite{bes_dataset}, Speech Under Simulated and Actual Stress (SUSAS) database \cite{DBLP:conf/interspeech/HansenB97} nebo Ryerson Audio-Visual Database of Emotional Speech and Song database (RAVDESS) \cite{Livingstone2018}. Mezi vybuzené datové sady patří na příklad eNTERFACE \cite{DBLP:conf/icde/MartinKMP06}. Většina datových sad má do jedné hodiny délky a nahrávky jsou namluveny kolem deseti mluvčích. Nicméně při rozpoznávání řečí je typicky potřeba datová sada s několika sty hodinami nahrávek a větší různorodost mluvčích \cite{konar_chakraborty_2015}.
 
-Příznaky používané pro rozpoznávání emocí lze dělit na prozodické příznaky, spektrální příznaky, příznaky založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Mezi prozodické příznaky patří na příklad intonace nebo rytmus. K příznakům založených na spektru lze přiřadit Melovské frekvenční kepstrální koeficienty (MFCC), lineární predikční kepstrální koeficienty (LPCC) nebo log-frequency power coeﬀicients (LFPC). Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku \cite{DBLP:journals/speech/AkcayO20}.
+Příznaky používané pro rozpoznávání emocí lze dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Mezi prozodické příznaky patří na příklad intonace nebo rytmus. K příznakům založených na spektru lze přiřadit Melovské frekvenční kepstrální koeficienty (MFCC), lineární predikční kepstrální koeficienty (LPCC) nebo log-frequency power coeﬀicients (LFPC). Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku \cite{DBLP:journals/speech/AkcayO20}.
 
 Pro rozpoznávání emocí jsou používány buď klasifikátory nebo regresory, podle toho jestli jsou emoce děleny na základě diskrétního nebo prostorového modelu. Z tradičních modelů strojového učení lze pro klasifikaci použít skryté Markovovy modely (HMM), Gaussovské směsné modely (GMM) nebo metodu podpůrných vektorů (SVM). Z řady klasifikárů typu hluboká neuronová síť (DNN) lze použít vícevrstvý perceptron (NLP), konvoluční neuronové sítě (CNN) nebo rekurentní neuronové sítě (RNN) \cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Datové sady} % Grammer checked
-K rozpoznávání emocí se používají anotované datové sady. Mohou být děleny podle toho, jak byla data získána na předstírané, vybuzené a přirozené datové sady. Také se mohou lišit tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také odlišovat tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
+K rozpoznávání emocí se používají anotované datové sady. Mohou být děleny podle toho, jak byla data získána na předstírané, vybuzené a přirozené datové sady. Také se mohou lišit tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také odlišují tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
 
 V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad. Je patrné, že nejvíce datových sad je předstíraných a nejméně je sad vybuzených. Poměrně velké zastoupení mají anglické datové sady.
 
@@ -184,13 +182,13 @@ BAUM-1 Speech Database & turečtina                        & 12         & 31    
 \end{sidewaystable}
 \FloatBarrier
 
-\subsection{Předstírané datové sady}
+\subsection{Předstírané datové sady} % Grammer checked
 Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad \cite{konar_chakraborty_2015}.
 
-\subsection{Vybuzené datové sady}
+\subsection{Vybuzené datové sady} % Grammer checked
 Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}.
 
-\subsection{Přirozené datové sady}
+\subsection{Přirozené datové sady} % Grammer checked
 Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{RAVDESS} % Grammer checked
@@ -200,7 +198,7 @@ RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotion
 Surrey Audio-Visual Expressed Emotion (SAVEE) označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a rozlišuje sedm emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena čtyřmi mužskými herci mluvícími britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology (TIMIT). Kromě řeči byla při nahrávání zaznamenána i mimika obličeje mluvčích, kteří na něm měli namalovány modré značky \cite{savee}.
 
 \subsection{TESS} % Grammer checked
-Zkratka TESS \cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny dvěma herečkami ve věku 26 a 64 let. Rozlišuje sedm emocí, mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začínala slovy "Say the word" a končila jedním z 200 vybraných slov \cite{tess}.
+Zkratka TESS \cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny dvěma herečkami ve věku 26 a 64 let. Rozlišuje sedm emocí mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začíná slovy "Say the word" a končí jedním z 200 vybraných slov \cite{tess}.
 
 \subsection{EMOVO} % Grammer checked
 EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny šesti herci, z nichž tři byli muži a tři ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje sedm emocí, mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav \cite{DBLP:conf/lrec/CostantiniIPT14}.
@@ -208,8 +206,8 @@ EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpozn
 \section{Předzpracování dat pro rozpoznávání} % Grammer checked
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracována. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozdělena na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je analýza hlavních komponent (PCA) nebo lineární diskriminační analýza (LDA) \cite{konar_chakraborty_2015}.
 
-\subsection{Rámcování} % Grammer checked
-Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové kousky zvané rámce, které nabývají většinou rozsahu mezi 10-30 milisekundami. Často se jednotlivé rámce překrývají 30 \% až 50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
+\subsection{Rámcování} % Grammer checked    % Checked Twice ended
+Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\text{--}30 milisekundami. Často se jednotlivé rámce překrývají 30 \% až 50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
 
 \subsection{Okénkování} % Grammer checked
 Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích a tím snižuje úniky, ke kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro okénkování lze použít Hammingovu okénkovací funkci \cite{DBLP:journals/speech/AkcayO20}.
@@ -226,18 +224,18 @@ Dále mohou být použity techniky na odstranění šumu, který se může běhe
 \section{Výběr příznaků} % Grammer checked
 Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybrány pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodily přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné tak lokální příznaky pro rozpoznávání. Mezi souhrnné  příznaky patří střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu \cite{DBLP:journals/speech/AkcayO20}.
 
-Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické příznaky, spektrální příznaky, příznaky založené na kvalitě hlasu nebo příznaky založené na Teager Energy Operator (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické příznaky a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
+Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teager Energy Operator (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické příznaky a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
 
-\subsection{Prozodické příznaky}
+\subsection{Prozodické příznaky}  % Grammer checked
 Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Řadí se mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii a na druhé straně znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku \cite{DBLP:journals/speech/AkcayO20}.
 
-\subsection{Příznaky založené na spektru}
+\subsection{Příznaky založené na spektru}  % Grammer checked
 Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z časové oblasti do oblasti frekvenční a mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří lineární predikční kepstrální koeficienty (LPCC), log-frequency power coefficients (LFPC) nebo gammatone frequency cepstral coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
 
-\subsection{Příznaky založené na kvalitě zvuku}
+\subsection{Příznaky založené na kvalitě zvuku}  % Grammer checked
 Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. Poměr harmonie k hluku udává poměr mezi hlukem a frekvenčním spektrem samohlásek \cite{DBLP:journals/speech/AkcayO20}.
 
-\subsection{Příznaky založené na Teagerově energetickém operátoru}
+\subsection{Příznaky založené na Teagerově energetickém operátoru}  % Grammer checked
 Příznaky založené na Teagerově energetickém operátoru jsou používány k detekci stresu. Využívají změny svalového napětí, které při stresové situaci nastává. V této kategorii předstihují příznaky jako jsou MFCC nebo výška tónu \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Melovské frekvenční kepstrální koeficienty} % Grammer checked
@@ -625,7 +623,7 @@ Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čty�
 \end{figure}
 \FloatBarrier
 
-\section{Změny šířky skrytých vrstev}
+\section{Změny šířky skrytých vrstev} % Grammer checked
 Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskutečnily se čtyři experimenty, během kterých nabývala šířka vrstev hodnot od 16 do 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Dále s přibývající šířkou výsledná přesnost stoupá přibližně o 10 \%, kromě modelu s šířkou 256 a 512, kde je rozdíl mezi přesností podstatně menší. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů. Pro model se šířkou 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
 
 \begin{figure}[!htbp]
@@ -663,7 +661,7 @@ Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnomě
 \end{figure}
 \FloatBarrier
 
-\section{Použití regularizace}
+\section{Použití regularizace} % Grammer checked
 Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem zamezení přeučování.
 
 \begin{figure}[!htbp]
@@ -678,20 +676,28 @@ U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dro
 % Grammer further ahead has not been checked
 Pro další pokus byly skryté vrstvy výchozího modelu rozšířeny o vrstvy s normalizací dávek. Normalizace byly opět umístěny za aktivační funkce. Model dosahoval velice podobných výsledků ztráty a přesnosti na trénovacích datech. Nicméně průběhy trénovaní na validační sadě byly různé. Přesnost modelu dosáhla o 5 \% více než na výchozím modelu a po celou dobu trénování rostla. Míra růstu ztráty byla podstatně nižší. 
 
-U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná drop out vrstvou. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s drop out vrstvami. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosahla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s drop out vrstvami.
+U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná dropout. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s dropout. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosahla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s dropout.
 
-Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a drop out vrstvami.
+Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a dropout.
 
+\clearpage
 \section{Finální modely}
-Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a drop out vrstvami ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \ref{fig:final_training_course}.
+Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a dropout ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \ref{fig:final_training_course}.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-final.png}}
+\caption{Přehled průběhu trénování finálních modelů}
+\label{fig:final_training_course}
+\end{figure}
+\FloatBarrier
 
 První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky 77,4 \% na trénovací sadě, 73,4 \% na validančí sadě a 75,4 \% na testovací sadě. Byla získána přesnost pro nahrávky 83,2 \% na validační sadě a 84,7 \% na sadě testovací.
 
 Další model se skládal ze tří skrytých vrstev o šířce 128 neuronů s velikostí 30 pravého a levého okolí. Při klasifikaci do čtyř a sedmi tříd model vykazoval dobré výsledky, které byly překonány posledním modelem.
 
-Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř s krytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10 epoše, kdy byly přesnosti pro vzorky na trénovací sadě 79 \%, validační sadě 73,7 \% a na testovací sadě 73,6 \%. Přesnost pro nahrávky vystoupala u validační sady na 91,7 \% a u testovací sady na 92,3 \%. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně, kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na 75,8 \%, na sadě validační na 69,3 \% a na testovací sadě 68 \%. Bylo dosaženo přesnosti pro nahrávky 90,4 \% na sadě validanční a 88,5 \% na sadě testovací.
+Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř skrytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10. epoše, kdy byly přesnosti pro vzorky na trénovací sadě 79 \%, na validační sadě 73,7 \% a na testovací sadě 73,6 \%. Přesnost pro nahrávky vystoupala u validační sady na 91,7 \% a u testovací sady na 92,3 \%. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na 75,8 \%, na sadě validační na 69,3 \% a na testovací sadě na 68 \%. Bylo dosaženo přesnosti pro nahrávky 90,4 \% na sadě validanční a 88,5 \% na sadě testovací. V tabulce \ref{tab:best_results} jsou vypsány nejlepší výsledky finálních modelů.
 
-\begin{table}
+\begin{table}[htb]
 \centering
 \resizebox{\textwidth}{!}{\begin{tabular}{|l|l|l|l|l|l|} 
 \hline
@@ -711,14 +717,9 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 \end{table}
 \FloatBarrier
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-final.png}}
-\caption{Přehled průběhu trénování}
-\label{fig:final_training_course}
-\end{figure}
-\FloatBarrier
 
-\chapter{Závěr}
+
+\chapter{Závěr} % Grammer checked
 
 Z volně dostupných datových sad byly vybrány tři anglické datové sady (RAVDESS, SAVEE, TESS) a jedna italská (EMOVO). Byl sjednocen formát nahrávek a byly získány příznaky MFCC. Pro učení modelu byla data z jednotlivých datových sad rovnoměrně rozdělena do trénovací, validační a testovací sady v poměru 80 \%, 10 \% a 10 \%.
 
