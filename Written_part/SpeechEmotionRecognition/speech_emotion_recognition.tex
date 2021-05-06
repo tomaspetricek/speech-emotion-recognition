@@ -128,10 +128,18 @@ V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emo
 
 Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozšiřuje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že je na rozdíl od prostorového modelu intuitivnější. \cite{DBLP:journals/speech/AkcayO20}
 
+\section{Rozpoznávání emocí}
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{speech_emotion_recognition-pipeline.png}}
+\caption{Postup při rozpoznávání emocí}
+\label{fig:mfcc_pipeline}
+\end{figure}
+\FloatBarrier
+
 \section{Současné poznání}
 % Popis přístupů - co se na to používalo, co se používá teď nejlepší úspěchy
 % Používané datasety
-Přestože existuje mnoho datových sad, tak většina z nich má do 1 hodiny délky a nahrávky jsou namluveny kolem 10 mluvčích. V rozpoznává řečí je typicky potřeba datová sada s několika sty hodin a větší různorodost mluvčích \cite{konar_chakraborty_2015}.
+V současné době existuje mnoho datových sad, tak většina z nich má do 1 hodiny délky a nahrávky jsou namluveny kolem 10 mluvčích. V rozpoznává řečí je typicky potřeba datová sada s několika sty hodin a větší různorodost mluvčích \cite{konar_chakraborty_2015}.
 
 Dále není v rozpoznávání určeno, které emoce rozpoznávat a jestli pro rozpoznávání používat diskrétní nebo prostorový model. Nicméně při použití diskrétního modelu jsou vymezeny takzvané „big N" emoce, mezi než patří na příklad: hněv, strach, smutek nebo radost \cite{konar_chakraborty_2015}.
 
@@ -139,17 +147,9 @@ Bylo provedeno mnoho pokusů pro rozpoznávání za použití různých modelů,
 Tashev porovnali neuronové sítě typu DNNs, RNNs a 1D-CNN na čínských datových sadách. S 1D-CNN dosáhli výsledků 56 \% procent. Kannan Venkataramanan a Haresh Rengaraj Rajamohan provedli několik pokusů na datové sadě RAVDESS. Použili různé příznaky pro rozpoznávání jako MFCC nebo log Mel spektrogramy a vyzkoušeli modely jako různé varianty CNN a HMM. Nejlepší model 2D CNN s globalním average poolingem dosáhl 70 \% na validačních datech a 66 \% testovacích datech při rozpoznávání emocí do 14 kategorií \cite{DBLP:journals/corr/abs-1912-10458}.
 
 \section{Datové sady} % Grammer checked
-K rozpoznávání emocí se používají datové sady, které musí být anotovány. Datové sady pro rozpoznávání emocí jsou děleny do tří hlavních kategorií podle toho, jak byla data získána.
+K rozpoznávání emocí se používají anotované datové sady. Mohou být děleny podle toho, jak byla data získána na předstírané, vybuzené a přirozené datové sady. Také se mohou lišit tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také odlišovat tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
 
-Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Mezi  \cite{konar_chakraborty_2015}.
-
-Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}.
-
-Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
-
-Datové sady se od sebe mohou lišit také tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také liší tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé \cite{DBLP:journals/speech/AkcayO20}.
-
-V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad. Z tabulky je patrné, že nejvíce datových sad je předstíraných a nejméně je sad vybuzených. Poměrně velké zastoupení mají anglické datové sady.
+V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad. Je patrné, že nejvíce datových sad je předstíraných a nejméně je sad vybuzených. Poměrně velké zastoupení mají anglické datové sady.
 
 \begin{sidewaystable}
 \centering
@@ -180,6 +180,15 @@ BAUM-1 Speech Database & turečtina                        & 12         & 31    
 \label{tab:overview-datasets}
 \end{sidewaystable}
 \FloatBarrier
+
+\subsection{Předstírané datové sady}
+Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad. Mezi  \cite{konar_chakraborty_2015}.
+
+\subsection{Vybuzené datové sady}
+Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití \cite{konar_chakraborty_2015}.
+
+\subsection{Přirozené datové sady}
+Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{RAVDESS} % Grammer checked
 RAVDESS \cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z nichž bylo dvanáct žen a dvanáct mužů, což činí datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují osm emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil dvě tvrzení ve dvou úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nahrávek se pohybují kolem třech minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com \cite{smart_lab}.
@@ -216,13 +225,17 @@ Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha 
 
 Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické příznaky, spektrální příznaky, příznaky založené na kvalitě hlasu nebo příznaky založené na Teager Energy Operator (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické příznaky a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
 
+\subsection{Prozodické příznaky}
 Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Řadí se mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii a na druhé straně znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku \cite{DBLP:journals/speech/AkcayO20}.
 
+\subsection{Příznaky založené na spektru}
 Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z časové oblasti do oblasti frekvenční a mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří Linear Prediction Cepstral Coefficients(LPCC), Log-Frequency Power Coefficients (LFPC) nebo Gammatone Frequency Cepstral Coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
 
+\subsection{Příznaky založené na kvalitě zvuku}
 Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. Poměr harmonie k hluku udává poměr mezi hlukem a frekvenčním spektrem samohlásek \cite{DBLP:journals/speech/AkcayO20}.
 
-Příznaky založené na TEO jsou používány k detekci stresu. Využívají změny svalového napětí, které při stresové situaci nastává. V této kategorii předstihují příznaky jako jsou MFCC nebo výška tónu.
+\subsection{Příznaky založené na Teagerově energetickém operátoru}
+Příznaky založené na Teagerově energetickém operátoru jsou používány k detekci stresu. Využívají změny svalového napětí, které při stresové situaci nastává. V této kategorii předstihují příznaky jako jsou MFCC nebo výška tónu.
 
 \subsection{Melovské frekvenční kepstrální koeficienty} % Grammer checked
 Melovské frekvenční kepstrální koeficienty (MFCC) jsou příznaky používané pro rozpoznávání řeči. Technika převodu zvukového signálu na příznaky MFCC spočívá v provedení několika kroků zobrazených na obrázku \ref{fig:mfcc_pipeline}. 
@@ -398,7 +411,7 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 
 Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližně dobu trvání čtyř hodin.
 
-\section{Předpříprava dat} % Grammer checked
+\section{Předzpracování dat} % Grammer checked
 Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \ref{fig:ffmpeg}.
 
 \begin{figure}[htbp]
