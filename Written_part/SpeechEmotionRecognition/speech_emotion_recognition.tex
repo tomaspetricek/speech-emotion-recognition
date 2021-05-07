@@ -121,8 +121,8 @@ sentiment analysis, speech emotion recognition, deep learning, PyTorch, MFCC
 
 \clearpage
 
-\begin{abbrList}
-\end{abbrList}
+% \begin{abbrList}
+% \end{abbrList}
 
 \chapter{Úvod} % Grammer checked
 Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět \cite{DBLP:journals/speech/AkcayO20}.
@@ -346,7 +346,7 @@ Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud zt
 \subsection{Matice záměn} % Grammer checked
 Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné, byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.7]{conf_matrix-example.png}}
 \caption{Matice záměn pro dvě třídy}
 \label{fig:conf_matrix-example}
@@ -476,7 +476,7 @@ Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními ú
 
 Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data načte na základě cesty k souboru vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny, byly vytvořeny třídy dědící od třídy UnifiedLabel (viz Obr. \ref{fig:label}), které navíc anotace pro vzorek převedly na stejné značení.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-label.png}}
 \caption{Třídy Label}
 \label{fig:label}
@@ -485,7 +485,7 @@ Třída Dataset má navíc atributy samples pro uložení načtených vzorků a 
 
 Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující načtení příznaků MFCC a WAVData zprostředkovávající načtení nahrávek ze souboru typu WAV. MFCCData používá třídu HTKFile z balíčku PyHTK pro načtení příznaků.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-data.png}}
 \caption{Třídy Data}
 \label{fig:data}
@@ -494,7 +494,7 @@ Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující 
 
 Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer (viz Obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady. Na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně pomocí funkce train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{prepare.png}}
 \caption{Třída Preparer}
 \label{fig:preparer}
@@ -503,14 +503,14 @@ Dále byla data rozdělena do trénovacích, validačních a testovacích setů.
 
 Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena vlastní složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Struktura složky je znázorněna na obrázku \ref{fig:file_structure}. Pro ukládání a načítání informací ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz Obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly uloženy údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.25]{files-info.png}}
 \caption{Třídy InfoFile}
 \label{fig:info_files}
 \end{figure}
 \FloatBarrier
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.22]{dataset_file_structure.png}}
 \caption{Souborová struktura uložené datové sady}
 \label{fig:file_structure}
@@ -531,7 +531,7 @@ kde písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotliv
 
 Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (viz Obr. \ref{fig:numpy_dataset}), které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden vzorek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají, a to je také důvod, proč je lepší mít třídu rozdělenou.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.185]{datasets.png}}
 \caption{Třídy NumpyDataset}
 \label{fig:numpy_dataset}
@@ -540,7 +540,7 @@ Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (vi
 
 Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachycení kontextu nahrávky. Počet vzorků z okolí je načítán na základě velikosti pravého a levého okraje. Vybrané vzorky jsou před vrácením zploštěny. Proces výběru vzorku je znázorněn na obrázku \ref{fig:sample_selection}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centerline{\includegraphics[scale=.125]{sample_selection.png}}
 \caption{Výběr vzorku}
 \label{fig:sample_selection}
@@ -608,14 +608,14 @@ Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala a�
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{baseline-conf_matrix-val.png}}
 \caption{Matice záměn pro validační sadu}
-\label{fig}
+\label{fig:conf_matrix-val-baseline}
 \end{figure}
 \FloatBarrier
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{baseline-conf_matrix-test.png}}
 \caption{Matice záměn pro testovací sadu}
-\label{fig}
+\label{fig:conf_matrix-test-baseline}
 \end{figure}
 \FloatBarrier
 
@@ -627,7 +627,7 @@ Byly provedeny tři experimenty, jejíž cílem bylo zjistit optimální počet 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-layers.png}}
 \caption{Přehled průběhu trénování}
-\label{fig}
+\label{fig:training_course-layers}
 \end{figure}
 \FloatBarrier
 
@@ -637,7 +637,7 @@ Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čty�
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-margin.png}}
 \caption{Přehled průběhu trénování}
-\label{fig}
+\label{fig:training_course-margin}
 \end{figure}
 \FloatBarrier
 
@@ -647,7 +647,7 @@ Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskute
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-width.png}}
 \caption{Přehled průběhu trénování}
-\label{fig}
+\label{fig:training_course-width}
 \end{figure}
 \FloatBarrier
 
@@ -657,7 +657,7 @@ V další řadě experimentů byly měněny počty emocí. Při experimentu se �
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
 \caption{Přehled průběhu trénování}
-\label{fig}
+\label{fig:training_course-emotion_reduction}
 \end{figure}
 \FloatBarrier
 
@@ -685,7 +685,7 @@ Jelikož u předchozích experimentů docházelo přeučování na testovací a 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
 \caption{Přehled průběhu trénování}
-\label{fig}
+\label{fig:training_course-regularization}
 \end{figure}
 \FloatBarrier
 
@@ -729,6 +729,7 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 7 & 75,8 \% & 69,3 \% & 90,4 \% & 68 \% & 88,5 \% \\
 \hline
 \end{tabular}}
+\label{tab:best_results}
 \end{table}
 \FloatBarrier
 
