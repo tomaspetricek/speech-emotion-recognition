@@ -94,7 +94,7 @@ backend=biber
 \ThesisStart{male}
 %\ThesisStart{zadani-a-prohlaseni.pdf}
 
-\begin{abstractCZ}
+\begin{abstractCZ}  % Grammer checked
 Bakalářská práce se věnuje rozpoznávání emocí v audio nahrávkách s využitím hlubokých neuronových sítí. V úvodní části je čtenář seznámen s motivací a využitím systému pro rozpoznávání emocí. Na začátku první kapitoly jsou definovány pojmy emoce a rozpoznávání emocí. Navazující podkapitoly jsou zaměřeny na vývoj systému pro rozpoznávání emocí. Další kapitola je věnována seznámení se základy neuronových sítí. Je uveden model používaný v experimentální části práce, vysvětleno trénování a vyhodnocení modelu. V následující části je popsán návrh a práce s balíčkem pro rozpoznávání emocí napsaném v jazyce Python. Poslední kapitola představuje experimenty provedené na datové sadě získané sjednocením datových sad RAVDESS, TESS, SAVEE a EMOVO. Pro klasifikaci byla použita neuronová síť typu MLP. Byla implementována a natrénována pomocí frameworku PyTorch. MFCC příznaky byly zvoleny pro učení modelu. Provedené experimenty byly zdokumentovány a rozebrány. V závěru práce jsou shrnuty výsledky a navrženy metody pro dosažení lepších výsledků.
 \end{abstractCZ}
 
@@ -221,31 +221,31 @@ EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpozn
 \section{Předzpracování dat pro rozpoznávání} % Grammer checked
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracována. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozdělena na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je analýza hlavních komponent (PCA) nebo lineární diskriminační analýza (LDA) \cite{konar_chakraborty_2015}.
 
-\subsection{Rámcování} % Grammer checked    % Checked Twice ended
-Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\textendash30 milisekundami. Často se jednotlivé rámce překrývají 30 \% až 50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
+\subsection{Rámcování} % Grammer checked
+Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\textendash30 milisekundami. Často se jednotlivé rámce překrývají z 30\textendash50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho úseku stejná \cite{konar_chakraborty_2015}.
 
 \subsection{Okénkování} % Grammer checked
-Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích a tím snižuje úniky, ke kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro okénkování lze použít Hammingovu okénkovací funkci \cite{DBLP:journals/speech/AkcayO20}.
+Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích, a tím snižuje úniky, ke kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro okénkování lze použít Hammingovu okénkovací funkci \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Odstranění ticha} % Grammer checked
-Dále mohou být použity techniky pro detekci hlasové aktivity. S jejich pomocí může ze signálu odstranit tichá místa. Mohou být použity metody jako je zero crossing rate, krátkodobá energie nebo autokorelační metody. Metoda zero crossing rate udává míru přechodu signálu z kladných do záporných hodnot nebo naopak, a to v rámci jednoho rámce. Hodnota ukazatele je nízká v místech řeči a vysoká v místech ostatních. Při použití krátkodobé energie dosáhne vysokých hodnot v hlasové části a nízkých hodnotu v částech ostatních. Techniky pro odstranění tichých míst v řeči mohou snížit počet dat a zvýšit jejich přínos pro učení \cite{DBLP:journals/speech/AkcayO20}.
+Dále mohou být použity techniky pro detekci hlasové aktivity. S jejich pomocí lze ze signálu odstranit tichá místa. Mohou být použity metody jako je metoda průchodu nulovou úrovní (ZCR), krátkodobá energie nebo autokorelační metody. ZCR udává míru přechodu signálu z kladných do záporných hodnot nebo naopak, a to v rámci jednoho úseku. Hodnota ukazatele je nízká v místech řeči a vysoká v místech ostatních. Při použití krátkodobé energie dosáhne vysokých hodnot v hlasové části a nízkých hodnotu v částech ostatních. Techniky pro odstranění tichých míst v řeči mohou snížit počet dat a zvýšit jejich přínos pro učení \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Normalizace} % Grammer checked
-Může být použita také normalizace, která zmírňuje rozdíly v řeči mezi mluvčími a zároveň zachová přenášenou informaci. Normalizace může být použita na více úrovních na úrovni jednotlivých rámců nebo na úrovni celé datové sady. Nejčastěji se pro normalizaci používá z-normalizace \cite{DBLP:journals/speech/AkcayO20}.
+Může být použita také normalizace, která zmírňuje rozdíly v řeči mezi mluvčími a zároveň zachová přenášenou informaci. Normalizace může být použita na více úrovních, na úrovni jednotlivých rámců nebo na úrovni celé datové sady. Nejčastěji se pro normalizaci používá z-normalizace \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Odstranění šumu} % Grammer checked
-Dále mohou být použity techniky na odstranění šumu, který se může během nahrávání do nahrávky dostat. Mezi nejčastěji používané techniky patří nejmenší střední kvadratická chyba (MMSE) a logaritmická spektrální amplituda MMSE \cite{DBLP:journals/speech/AkcayO20}.
+Dále mohou být použity techniky na odstranění šumu, který se může během nahrávání do záznamu dostat. Lze použít techniky, mezi něž patří nejmenší střední kvadratická chyba (MMSE) a logaritmická spektrální amplituda MMSE \cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Výběr příznaků} % Grammer checked
-Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybrány pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodily přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné tak lokální příznaky pro rozpoznávání. Mezi souhrnné  příznaky patří střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu \cite{DBLP:journals/speech/AkcayO20}.
+Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybrány pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodily přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné, tak lokální příznaky pro rozpoznávání. Mezi souhrnné příznaky patří střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu \cite{DBLP:journals/speech/AkcayO20}.
 
-Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teager Energy Operator (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické příznaky a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
+Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické a spektrální příznaky \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Prozodické příznaky}  % Grammer checked
-Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Řadí se mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii a na druhé straně znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku \cite{DBLP:journals/speech/AkcayO20}.
+Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Řadí se mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii. Na straně druhé znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu, a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Příznaky založené na spektru}  % Grammer checked
-Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z časové oblasti do oblasti frekvenční a mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří lineární predikční kepstrální koeficienty (LPCC), log-frequency power coefficients (LFPC) nebo gammatone frequency cepstral coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
+Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z oblasti časové do frekvenční. Mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém silovém spektru signálu. Mezi další příznaky patří lineární predikční kepstrální koeficienty (LPCC), log-frequency power coefficients (LFPC) nebo gammatone frequency cepstral coefficients (GFCC) \cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Příznaky založené na kvalitě zvuku}  % Grammer checked
 Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. Poměr harmonie k hluku udává poměr mezi hlukem a frekvenčním spektrem samohlásek \cite{DBLP:journals/speech/AkcayO20}.
@@ -263,30 +263,23 @@ Melovské frekvenční kepstrální koeficienty (MFCC) jsou příznaky používa
 \end{figure}
 \FloatBarrier
 
-Při rámcování je zvukový signál nejprve rozdělen na jednotlivé posuvné rámce. Dále je signál podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použito Hammingovo nebo Hanningovo okénko. Poté je signál převeden pomocí diskrétní Fourierovi transformace (DFT) do frekvenční oblasti. Na výsledné amplitudové spektrum je použito Melovské frekvenční ohýbání. K převodu je použita Melovská banka filtrů složená z trojúhelníkových filtrů s měřítkem v Melovské škále, která zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál logaritmován a je provedena inverzní diskrétní kosinová transformace (IDCT). Z koeficientů Melovského kepstra nazývaných také nulté koeficienty lze získat dále koeficienty delta a akcelerační koeficienty (delta delta), které jsou získány použitím první a druhé derivace na nulté koefieficinty \cite{mfcc}.
+Při rámcování je zvukový signál nejprve rozdělen na jednotlivé posuvné rámce. Dále je podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použito Hammingovo nebo Hanningovo okénko. Poté je signál převeden pomocí diskrétní Fourierovi transformace (DFT) do frekvenční oblasti. Na výsledné amplitudové spektrum je použito Melovské frekvenční ohýbání. K převodu je použita Melovská banka filtrů složená z trojúhelníkových filtrů s měřítkem v Melovské škále, která zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál logaritmován a je provedena inverzní diskrétní kosinová transformace (IDCT). Z koeficientů Melovského kepstra, nazývaných také nulté koeficienty, lze získat koeficienty delta a akcelerační koeficienty (delta delta), které jsou získány použitím první a druhé derivace na nulté koeficienty \cite{mfcc}.
 
 \section{Způsoby rozpoznávání emocí}  % Grammer checked
-Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem \cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazenou anotaci udávající třídu, do které patří. V případě klasifikace jsou to diskrétní třídy, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od -1 do +1 \cite{konar_chakraborty_2015}.
+Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem \cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazenou anotaci udávající třídu, do které patří. V případě klasifikace jsou to diskrétní třídy, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od $-1$ do $+1$ \cite{konar_chakraborty_2015}.
 
-Často se při klasifikaci ke vzorku přidávají i vzorky z okolí pro zvýšení kontextu, který může zlepšit výsledky rozpoznávaní. Důvodem je, že emoce ovlivňují dlouhodobé charakteristiky řeči. Přesný počet rámců, který by se měl vzít není určen. Na příklad při použití neuronové sítě typu RNN lze pro zachycení kontextu zvolit maximálně deset rámců, jinak model začne trpět problémem mizejícího gradientu. Dalším způsobem, jak klasifikovat emoce je podle statických příznaků jako je maximum, minimum nebo časová délka \cite{konar_chakraborty_2015}.
+Často se při klasifikaci ke vzorku přidávají i vzorky z okolí pro zvýšení kontextu, který může zlepšit výsledky rozpoznávaní. Důvodem je, že emoce ovlivňují dlouhodobé charakteristiky řeči. Přesný počet rámců, který by se měl vzít není určen. Další způsob, jak klasifikovat emoce je podle statických příznaků jako jsou maximum, minimum nebo časová délka \cite{konar_chakraborty_2015}.
 
-Při trénování se používá často křížová validace, kdy se trénovací a validační sada mění a je vytvořeno několik modelů, jejichž výsledky jsou zprůměrovány a je tak dosaženo smysluplnějších výsledkům. U rozpoznávání emocí je používána především, protože jsou datové sady po většinou menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost. Vážená přesnost zohledňuje případný jiný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy \cite{konar_chakraborty_2015}.
-
-Pro úlohu rozpoznávání emocí v řeči není všeobecně uznaný algoritmus strojového učení, který by se používal. Nicméně nejčastěji používané algoritmy jsou Skryté Markovovy modely (HMM), Gaussian Mixture Model (GMM), Support Vector Machines (SVM), a umělé neuronové sítě (ANN) \cite{DBLP:journals/speech/AkcayO20}.
+Při trénování se často používá křížová validace, kdy se mění trénovací a validační sada a je vytvořeno několik modelů, jejichž výsledky jsou zprůměrovány, tím je dosaženo smysluplnějších výsledků. U rozpoznávání emocí je používána především, protože jsou datové sady po většinou menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost, která zohledňuje odlišný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy \cite{konar_chakraborty_2015}.
 
 \chapter{Vybrané základy neuronových sítí}
 
 \section{Vícevrstvý perceptron} % Grammer checked
-Vícevrstvý perceptron (MLP) neboli feed-forward neural network je složen z více lineárních vrstev následovaných nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva je tvořena aktivační funkcí \cite{DBLP:books/lib/Bishop07}.
+Vícevrstvý perceptron (MLP) neboli dopředná neuronová síť je složena z více lineárních vrstev následovaných nelineárními vrstvami. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva je tvořena aktivační funkcí \cite{DBLP:books/lib/Bishop07}.
 
-Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít dvě a více lineárních vrstev. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstvou výstupní. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svoji šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoid a při klasifikaci do více tříd je funkce softmax.
+Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít dvě a více lineárních vrstev. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstvou výstupní. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svoji šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoida a při klasifikaci do více tříd funkce softmax.
 
-\begin{equation}
-\label{eqn:sigmoid}
-y_j =  \frac{\mathrm{1} }{\mathrm{1} + e^{-x_j} },
-\end{equation}
-
-Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoid a ReLU. Neuronovou síť typu MLP lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
+Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoida a ReLU. Neuronovou síť typu MLP lze použít také pro regresy, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity \cite{DBLP:books/lib/Bishop07}.
 
 \section{Trénování} % Grammer checked
 Při trénování neuronové sítě je provedena nejprve dopředná propagace následovaná zpětnou propagací. Po zpětném průchodu sítí jsou parametry sítě upraveny pomocí metody největšího spádu, která minimalizuje ztrátu modelu. Jeden proces učení nazýváme epochou.
@@ -319,16 +312,16 @@ x_{t+1} = x_t - \alpha \frac{d}{dx}J(x_t),
 kde proměnná $ x_{t+1} $ je hodnota aktualizovaného parametru sítě a $ x_t $ je hodnota původního parametru sítě. Hodnota gradientu pro parametr x je $ \frac{d}{dx} $. Ztráta parametru $ x_t $ je označena $ J $.
 
 \section{Rozdělení na datové sady} % Grammer checked
-Po získání datové sady je většinou sada rozdělena na tři části: trénovací, validační a testovací. Trénovací sada je většinou největší a slouží k trénování modelu. Validační a testovací sady jsou menší a slouží k vyhodnocení modelu. Při rozdělování menších datových sad je často použito 70 \% pro trénování, 15 \% pro validaci a 15 \% pro testování. Při rozdělování větších datových sad je možné použít větší část 95 \% pro trénování a zbytek pro validaci a testování. Datová sada je tímto způsobem rozdělena, aby se model naučil dobře zobecňovat. Můžeme to poznat tak, že model dosahuje podobných výsledků na všech datových sadách. Validační datová sada se používá pro zvolení vhodného modelu a příhodných hyperparametrů. Testovací datová sada je použita v posledních částech vývoje modelu, kdy jsou na ní zjištěny konečné výsledky modelu \cite{burkov2019hundred}.
+Po získání datové sady je většinou sada rozdělena na tři části: trénovací, validační a testovací. Trénovací sada je často největší a slouží k trénování modelu. Validační a testovací sady jsou menší a slouží k vyhodnocení modelu. Při rozdělování menších datových sad je často použito 70 \% pro trénování, 15 \% pro validaci a 15 \% pro testování. Při rozdělování větších datových sad je možné použít větší část 95 \% pro trénování a zbytek pro validaci a testování. Datová sada je tímto způsobem rozdělena, aby se model naučil dobře zobecňovat. Můžeme to poznat tak, že model dosahuje podobných výsledků na všech datových sadách. Validační datová sada se používá pro zvolení vhodného modelu a vhodných hyperparametrů. Testovací datová sada je použita v posledních částech vývoje modelu, kdy jsou na ní zjištěny konečné výsledky modelu \cite{burkov2019hundred}.
 
 \section{Přeučování a nedoučování} % Grammer checked
 Při trénování modelu je možné se setkat s nedoučováním a přeučováním. K nedoučování dochází, když model dosahuje nízkých výsledků na trénovací sadě. Nedoučování může být způsobeno na příklad přílišnou jednoduchostí modelu nebo zvolením nevhodných příznaků pro učení. Při přeučování dochází k opačnému jevu, kdy model velice dobře rozpoznává vzorky z trénovací sady, ale velice špatně vzorky ostatní. Mezi hlavní důvody pro vznik přeučování patří přílišná složitost modelu nebo nadměrné množství příznaků pro malou trénovací sadu. Přeučování na datové sadě můžeme poznat na příklad na validační sadě, kdy ztráta modelu stoupá. Mezi nejčastější techniky používané proti přeučování patří použití jednoduššího modelu, zmenšení počtu vstupních příznaků, přidání trénovacích dat nebo použití regularizace \cite{burkov2019hundred}.
 
 \section{Regularizace} % Grammer checked
-Regularizace označuje množinu technik, které zabraňují vytvoření příliš složitého modelu. Často jsou používány regularizace typu L1 a L2, které jsou umístěny v algoritmu pro upravovaní parametrů modelu. Je možné použít také techniky, které jsou součástí modelu samotného jako jsou drop out vrstvy nebo vrstvy normalizace dávek \cite{burkov2019hundred}.
+Regularizace označuje množinu technik, které zabraňují vytvoření příliš složitého modelu. Často jsou používány regularizace typu L1 a L2, které jsou umístěny v algoritmu pro upravovaní parametrů modelu. Je možné použít také techniky, které jsou součástí modelu samotného jako je dropout nebo vrstvy normalizace dávek \cite{burkov2019hundred}.
 
 \subsection{Dropout} % Grammer checked
-Princip dropout spočívá v náhodném vypínání neuronů ve vrstvě během trénování. Dropout bere jako parametr pravděpodobnost vypnutí jednoho neuronu. Čím vyšší je pravděpodobnost vypnutí, tím je vyšší účinek regularizace \cite{burkov2019hundred}.
+Princip dropout spočívá v náhodném vypínání neuronů ve vrstvě během trénování. Dropout bere jako parametr pravděpodobnost vypnutí jednoho neuronu. Čím vyšší je pravděpodobnost vypnutí, tím stoupá účinek regularizace \cite{burkov2019hundred}.
 
 \subsection{Normalizace dávky} % Grammer checked
 Normalizace dávky spočívá v normalizaci výstupu z předešlé vrstvy modelu před vstupem do následující. Použití normalizace může vést k rychlejšímu a stabilnějšímu trénování \cite{burkov2019hundred}. Vztah pro výpočet normalizace dávky lze vyjádřit pomocí následujícího vzorce:
@@ -341,10 +334,10 @@ z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}},
 kde $ z_i $ je normalizovaný vzorek. Hodnota $ \mu_b $ označuje průměr dávky a $ \sigma^2_b $ znázorňuje rozptyl dávky. Parametr $ x_i $ je jeden vzorek dávky.
 
 \section{Hodnocení výkonu modelu} % Grammer checked
-Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikaci lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost, preciznost, úplnost nebo matice záměn.
+Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikaci lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost, preciznost, úplnost nebo matici záměn \cite{burkov2019hundred}.
 
 \subsection{Matice záměn} % Grammer checked
-Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé jsou třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné, byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
+Matice záměn shrnuje výkon modelu. Na jedné z os matice jsou vyobrazeny správné třídy a na druhé třídy předpovězené. Jednotlivé prvky matice záměn udávají počet přiřazených vzorků. Pokud by byly všechny předpovědi správné, byly by hodnoty větší než nula na hlavní diagonále matice. Příklad matice záměn pro klasifikaci do dvou tříd je znázorněn na obrázku \ref{fig:conf_matrix-example}.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.7]{conf_matrix-example.png}}
@@ -361,7 +354,6 @@ Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu
 \begin{equation}
 \label{eqn:accuracy}
 acc = \frac{TP + TN}{TP + TN + FP + FN},
-% přesnost = \frac{pravdivé pozitivní + pravdivé negativní}{pravdivé % pozitivní + pravdivé negativní + nepravdivé negativní + pravdivé % negativní}
 \end{equation}
 
 kde TP a TN jsou počty správně klasifikovaných pozitivních a negativní tříd. FP a FN jsou množství nesprávně přiřazených pozitivních a negativních tříd. 
@@ -373,27 +365,27 @@ Hyperparametry jsou parametry ovlivňující učení modelu. Na rozdíl od param
 
 % Vybrané koncepty
 \subsection{Křížová entropie} % Grammer checked
-Jako kriteriální funkce pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Lze ji vyjádřit:
+Jako kriteriální funkci pro klasifikaci do více tříd lze použít křížovou entropii, která měří rozdíl mezi dvěma rozděleními pravděpodobnosti. Lze ji vyjádřit:
 
 \begin{equation}
 \label{eqn:cross_entropy}
 l = -{\sum_{c}^{C}t_{c}\log p_{c}},
 \end{equation}
 
-kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje skutečné třídy. Nabývá hodnoty jedna pro správnou třídu a hodnoty nula pro nesprávnou třídu. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
+kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje skutečné třídy. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot \cite{brownlee_2020}.
 
 \subsection{ReLU} % Grammer checked
-Rectified linear activation function (ReLU) je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Lze ji vyjádřit:
+Usměrněná lineární aktivační funkce (ReLU) je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Lze ji vyjádřit:
 
 \begin{equation}
 \label{eqn:relu}
 y = max(0, x),
 \end{equation}
 
-kde $ y $ jsou výstupní hodnoty. Proměnná $ x $ zastupuje vstupní hodnoty. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na jedna a velmi malá čísla nula. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaní modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
+kde $ y $ jsou výstupní hodnoty. Proměnná $ x $ zastupuje vstupní hodnoty. Neuronové sítě používající tuto funkci se většinou učí snadněji a dosáhnou lepších výsledků. Výhodou této funkce je, že nepodléhá přesycení, kdy jsou velká čísla na příklad u funkce sigmoid změněna na jedna a velmi malá na nula. Důsledkem přesycení je, že jsou funkce jako sigmoid nebo tanh velice citlivé na hodnoty okolo jejich středu a méně na odlehlejší hodnoty. Následně se to projeví při trénovaní modelu, kdy může dojít k problému mizejícího gradientu u hlubších neuronových sítí \cite{brownlee_2020_ReLU}.
 
 \subsection{Softmax} % Grammer checked
-Softmax je funkce, která přemění vektor čísel na vektor pravděpodobností, kde jsou pravděpodobnosti pro jednotlivé prvky úměrné velikosti všech prvků vektoru. Funkci lze vyjádřit vzorcem:
+Softmax je funkce, která mění vektor čísel na vektor pravděpodobností, kde jsou pravděpodobnosti pro jednotlivé prvky úměrné velikosti všech prvků vektoru. Funkci lze vyjádřit vzorcem:
 
 \begin{equation}
 \label{eqn:softmax}
@@ -403,10 +395,10 @@ p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}},
 kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá skóre výstupní vrstvy neuronové sítě. Hodnoty $ i $ a $ c $ odpovídají indexu příchozího skóre a $ C $ počtu klasifikovaných tříd. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady \cite{brownlee_2020_Softmax}.
 
 \chapter{Vývoj balíčku pro rozpoznávání emocí} % Grammer checked
-Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Mezi vytvořené moduly patří: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihovny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na sety, pandas 1.1 numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK pro načítání souborů vytvořené pomocí sady nástrojů HTK.
+Byl vytvořen balíček s moduly pro rozpoznávání emocí. Balíček je napsán v jazyku Python verze 3. Mezi vytvořené moduly patří: convertors pro převod dat, data pro práci s daty, classifiers na tvorbu klasifikátoru, files na práci se soubory, datasets k tvorbě datových sad, prepare pro přípravu datových sad a train sloužící k trénování modelu. Modely jsou psány objektově. Byly použity knihovny a frameworky: PyTorch 1.6 pro tvorbu a trénování modelu, seaborn 0.11 a matplotlib 3.3 pro vytvoření grafů, logging 0.4 pro logování při trénování modelu, scikit-learn 0.23 pro rozdělení dat na datové sady, pandas 1.1 a numpy 1.18 pro ukládání a práci s daty, os a sys pro práci s operačním systémem, re pro parsování anotací, subprocess pro spouštění příkazů z příkazové řádky, PyHTK \cite{pyhtk} pro načítání souborů vytvořené pomocí sady nástrojů HTK.
 
 \section{Výběr datových sad} % Grammer checked
-Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají společných sedm emocí, mezi které patří emoce: neutrální, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupeny obě pohlaví. Informace o datových sadách byly shrnuty v tabulce \ref{tab:overview}).
+Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají společných sedm emocí, mezi které patří emoce: neutrální stav, hněv, strach, smutek, spokojenost, odpor a překvapení. Současně mají společně zastoupena obě pohlaví. Informace o datových sadách byly shrnuty v tabulce \ref{tab:overview}).
 
 \begin{table}[ht]
 \centering
@@ -425,7 +417,7 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 \end{table}
 \FloatBarrier
 
-Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližně dobu trvání čtyř hodin.
+Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližnou dobu trvání čtyři hodiny.
 
 \section{Předzpracování dat} % Grammer checked
 Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \ref{fig:ffmpeg}.
@@ -437,7 +429,7 @@ Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data přev
 \end{figure}
 \FloatBarrier
 
-Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz Obr. \ref{fig:htk_config}).
+Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). Pro převod byl použit konfigurační soubor (viz obr. \ref{fig:htk_config}).
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
@@ -474,7 +466,7 @@ Pro načítání dat byla vytvořena třída Dataset v modulu data. Hlavními ú
 \end{figure}
 \FloatBarrier
 
-Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data načte na základě cesty k souboru vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny, byly vytvořeny třídy dědící od třídy UnifiedLabel (viz Obr. \ref{fig:label}), které navíc anotace pro vzorek převedly na stejné značení.
+Třída Dataset má navíc atributy samples pro uložení načtených vzorků a labels pro uložení anotací pro vzorky. Při vytváření objektu třídy Dataset jsou předávány objekty třídy Data a Label. Objekt třídy Data načte na základě cesty k souboru vzorek a Label z anotace získá informace potřebné k vytvoření anotace pro vzorek. Jelikož jsou datové sady odlišně značeny, byly vytvořeny třídy dědící od třídy UnifiedLabel (viz obr. \ref{fig:label}), které navíc anotace pro vzorky převedly na stejné značení.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-label.png}}
@@ -483,7 +475,7 @@ Třída Dataset má navíc atributy samples pro uložení načtených vzorků a 
 \end{figure}
 \FloatBarrier
 
-Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující načtení příznaků MFCC a WAVData zprostředkovávající načtení nahrávek ze souboru typu WAV. MFCCData používá třídu HTKFile z balíčku PyHTK pro načtení příznaků.
+Z třídy Data (viz obr. \ref{fig:data}) dědí třída MFCCData umožňující načtení příznaků MFCC a WAVData zprostředkovávající načtení nahrávek ze souboru typu WAV. MFCCData používá třídu HTKFile z balíčku PyHTK pro načtení příznaků.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{data-data.png}}
@@ -492,7 +484,7 @@ Z třídy Data (viz Obr. \ref{fig:data}) dědí třída MFCCData umožňující 
 \end{figure}
 \FloatBarrier
 
-Dále byla data rozdělena do trénovacích, validačních a testovacích setů. Pro rozdělení byla použita třída Preparer (viz Obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady. Na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně pomocí funkce train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sety byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých setů podle anotací.
+Dále byla data rozdělena do trénovacích, validačních a testovacích sad. Pro rozdělení byla použita třída Preparer (viz obr. \ref{fig:preparer}) z modulu prepare. Data byla nejdříve načtena pomocí objektů třídy Dataset. Mohla být sloučena dohromady. Na příklad mohla být vytvořena datová sada ze všech anglických datových sad. Data získaná z objektu Dataset mohla být rozdělena do trénovacího, testovacího a validačního setu. Rozdělení probíhalo rovnoměrně pomocí funkce train\_test\_split z modulu sklearn.model\_selection a vzorky byly rozděleny po celých nahrávkách. Při rozdělování na sady byla zvolena možnost stratify, která rozdělila vzorky rovnoměrně do vzniklých sad podle anotací.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.25,keepaspectratio]{prepare.png}}
@@ -501,14 +493,7 @@ Dále byla data rozdělena do trénovacích, validačních a testovacích setů.
 \end{figure}
 \FloatBarrier
 
-Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena vlastní složka, která obsahovala soubory labels.npy, samples.py a info.txt. V souboru info.txt byly uloženy informace pro načítání datového setu. Struktura složky je znázorněna na obrázku \ref{fig:file_structure}. Pro ukládání a načítání informací ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz Obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly uloženy údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli z balíčku numpy.
-
-\begin{figure}[ht]
-\centerline{\includegraphics[scale=.25]{files-info.png}}
-\caption{Třídy InfoFile}
-\label{fig:info_files}
-\end{figure}
-\FloatBarrier
+Jako poslední byly sady uloženy do složky. Každé sadě byla přiřazena vlastní složka, která obsahovala soubory labels.npy, samples.npy a info.txt. V souboru info.txt byly uloženy informace pro načítání datové sady. Struktura složky je znázorněna na obrázku \ref{fig:file_structure}. 
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.22]{dataset_file_structure.png}}
@@ -517,8 +502,17 @@ Jako poslední byly sety uloženy do složky. Každému setu byla přiřazena vl
 \end{figure}
 \FloatBarrier
 
+Pro ukládání a načítání informací ze souborů info.txt byly vytvořeny třídy DatasetInfoFile (viz obr. \ref{fig:info_files}) a SetInfoFile. V souboru třídy DatasetInfoFile byly uloženy údaje o počtu příznaků, počtu tříd a počtu vzorků datové sady. Do SetInfoFile byly ukládány počty vzorků, délky vzorků a názvy souborů se vzorky a anotacemi. Data pro rozpoznávání byla uložena ve dvourozměrném poli numpy.
+
+\begin{figure}[ht]
+\centerline{\includegraphics[scale=.25]{files-info.png}}
+\caption{Třídy InfoFile}
+\label{fig:info_files}
+\end{figure}
+\FloatBarrier
+
 \section{Načítání dat} % Grammer checked
-Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, který dědí od objektu Dataset z balíčku torch.utils.data. Objektu je přidělena cesta k datové sadě. Z textového souboru info.txt si přečte informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá, patří velikosti pravého a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídaly délce vzorků nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
+Pro načítání uložených datových sad byla vytvořena třída NumpyDataset, která dědí od třídy Dataset z balíčku torch.utils.data. Při vytvoření je objektu třídy přidělena cesta k datové sadě. Z textového souboru info.txt se přečtou informace potřebné k načtení dat. Mezi důležité parametry, které objekt NumpyDataset při svém vytvoření přebírá, patří velikosti pravého a levého okolí vzorku. Při načtení vzorků ze souboru samples.py jsou ke vzorkům na začátku a na konci přiřazeny okraje, které mají velikosti pravého a levého okolí. Okraje jsou vytvořeny z kopií krajních vzorků a slouží pro zjednodušení výběrů vzorků. Vzorky jsou uloženy popořadě po jednotlivých nahrávkách. Objekt si ukládá indexy začátku a konce nahrávek. Načtené anotace z připravené datové sady odpovídají jednotlivým nahrávkám, proto jsou anotace roztaženy tak, aby odpovídaly délce vzorků nahrávky. Uložení vzorků v objektu NumpyDataset je znázorněno na diagramu \ref{fig:data_arrangement}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.125]{dataset_arrangement.png}}
@@ -529,7 +523,7 @@ Pro načítání uložených datových sad byl vytvořen objekt NumpyDataset, kt
 
 kde písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotlivé nahrávky, které mohou mít různou délku. Písmeno $ N $ udává počet vzorků a $ M $ počet uložených nahrávek. $ L $ a $ R $ značí velikost pravého a levého okraje. Písmeno $ F $ odpovídá počtu příznaků pro jeden vzorek.
 
-Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (viz Obr. \ref{fig:numpy_dataset}), které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden vzorek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají, a to je také důvod, proč je lepší mít třídu rozdělenou.
+Z třídy NumpyDataset dědí třídy NumpyFrameDataset a NumpySampleDataset (viz obr. \ref{fig:numpy_dataset}), které se liší v implementaci metod \_\_len\_\_ a \_\_getitem\_\_. Metoda \_\_len\_\_ při zavolání vrací délku datové sady, která u třídy NumpyFrameDataset odpovídá počtu vzorků a u třídy NumpySampleDataset odpovídá počtu nahrávek. Metoda \_\_getitem\_\_ vrací jeden prvek z Datasetu, u třídy NumpyFrameDataset vrací metoda jeden vzorek a třídy NumpySampleDataset vrací jednu nahrávku. Třída NumpyDataset je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy NumpySampleDataset spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají, a to je také důvod, proč je lepší mít třídu rozdělenou.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.185]{datasets.png}}
@@ -547,13 +541,13 @@ Ke vzorkům jsou při výběru přidávány vzorky z okolí pro větší zachyce
 \end{figure}
 \FloatBarrier
 
-kde vybraný vzorek má označení $ S $ a krajní vzorky mají označení $ S_{P-L} $ a $ S_{P+R} $. Písmeno $ F $ označuje počet příznaků pro jeden vzorek. Značky $ L $ a $ P $ odpovídají délkám levého a pravého okraje. Výsledný zploštělí obrázek má délku odpovídající $ F * (L + R + 1) $.
+kde vybraný vzorek má označení $ S_{P} $ a krajní vzorky mají označení $ S_{P-L} $ a $ S_{P+R} $. Písmeno $ F $ označuje počet příznaků pro jeden vzorek. Značky $ L $ a $ P $ odpovídají délkám levého a pravého okraje. Výsledný zploštělý obrázek má délku odpovídající $ F * (L + R + 1) $.
 
 \section{Tvorba neuronové sítě} % Grammer checked
 Byl vytvořen model FeedForwardNet pomocí dědění z třídy Module z modulu torch.nn. V konstruktoru třídy FeedForwardNet byly vytvořeny jednotlivé vrsty neuronové sítě a byly uloženy do objektu ModuleList z modulu torch.nn. Dále byl pomocí metody forward implementován dopředný průchod.
 
 \subsection{Trénování} % Grammer checked
-V modulu train byla vytvořena třída Trainer (viz Obr. \ref{fig:trainer}), jejíž úkolem je trénování modelu. Hlavní parametr předaný při vytváření instance třídy je model. Dále jsou předány trénovací, testovací a validační sady. Pro trénování modelu jsou důležité parametry optimizer k úpravě parametrů a kriteriální funkce pro získání ztráty. Parametr device umožňuje zvolit zařízení, na kterém bude trénování probíhat. Jako poslední je předán objekt typu Stats (viz Obr. \ref{fig:stats}), do kterého se ukládají statistiky získané při trénování modelu. 
+V modulu train byla vytvořena třída Trainer (viz obr. \ref{fig:trainer}), jejíž úkolem je trénování modelu. Hlavní parametr předaný při vytváření instance třídy je model. Dále jsou předány trénovací, testovací a validační sady. Pro trénování modelu jsou důležité parametry optimizer k úpravě parametrů a kriteriální funkce pro získání ztráty. Parametr device umožňuje zvolit zařízení, na kterém bude trénování probíhat. Jako poslední je předán objekt typu Stats (viz obr. \ref{fig:stats}), do kterého se ukládají statistiky získané při trénování modelu. 
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.3]{train-trainer.png}}
@@ -569,7 +563,7 @@ V modulu train byla vytvořena třída Trainer (viz Obr. \ref{fig:trainer}), jej
 \end{figure}
 \FloatBarrier
 
-Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán počet trénovacích epoch. Každou epochu jsou do objektu třídy Stats ukládány statistiky trénování, mezi které patří přesnost na jeden vzorek, přesnost na jednu nahrávku, ztráta modelu a matice záměn. Řádky matice záměn odpovídají správným třídám a sloupce odpovídají předpovězeným třídám. Jednotlivé prvky matice odpovídají počtu přiřazených vzorků ke třídě. Pokud by byly všechny vzorky přiřazeny správně, tak by byla všechna čísla větší než nula na hlavní diagonále matice. Zároveň jsou vybrané statistiky vypisovány v přehledném výpisu (viz Obr. \ref{fig:print}) do konzole. K výpisu je používán objekt třídy StatsPrinter (viz Obr. \ref{fig:printer}).
+Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán počet trénovacích epoch. Každou epochu jsou do objektu třídy Stats ukládány statistiky trénování, mezi které patří přesnost na jeden vzorek, přesnost na jednu nahrávku, ztráta modelu a matice záměn. Zároveň jsou vybrané statistiky vypisovány v přehledném výpisu (viz obr. \ref{fig:print}) do konzole. K výpisu je používán objekt třídy StatsPrinter (viz obr. \ref{fig:printer}).
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.215]{train_log.png}}
@@ -585,7 +579,7 @@ Trénování je zahájeno zavoláním objektu třídy Trainer, kdy je předán p
 \end{figure}
 \FloatBarrier
 
-Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statistiky trénování lze uložit do souboru CSV. Ze statistik lze pomocí třídy Results (viz Obr. \ref{fig:results}) získat grafy průběhu trénování. Pomocí funkce plot z knihovny matplolib jsou vykresleny grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy lze zobrazit a uložit jako obrázky typu PNG.
+Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statistiky trénování lze uložit do souboru CSV. Ze statistik lze pomocí třídy Results (viz obr. \ref{fig:results}) získat grafy průběhu trénování. Pomocí funkce plot z knihovny matplolib jsou vykresleny grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce heatmap z knihovny seaborn grafy matice záměn. Grafy lze zobrazit a uložit jako obrázky typu PNG.
 
 \begin{figure}[ht]
 \centerline{\includegraphics[scale=.3]{train-results.png}}
@@ -594,7 +588,7 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 \end{figure}
 \FloatBarrier
 
-\subsection{Použité metriky}
+\subsection{Použité metriky} % Grammer checked
 Během trénování modelu byly každou epochu měřeny metriky. Při trénování a validaci byla počítána přesnost pro jeden vzorek a ztráta pro jeden vzorek z datové sady. Při validaci byla navíc zaznamenávána i přesnost pro jednu nahrávku, kdy byla předpověď pro jednu nahrávku vypočtena zprůměrováním předpovědí pro každý vzorek nahrávky.
 
 \chapter{Experimenty} % Grammer checked
@@ -603,7 +597,7 @@ Bylo provedeno několik experimentů pro vyladění hyperparametrů modelu. Jako
 \section{Výchozí model}
 Jako první byl vytvořen výchozí model, který slouží k porovnání výkonu mezi modely. Pro získání ztráty modelu byla jako kriteriální funkce zvolena křížová entropie. Byl zvolen algoritmus Adaptive Momentum (Adam) pro optimalizaci modelu a míra učení byla nastavena na hodnotu 0,001. Model se skládal ze tří skrytých lineárních vrstev o šířce 128 neuronů. Ve skryté vrstvě byla použita aktivační funkce ReLU. Model byl trénován po dobu deseti epoch s velikostí jedné dávky 256 vzorků. Velikost pravého a levého okolí byla rovna 25 vzorkům. Bylo klasifikováno sedm emocí: hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav.
 
-Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala až k hodně 83,1 \% a na trénovací sadě kolísala kolem 59 \%. Ztráta modelu na trénovací sadě postupně klesala. U validační a testovací sady ztráta mírně stoupala. Přesnost pro nahrávky dosáhla kolem 87 \% na validační a testovací sadě. Úspěch dokládá i rozložení předpovědí v matici záměn, kde je většina předpovědí umístěna na hlavní diagonále.
+Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala až k hodně 83,1 \% a na trénovací sadě kolísala kolem 59 \%. Ztráta modelu na trénovací sadě postupně klesala. U validační a testovací sady ztráta mírně stoupala. Přesnost pro nahrávky dosáhla kolem 87 \% na validační a testovací sadě. Úspěch dokládá i rozložení předpovědí v matici záměn pro validančí sadu (viz obr. \ref{fig:conf_matrix-val-baseline}), kde je většina předpovědí umístěna na hlavní diagonále
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{baseline-conf_matrix-val.png}}
@@ -612,17 +606,11 @@ Během trénování modelu přesnost pro vzorky na trénovací sadě stoupala a�
 \end{figure}
 \FloatBarrier
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{baseline-conf_matrix-test.png}}
-\caption{Matice záměn pro testovací sadu}
-\label{fig:conf_matrix-test-baseline}
-\end{figure}
-\FloatBarrier
-
 Následně bylo provedeno několik pokusů se snahou vyladit hyperparametry modelu. Byla měněna především architektura sítě, počet a šířka vrstev. Upravovány byly také velikosti okolí vzorku. Trénování probíhalo během deseti epoch, jelikož bylo zjištěno u výchozího pokusu, že tento počet postačí pro získání představy o výkonu modelu. Kriteriální a optimalizační funkce zůstaly stejné.
 
+\clearpage
 \section{Změny počtu skrytých vrstev} % Grammer checked
-Byly provedeny tři experimenty, jejíž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost pro vzorky na validační a testovací sadě také roste s počtem skrytých vrstev. Nicméně s ní vzrůstá i ztráta, která by měla naopak klesat. Průběh ztráty u modelů se třemi a více vrstvami se příliš nemění. Při počtu dvou vrstev se model učí pomaleji, ale zároveň neroste v takové míře ztráta.
+Byly provedeny tři experimenty, jejíž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů (viz obr. \ref{fig:training_course-layers} pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost pro vzorky na validační a testovací sadě také roste s počtem skrytých vrstev. Nicméně s ní vzrůstá i ztráta, která by měla naopak klesat. Průběh ztráty u modelů se třemi a více vrstvami se příliš nemění. Při počtu dvou vrstev se model učí pomaleji, ale zároveň neroste v takové míře ztráta.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-layers.png}}
@@ -631,8 +619,9 @@ Byly provedeny tři experimenty, jejíž cílem bylo zjistit optimální počet 
 \end{figure}
 \FloatBarrier
 
+\clearpage
 \section{Změny velikosti okolí vzorku} % Grammer checked
-Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čtyři pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá i přesnost a klesá ztráta modelu. U validační a testovací sady přesnost pro vzorky stoupá stejným způsobem jenom pomaleji. Zároveň však stoupá ztráta modelu.
+Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čtyři pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů (viz obr. \ref{fig:training_course-margin} pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá přesnost a klesá ztráta modelu. U validační sady přesnost pro vzorky stoupá stejným způsobem jenom pomaleji, zároveň však stoupá ztráta modelu.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-margin.png}}
@@ -641,8 +630,9 @@ Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čty�
 \end{figure}
 \FloatBarrier
 
+\clearpage
 \section{Změny šířky skrytých vrstev} % Grammer checked
-Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskutečnily se čtyři experimenty, během kterých nabývala šířka vrstev hodnot od 16 do 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Dále s přibývající šířkou výsledná přesnost stoupá přibližně o 10 \%, kromě modelu s šířkou 256 a 512, kde je rozdíl mezi přesností podstatně menší. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů. Pro model se šířkou 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
+Další parametr, který lze upravovat, je šířka skrytých vrstev modelu. Uskutečnily se čtyři experimenty, během kterých nabývala šířka vrstev hodnot od 16, 64, 256 a 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem 50 \%. Dále s přibývající šířkou výsledná přesnost stoupá přibližně o 10 \%, kromě modelu s šířkou 256 a 512, kde je rozdíl mezi přesností podstatně menší. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů. Pro model se šířkou 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Vzhledem k tomu, že modely s vyšším počtem neuronů mají tendenci se přeučovat zvolil bych model s šířkou mezi 64 a 128 neurony.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-width.png}}
@@ -651,8 +641,9 @@ Další parametr, který lze měnit, je šířka skrytých vrstev modelu. Uskute
 \end{figure}
 \FloatBarrier
 
+\clearpage
 \section{Omezení počtu emocí} % Grammer checked
-V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřila spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. V grafech pro validační sadu lze zpozorovat, že přesnost pro vzorky s ubývajícím počtem emocí roste, ale její průběh je konstantní. Ztráta u jednotlivých modelů lineárně roste.
+V další řadě experimentů byly měněny počty emocí. Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřila spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů (viz obr. \ref{fig:training_course-emotion_reduction} pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. V grafech pro validační sadu lze zpozorovat, že přesnost pro vzorky s ubývajícím počtem emocí roste, ale její průběh je konstantní. Ztráta u jednotlivých modelů lineárně roste.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
@@ -661,7 +652,7 @@ V další řadě experimentů byly měněny počty emocí. Při experimentu se �
 \end{figure}
 \FloatBarrier
 
-Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyřech tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část nahrávek umístěna do negativní třídy (viz Obr. \ref{fig:3_emotions-conf_matrix-val}). 
+Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyřech tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část nahrávek umístěna do negativní třídy (viz obr. \ref{fig:3_emotions-conf_matrix-val}). 
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
@@ -670,7 +661,7 @@ Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifik
 \end{figure}
 \FloatBarrier
 
-Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz Obr. \ref{fig:4_emotions-conf_matrix-val}). O trochu méně nahrávek bylo umístěno v neutrální třídě.
+Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz obr. \ref{fig:4_emotions-conf_matrix-val}). O trochu méně nahrávek bylo umístěno v neutrální třídě.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{4_emotions-conf_matrix-val.png}}
@@ -679,8 +670,9 @@ Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnomě
 \end{figure}
 \FloatBarrier
 
+\clearpage
 \section{Použití regularizace} % Grammer checked
-Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem zamezení přeučování.
+Jelikož u předchozích experimentů docházelo přeučování na testovací a validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem omezení přeučování. U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dropout s pravděpodobností 25 \%, že se výstup vynuluje. Tento model dosahoval nižší přesnosti pro vzorek na trénovacích datech (viz obr. \ref{fig:training_course-regularization}) než výchozí model a ztráta klesala pomaleji. Nicméně na validačních datech měla přesnost pro vzorky tendenci růst a dosáhla vyšší přesnosti než výchozí model. Z grafu pro ztrátu je také vidět, že ztráta v průběhu trénování klesala.
 
 \begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
@@ -689,14 +681,10 @@ Jelikož u předchozích experimentů docházelo přeučování na testovací a 
 \end{figure}
 \FloatBarrier
 
-U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dropout s pravděpodobností 50 \%, že se výstup vynuluje. Tento model dosahoval nižší přesnosti pro vzorek na trénovacích datech než výchozí model a ztráta klesala pomaleji. Nicméně na validačních datech měla přesnost pro vzorky tendenci růst a dosáhla vyšší přesnosti než výchozí model. Z grafu pro ztrátu je také vidět, že ztráta v průběhu trénování klesala. 
-
 % Grammer further ahead has not been checked
 Pro další pokus byly skryté vrstvy výchozího modelu rozšířeny o vrstvy s normalizací dávek. Normalizace byly opět umístěny za aktivační funkce. Model dosahoval velice podobných výsledků ztráty a přesnosti na trénovacích datech. Nicméně průběhy trénovaní na validační sadě byly různé. Přesnost modelu dosáhla o 5 \% více než na výchozím modelu a po celou dobu trénování rostla. Míra růstu ztráty byla podstatně nižší. 
 
-U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná dropout. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s dropout. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosahla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s dropout.
-
-Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a dropout.
+U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná dropout. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s dropout. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosáhla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s dropout.Na základě těchto výsledků jsem se pro další pokusy rozhodl použít model s normalizací dávek a dropout.
 
 \clearpage
 \section{Finální modely}
@@ -733,10 +721,7 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 \end{table}
 \FloatBarrier
 
-
-
 \chapter{Závěr} % Grammer checked
-
 Z volně dostupných datových sad byly vybrány tři anglické datové sady (RAVDESS, SAVEE, TESS) a jedna italská (EMOVO). Byl sjednocen formát nahrávek a byly získány příznaky MFCC. Pro učení modelu byla data z jednotlivých datových sad rovnoměrně rozdělena do trénovací, validační a testovací sady v poměru 80 \%, 10 \% a 10 \%.
 
 V jazyku Python byl vytvořen balíček pro rozpoznávání emocí. Skládal se z modulů pro převod dat, práci s daty, tvorbu klasifikátoru, práci se soubory, tvorbu datových sad, přípravu datových sad a trénování modelu. Balíček především umožňoval snadné vytvoření, uložení a načtení datových sad pro trénování. Zároveň zprostředkovával jednoduché trénování modelu a uložení výsledků trénování pro zpětnou analýzu.
