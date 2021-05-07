@@ -583,6 +583,9 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 \end{figure}
 \FloatBarrier
 
+\subsection{Použité metriky}
+Během trénování modelu byly každou epochu měřeny metriky. Při trénování a validaci byla počítána přesnost pro jeden vzorek a ztráta pro jeden vzorek z datové sady. Při validaci byla navíc zaznamenávána i přesnost pro jednu nahrávku, kdy byla předpověď pro jednu nahrávku vypočtena zprůměrováním předpovědí pro každý vzorek nahrávky.
+
 \chapter{Experimenty} % Grammer checked
 Bylo provedeno několik experimentů pro vyladění hyperparametrů modelu. Jako první byl proveden výchozí experiment. Trénovací, validační a testovací sady byly vytvořeny ze všech vybraných anglických datových sad a italské datové sady. Z každé vybrané datové sady byly rovnoměrně rozděleny vzorky podle tříd do sad v poměru 80 \% nahrávek přišlo do trénovací sady, 10 \% do sady testovací a 10 \% do sady validační.
 
