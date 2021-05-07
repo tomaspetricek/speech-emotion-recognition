@@ -222,7 +222,7 @@ EMOVO \cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpozn
 Data jsou v typickém systému pro rozpoznávání emocí nejdříve předzpracována. Z dat jsou nejprve vytaženy příznaky na nízké úrovni. Poté jsou data rozdělena na rámce, z kterých jsou vytaženy příznaky pro rozpoznávání. Dále mohou být na příznaky použity techniky pro snížení počtu příznaků jako je analýza hlavních komponent (PCA) nebo lineární diskriminační analýza (LDA) \cite{konar_chakraborty_2015}.
 
 \subsection{Rámcování} % Grammer checked    % Checked Twice ended
-Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\text{--}30 milisekundami. Často se jednotlivé rámce překrývají 30 \% až 50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
+Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\textendash30 milisekundami. Často se jednotlivé rámce překrývají 30 \% až 50 \%, aby se zachoval vztah mezi jednotlivými rámci \cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho rámce stejná \cite{konar_chakraborty_2015}.
 
 \subsection{Okénkování} % Grammer checked
 Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích a tím snižuje úniky, ke kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro okénkování lze použít Hammingovu okénkovací funkci \cite{DBLP:journals/speech/AkcayO20}.
@@ -441,7 +441,7 @@ Dále byly nahrávky převedeny na MFCC příznaky. K převodu byla použita sad
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
-\caption{Konfigurační soubor}
+\caption{HTK konfigurační soubor}
 \label{fig:htk_config}
 \end{figure}
 \FloatBarrier
@@ -450,7 +450,7 @@ MFCC formát byl zvolen jako MFCC\_0\_D\_A, kde chceme získat nulté, delta a a
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{htk_command.png}}
-\caption{Příkaz HTK}
+\caption{HCopy příkaz}
 \label{fig:htk}
 \end{figure}
 \FloatBarrier
