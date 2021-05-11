@@ -1,18 +1,18 @@
-název;jazyk;počet tříd;počet mluvčích;pohlaví mluvčích;typ
-RAVDESS;angličtina;5,7;24;obě;předstíraná
-SAVEE;angličtina;7;14;můži;předstíraná
-TESS;angličtina;6;2;ženy;předstíraná
-CHEAVD;mandariština;8;238;obě;předstíraná
-DES;dánština;5;4;obě;předstíraná
-EESDB;mandariština;7;16;obě;předstíraná
-EMA;angličtina;4;3;obě;předstíraná
-EMOVO;italština;7;6;obě;předstíraná
-eNTERFACE’05;angličtina;6;42;obě;vybuzená
-Keio-ESD;japonština;47;71;muži;předstíraná
-RECOLA Speech Database;francouzština;7;46;obě;přirozená
-SAMAINE Database;angličtina, řečtina, hebrejština;5;150;není známo;přirozená
-VAM;němčina;3;47;není známo;přirozená
-TUM AVIC Database;angličtina;5;21;obě;přirozená
-AFEW Database;angličtina;7;330;není známo;přirozená
-TURES;turečtina;9;582;obě;předstíraná
-BAUM-1 Speech Database;turečtina;12;31;obě;předstíraná
+název;jazyk;počet tříd;počet mluvčích;pohlaví mluvčích;typ;velikost sady
+RAVDESS;angličtina;5,7;24;obě;předstíraná;2452 promluv
+SAVEE;angličtina;7;14;můži;předstíraná;480 promluv
+TESS;angličtina;6;2;ženy;předstíraná;2800 promluv
+CHEAVD;mandariština;8;238;obě;předstíraná;2600 promluv
+DES;dánština;5;4;obě;předstíraná;10 min řeči
+EESDB;mandariština;7;16;obě;předstíraná;400 promluv
+EMA;angličtina;4;3;obě;předstíraná;34 promluv
+EMOVO;italština;7;6;obě;předstíraná;588 promluv
+eNTERFACE’05;angličtina;6;42;obě;vybuzená;1166 promluv
+Keio-ESD;japonština;47;71;muži;předstíraná;940 promluv
+RECOLA Speech Database;francouzština;7;46;obě;přirozená;1308 promluv
+SAMAINE Database;angličtina, řečtina, hebrejština;5;150;není známo;přirozená;959 konverzací
+VAM;němčina;3;47;není známo;přirozená;947 promluv
+TUM AVIC Database;angličtina;5;21;obě;přirozená;3901 promluv
+AFEW Database;angličtina;7;330;není známo;přirozená;1426 promluv
+TURES;turečtina;9;582;obě;předstíraná;5100 promluv
+BAUM-1 Speech Database;turečtina;12;31;obě;předstíraná;1222 promluv
