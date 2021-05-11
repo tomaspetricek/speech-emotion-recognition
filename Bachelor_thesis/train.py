@@ -13,7 +13,7 @@ from collections import defaultdict
 from classifiers import FeedForwardNet
 
 from classifiers import Sequential
-from datasets import NumpySampleDataset, NumpyFrameDataset
+from datasets import NumpyRecordingDataset, NumpySampleDataset
 from files import DatasetInfoFile, SetInfoFile
 from data import FOUR_EMOTIONS_VERBOSE, THREE_EMOTIONS_VERBOSE, ALL_EMOTIONS_VERBOSE
 
@@ -355,13 +355,13 @@ def main(result_dir):
     n_features, n_classes, n_samples = DatasetInfoFile(info_path).read()
 
     train_dir = os.path.join(dataset_dir, "train")
-    train_dataset = prepare_dataset(train_dir, NumpyFrameDataset, left_margin, right_margin, name="trénovací sada")
+    train_dataset = prepare_dataset(train_dir, NumpySampleDataset, left_margin, right_margin, name="trénovací sada")
 
     val_dir = os.path.join(dataset_dir, "val")
-    val_dataset = prepare_dataset(val_dir, NumpySampleDataset, left_margin, right_margin, name="validační sada")
+    val_dataset = prepare_dataset(val_dir, NumpyRecordingDataset, left_margin, right_margin, name="validační sada")
 
     test_dir = os.path.join(dataset_dir, "test")
-    test_dataset = prepare_dataset(test_dir, NumpySampleDataset, left_margin, right_margin, name="testovací sada")
+    test_dataset = prepare_dataset(test_dir, NumpyRecordingDataset, left_margin, right_margin, name="testovací sada")
 
     test_datasets = [test_dataset]
 

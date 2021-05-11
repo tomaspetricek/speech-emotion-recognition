@@ -103,7 +103,7 @@ class NumpyDataset(Dataset):
         pass
 
 
-class NumpyFrameDataset(NumpyDataset):
+class NumpySampleDataset(NumpyDataset):
 
     def _get_sample(self, frame_index):
         # add margin
@@ -127,7 +127,7 @@ class NumpyFrameDataset(NumpyDataset):
         label = self._get_label(frame_index)
         return sample, label
 
-class NumpySampleDataset(NumpyDataset):
+class NumpyRecordingDataset(NumpyDataset):
 
     def _get_sample(self, sample_index):
         # add margin
