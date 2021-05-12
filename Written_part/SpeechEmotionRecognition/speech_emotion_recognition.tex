@@ -191,6 +191,15 @@ K rozpoznávání emocí se používají anotované datové sady. Mohou být dě
 
 V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad. Je patrné, že nejvíce datových sad je předstíraných a nejméně je sad vybuzených. Poměrně velké zastoupení mají anglické datové sady.
 
+\section{Předstírané datové sady} % Grammer checked
+Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad~\cite{konar_chakraborty_2015}.
+
+\section{Vybuzené datové sady} % Grammer checked
+Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití~\cite{konar_chakraborty_2015}.
+
+\section{Přirozené datové sady} % Grammer checked
+Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování~\cite{DBLP:journals/speech/AkcayO20}.
+
 \begin{sidewaystable}
 \centering
 \caption{Přehled volně dostupných datových sad}
@@ -219,16 +228,6 @@ BAUM-1 Speech Database & turečtina     & 12  & 31  & obě        & předstíran
 \label{tab:overview-datasets}
 \end{sidewaystable}
 \FloatBarrier
-
-\section{Předstírané datové sady} % Grammer checked
-Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad~\cite{konar_chakraborty_2015}.
-
-\section{Vybuzené datové sady} % Grammer checked
-Při získávání vybuzených datových sad je mluvčí umístěn do situace, která se velice podobá reálnému životu. Situace jsou většinou vybírány tak, aby odpovídaly potenciálnímu použití~\cite{konar_chakraborty_2015}.
-
-\note{Dát před tabulku}
-\section{Přirozené datové sady} % Grammer checked
-Poslední způsob získávání dat pro rozpoznávání je z přirozené řeči. Data mohou být získána na příklad z rozhovorů z radií, televizních show nebo záznamů z call center. Ačkoli by tato data měla být pro rozpoznávání nejvhodnější, tak je mnohem obtížnější z nich sestavit datovou sadu. Na data se mohou vztahovat právní nároky a je s nimi více práce při zpracování~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Vybrané datové sady}
 \subsection{RAVDESS} \label{desc/ravdess} % Grammer checked
@@ -457,29 +456,6 @@ kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá
 Byl vytvořen balíček s moduly pro rozpoznávání emocí. \note{asi bych to lépe uvedl, víc popsat, než začneš popisovat moduly}
 Balíček je napsán v jazyku \texttt{\mbox{Python}}\footnote{https://www.python.org/} verze 3. Mezi vytvořené moduly patří: \texttt{\mbox{convertors}} pro převod dat, data pro práci s daty, \texttt{\mbox{classifiers}} na tvorbu klasifikátoru, \texttt{\mbox{files}} na práci se soubory, \texttt{\mbox{datasets}} k tvorbě datových sad, \texttt{\mbox{prepare}} pro přípravu datových sad a \texttt{\mbox{train}} sloužící k trénování modelu. Moduly jsou psány objektově. Byly použity knihovny a frameworky: \texttt{\mbox{PyTorch}}\footnote{https://pytorch.org} 1.6 pro tvorbu a trénování modelu, \texttt{\mbox{seaborn}} 0.11 a \texttt{\mbox{matplotlib}} 3.3 pro vytvoření grafů, \texttt{\mbox{logging}} 0.4 pro logování při trénování modelu, \texttt{\mbox{scikit-learn}} 0.23 pro rozdělení dat na datové sady, \texttt{\mbox{pandas}} 1.1 a \texttt{\mbox{numpy}} 1.18 pro ukládání a práci s daty, \texttt{\mbox{os}} a \texttt{\mbox{sys}} pro práci s operačním systémem, \texttt{\mbox{re}} pro parsování anotací, \texttt{\mbox{subprocess}} pro spouštění příkazů z příkazové řádky, \texttt{\mbox{PyHTK}}\footnote{https://github.com/danijel3/PyHTK} pro načítání souborů vytvořených pomocí sady nástrojů Hidden Markov Model Toolkit (\texttt{\mbox{HTK}})\footnote{https://htk.eng.cam.ac.uk}. \note{možná uvést následující podkapitoly, věnují se jednotlivým úlohám}
 
-\section{Výběr datových sad} % Grammer checked
-\note{nebylo by to lepší až v experimentech?}
-Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají společných sedm emocí, mezi které patří emoce: neutrální stav, hněv, strach, smutek, spokojenost, odpor a překvapení. Jelikož měla datová sada RAVDESS osm emocí, byla emoce klidu přidána mezi neutrální stav. Informace o datových sadách byly shrnuty v tabulce \mbox{\ref{tab:overview}}.
-
-\begin{table}[ht]
-\centering
-\caption{Přehled vybraných datových sad}
-\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|}
-  \hline
- \thead{Název} & \thead{Jazyk} & \thead{Počet tříd} & \thead{Počet mluvčích} & \thead{Pohlaví mluvčích} & \thead{Počet promluv} & \thead{Celková délka (hodiny)} \\
-  \hline
-    RAVDESS & angličtina & 8 & 24 & obě & 1440 & 1.5 \\
-    SAVEE   & angličtina & 7 & 4  & muži  & 480  & 0.5 \\
-    TESS    & angličtina & 7 & 2  & ženy  & 2800 & 1.6 \\
-    EMOVO   & italština  & 7 & 6  & obě & 588  & 0.5 \\
-   \hline
-\end{tabular}}
-\label{tab:overview}
-\end{table}
-\FloatBarrier
-
-Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližnou dobu trvání čtyři hodiny.
-
 \section{Předzpracování dat} % Grammer checked
 Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg)\footnote{https://ffmpeg.org} přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \mbox{\ref{fig:ffmpeg}}.
 
@@ -649,6 +625,29 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 \end{figure}
 \FloatBarrier
 
+\chapter{Výběr datových sad} % Grammer checked
+\note{nebylo by to lepší až v experimentech?}
+Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybrány sady bezplatné a dostupné pro vědecké účely. Byly vybrány datové sady především anglické: RAVDESS, TESS a SAVEE a jedna italská: EMOVO. Datové sady mají společných sedm emocí, mezi které patří emoce: neutrální stav, hněv, strach, smutek, spokojenost, odpor a překvapení. Jelikož měla datová sada RAVDESS osm emocí, byla emoce klidu přidána mezi neutrální stav. Informace o datových sadách byly shrnuty v tabulce \mbox{\ref{tab:overview}}.
+
+\begin{table}[ht]
+\centering
+\caption{Přehled vybraných datových sad}
+\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+ \thead{Název} & \thead{Jazyk} & \thead{Počet tříd} & \thead{Počet mluvčích} & \thead{Pohlaví mluvčích} & \thead{Počet promluv} & \thead{Celková délka (hodiny)} \\
+  \hline
+    RAVDESS & angličtina & 8 & 24 & obě & 1440 & 1.5 \\
+    SAVEE   & angličtina & 7 & 4  & muži  & 480  & 0.5 \\
+    TESS    & angličtina & 7 & 2  & ženy  & 2800 & 1.6 \\
+    EMOVO   & italština  & 7 & 6  & obě & 588  & 0.5 \\
+   \hline
+\end{tabular}}
+\label{tab:overview}
+\end{table}
+\FloatBarrier
+
+Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližnou dobu trvání čtyři hodiny.
+
 \note{Měněna jedna věc dodat}
 \chapter{Experimenty} % Grammer checked
 \extend{více uvést, cílem je taky zlepšít výsledky, ne?}
@@ -672,13 +671,6 @@ Následně bylo provedeno několik pokusů se snahou vyladit hyperparametry mode
 Byly provedeny tři experimenty, jejichž cílem bylo zjistit optimální počet skrytých vrstev modelu. Byly vyzkoušeny modely se dvěma, čtyřmi a pěti vrstvami. Tři vrstvy byly vynechány, jelikož je měl výchozí model. Z grafů (viz obr. \mbox{\ref{fig:training_course-layers}} pro trénovací data lze usoudit, že s rostoucím počtem vrstev stoupá i přesnost modelu a zároveň klesá ztráta. Přesnost pro vzorky na validační a testovací sadě také roste s počtem skrytých vrstev. Nicméně s ní vzrůstá i ztráta, která by měla naopak klesat. Průběh ztráty u modelů se třemi a více vrstvami se příliš nemění. Při počtu dvou vrstev se model učí pomaleji, ale zároveň neroste v takové míře ztráta. Nejlepších výsledků dosáhl model s pěti vrstvami.
 \extend{jaká byla dosažena nejlepší acc na test/valid datech a pro jakou síť? jaké je srovnání s baseline?}
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-layers.png}}
-\caption{Přehled průběhu trénování pro různé počty skrytých vrstev}
-\label{fig:training_course-layers}
-\end{figure}
-\FloatBarrier
-
 \begin{table}[htb]
 \centering
 \caption{Přehled nejlepších výsledků pro různé počty skrytých vrstev}
@@ -698,18 +690,18 @@ Byly provedeny tři experimenty, jejichž cílem bylo zjistit optimální počet
 \end{table}
 \FloatBarrier
 
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-layers.png}}
+\caption{Přehled průběhu trénování pro různé počty skrytých vrstev}
+\label{fig:training_course-layers}
+\end{figure}
+\FloatBarrier
+
 \section{Změny velikosti okolí vzorku} % Grammer checked
 Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čtyři pokusy, při nichž velikost okolí pro pravou a levou stranu nabývala hodnot 5, 10, 30 a 50. Z průběhu grafů (viz obr. \mbox{\ref{fig:training_course-margin}} pro trénovací datovou sadu lze usoudit, že se zvyšujícím se okolí stoupá přesnost a klesá ztráta modelu. U validační sady přesnost pro vzorky stoupá stejným způsobem jenom pomaleji, zároveň však stoupá ztráta modelu. S ohledem na ztrátu modelu a přesnost pro vzorky jsou nejlepší modely s okolím 15 a 30.
 \extend{kolik vrstev teda používáš?}
 \extend{zase chybí konkrétní hodnoty a zhodnocení, co je nejlepší}
 \note{přináší tu něco ty grafy z trénování, nestačily by jen validační?}
-
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-margin.png}}
-\caption{Přehled průběhu trénování pro různé velikosti okolí}
-\label{fig:training_course-margin}
-\end{figure}
-\FloatBarrier
 
 \begin{table}[htb]
 \centering
@@ -731,17 +723,17 @@ Velikost okolí vzorku bylo možné také upravovat. Celkem byly provedeny čty�
 \end{table}
 \FloatBarrier
 
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-margin.png}}
+\caption{Přehled průběhu trénování pro různé velikosti okolí}
+\label{fig:training_course-margin}
+\end{figure}
+\FloatBarrier
+
 \section{Změny šířky skrytých vrstev} % Grammer checked
 Další parametr, který lze upravovat, je šířka skrytých vrstev modelu. Uskutečnily se čtyři experimenty, během kterých se měnila šířka skrytých vrstev. Modely měly šířku vrstev 16, 64, 256 a 512 neuronů. Při srovnání přesností pro trénovací datovou sadu si lze všimnout, že model s 16 neurony dosahuje nejnižší přesnosti kolem \mbox{50 \%}. Dále s přibývající šířkou výsledná přesnost stoupá přibližně o \mbox{10 \%}, kromě modelu s šířkou 256 a 512, kde je rozdíl mezi přesností podstatně menší. Na grafu ztráty pro validační sadu lze vidět, že ztráta klesá pro model se šířkou 16 neuronů. Pro model se šířkou 64 neuronů je ztráta téměř konstantní a pro modely se šířkou 256 a 512 výrazně stoupá. Modely se šířkou 64 a 128 neuronů dosáhly nejlepších výsledků, jelikož modely s širšími skrytými vrstvami mají větší tendenci se přeučovat.
 \note{výsledky ti ale říkají, že to funguje lépe s více neurony, co říkají testovací data?}
 \note{tohle používá, kolik vrstev, jaký kontext? proč zrovna tyhle a ne nějaké, co třeba fungovaly líp?}
-
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-width.png}}
-\caption{Přehled průběhu trénování při použití regularizace}
-\label{fig:training_course-width}
-\end{figure}
-\FloatBarrier
 
 \begin{table}[htb]
 \centering
@@ -761,6 +753,13 @@ Další parametr, který lze upravovat, je šířka skrytých vrstev modelu. Usk
 \end{tabular}}
 \label{tab:best_results}
 \end{table}
+\FloatBarrier
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-width.png}}
+\caption{Přehled průběhu trénování při použití regularizace}
+\label{fig:training_course-width}
+\end{figure}
 \FloatBarrier
 
 \section{Omezení počtu emocí} % Grammer checked
@@ -815,13 +814,6 @@ Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnomě
 \section{Použití regularizace} % Grammer checked
 Jelikož u předchozích experimentů docházelo přeučování na validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem omezení přeučování. U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dropout s pravděpodobností \mbox{25 \%}, že se výstup vynuluje. Tento model dosahoval nižší přesnosti pro vzorek na trénovacích datech (viz obr. \mbox{\ref{fig:training_course-regularization}}) než výchozí model a ztráta klesala pomaleji. Nicméně na validačních datech měla přesnost pro vzorky tendenci růst a dosáhla vyšší přesnosti než výchozí model. Z grafu pro ztrátu je také vidět, že ztráta v průběhu trénování klesala.
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
-\caption{Přehled průběhu trénování při použití regularizace}
-\label{fig:training_course-regularization}
-\end{figure}
-\FloatBarrier
-
 % Grammer further ahead has not been checked
 Pro další pokus byly skryté vrstvy výchozího modelu rozšířeny o vrstvy s normalizací dávek. Normalizace byly opět umístěny za aktivační funkce. Model dosahoval velice podobných výsledků ztráty a přesnosti na trénovacích datech. Nicméně průběhy trénovaní na validační sadě byly různé. Přesnost modelu dosáhla o \mbox{5 \%} více než na výchozím modelu a po celou dobu trénování rostla. Míra růstu ztráty byla podstatně nižší. 
 
@@ -848,6 +840,13 @@ dropout s normalizací dávek & 65,8 \% & 63,7 \% & 86,1 \% & 63,6 \% & 85,3 \% 
 \end{table}
 \FloatBarrier
 
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-regularization.png}}
+\caption{Přehled průběhu trénování při použití regularizace}
+\label{fig:training_course-regularization}
+\end{figure}
+\FloatBarrier
+
 \note{Brát poslední epochy}
 \note{Natrénovat stejný finální model}
 \note{Finální 10 epoch, 4 vrstvy, okolí 30, 256 neuronů, normalizace dávek}
@@ -858,13 +857,6 @@ dropout s normalizací dávek & 65,8 \% & 63,7 \% & 86,1 \% & 63,6 \% & 85,3 \% 
 \note{}
 \section{Finální modely}
 Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a dropout ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \mbox{\ref{fig:training_course-final_more}}.
-
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-final_more.png}}
-\caption{Přehled průběhu trénování finálních modelů}
-\label{fig:training_course-final_more}
-\end{figure}
-\FloatBarrier
 
 \note{tohle je poprvé, co mluvíme o acc na nahrávky, což je to hlavní, co nás zajímá, protože děláš offline přístup...}
 První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky \mbox{77,4 \%} na trénovací sadě, \mbox{73,4 \%} na validační sadě a \mbox{75,4 \%} na testovací sadě. Byla získána přesnost pro nahrávky \mbox{83,2 \%} na validační sadě a \mbox{84,7 \%} na sadě testovací.
@@ -892,6 +884,13 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 \end{tabular}}
 \label{tab:best_results}
 \end{table}
+\FloatBarrier
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-final_more.png}}
+\caption{Přehled průběhu trénování finálních modelů}
+\label{fig:training_course-final_more}
+\end{figure}
 \FloatBarrier
 
 \chapter{Závěr} % Grammer checked
