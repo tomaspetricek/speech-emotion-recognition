@@ -130,6 +130,7 @@ sentiment analysis, speech emotion recognition, deep learning, PyTorch, MFCC
 \clearpage
 
 \begin{acknowledgement}
+Jako první bych chtěl poděkovat vedoucímu této práce panu doktoru Lukáši Matějů za důsledné vedení, pravidelné konzultace a užitečné rady.
 \end{acknowledgement}
 
 \tableofcontents
@@ -435,7 +436,7 @@ kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá
 
 \chapter{Vývoj balíčku pro rozpoznávání emocí} % Grammer checked
 Byl vytvořen balíček s moduly pro rozpoznávání emocí. \note{asi bych to lépe uvedl, víc popsat, než začneš popisovat moduly}
-Balíček je napsán v jazyku \texttt{\mbox{Python}} verze 3. Mezi vytvořené moduly patří: \texttt{\mbox{convertors}} pro převod dat, data pro práci s daty, \texttt{\mbox{classifiers}} na tvorbu klasifikátoru, \texttt{\mbox{files}} na práci se soubory, \texttt{\mbox{datasets}} k tvorbě datových sad, \texttt{\mbox{prepare}} pro přípravu datových sad a \texttt{\mbox{train}} sloužící k trénování modelu. Moduly jsou psány objektově. Byly použity knihovny a frameworky: \texttt{\mbox{PyTorch}} 1.6\extend{reference} pro tvorbu a trénování modelu, \texttt{\mbox{seaborn}} 0.11 a \texttt{\mbox{matplotlib}} 3.3 pro vytvoření grafů, \texttt{\mbox{logging}} 0.4 pro logování při trénování modelu, \texttt{\mbox{scikit-learn}} 0.23 pro rozdělení dat na datové sady, \texttt{\mbox{pandas}} 1.1 a \texttt{\mbox{numpy}} 1.18 pro ukládání a práci s daty, \texttt{\mbox{os}} a \texttt{\mbox{sys}} pro práci s operačním systémem, \texttt{\mbox{re}} pro parsování anotací, \texttt{\mbox{subprocess}} pro spouštění příkazů z příkazové řádky, \texttt{\mbox{PyHTK}}~\cite{pyhtk} pro načítání souborů vytvořených pomocí sady nástrojů \texttt{\mbox{HTK}}. \note{možná uvést následující podkapitoly, věnují se jednotlivým úlohám}
+Balíček je napsán v jazyku \texttt{\mbox{Python}}\footnote{https://www.python.org/} verze 3. Mezi vytvořené moduly patří: \texttt{\mbox{convertors}} pro převod dat, data pro práci s daty, \texttt{\mbox{classifiers}} na tvorbu klasifikátoru, \texttt{\mbox{files}} na práci se soubory, \texttt{\mbox{datasets}} k tvorbě datových sad, \texttt{\mbox{prepare}} pro přípravu datových sad a \texttt{\mbox{train}} sloužící k trénování modelu. Moduly jsou psány objektově. Byly použity knihovny a frameworky: \texttt{\mbox{PyTorch}}\footnote{https://pytorch.org} 1.6 pro tvorbu a trénování modelu, \texttt{\mbox{seaborn}} 0.11 a \texttt{\mbox{matplotlib}} 3.3 pro vytvoření grafů, \texttt{\mbox{logging}} 0.4 pro logování při trénování modelu, \texttt{\mbox{scikit-learn}} 0.23 pro rozdělení dat na datové sady, \texttt{\mbox{pandas}} 1.1 a \texttt{\mbox{numpy}} 1.18 pro ukládání a práci s daty, \texttt{\mbox{os}} a \texttt{\mbox{sys}} pro práci s operačním systémem, \texttt{\mbox{re}} pro parsování anotací, \texttt{\mbox{subprocess}} pro spouštění příkazů z příkazové řádky, \texttt{\mbox{PyHTK}}\footnote{https://github.com/danijel3/PyHTK} pro načítání souborů vytvořených pomocí sady nástrojů Hidden Markov Model Toolkit (\texttt{\mbox{HTK}})\footnote{https://htk.eng.cam.ac.uk}. \note{možná uvést následující podkapitoly, věnují se jednotlivým úlohám}
 
 \section{Výběr datových sad} % Grammer checked
 \note{nebylo by to lepší až v experimentech?}
@@ -461,7 +462,7 @@ Hlavním kritériem při výběru byla dostupnost datové sady, proto byly vybr�
 Celkem tedy byly získány čtyři datové sady o dvou jazycích se zastoupením sedmi emocemi. Dohromady vzniklá datová sada má celkem přibližnou dobu trvání čtyři hodiny.
 
 \section{Předzpracování dat} % Grammer checked
-Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg) přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \mbox{\ref{fig:ffmpeg}}.
+Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data převedena na příznaky MFCC. Formát byl sjednocen pomocí nástroje Fast Forward MPEG (FFmpeg)\footnote{https://ffmpeg.org} přístupného z příkazové řádky. Nahrávky byly převedeny na vzorkovací frekvenci 16 kHz a byl zachován jeden zvukový kanál. Zvukové nahrávky byly převedeny pomocí příkazu na obrázku \mbox{\ref{fig:ffmpeg}}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{ffmpeg_command.png}}
@@ -470,8 +471,7 @@ Data byla nejdříve předzpracována. Byl sjednocen jejich formát a data přev
 \end{figure}
 \FloatBarrier
 
-Dále byly z nahrávek extrahovány příznaky MFCC. K extrakci byla použita sada nástrojů Hidden Markov Model Toolkit (HTK). \note{odkaz?}
-Pro extrakci byl použit konfigurační soubor (viz obr. \mbox{\ref{fig:htk_config})}.
+Dále byly z nahrávek extrahovány příznaky MFCC. K extrakci byla použita sada nástrojů HTK. Pro extrakci byl použit konfigurační soubor (viz obr. \mbox{\ref{fig:htk_config})}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
@@ -633,9 +633,8 @@ Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statist
 
 \subsection{Použité metriky} % Grammer checked
 \note{nemělo už být u původních metrik?}
-Během trénování modelu byly každou epochu měřeny metriky. Při trénování a validaci byla počítána přesnost pro jeden vzorek a ztráta pro jeden vzorek z datové sady. \note{pro jeden vzorek? není to přesnost na úrovni framů?} 
-Při validaci byla navíc zaznamenávána i přesnost pro jednu nahrávku, kdy byla předpověď pro jednu nahrávku vypočtena zprůměrováním předpovědí pro každý vzorek nahrávky.\note{pro jednu nahrávku?}
-\note{zprůměrováním výstupů sítě nebo labelů?}
+Během trénování modelu byly každou epochu měřeny metriky. Při trénování a validaci byla počítána přesnost pro vzorek a ztráta pro vzorek \note{pro jeden vzorek? není to přesnost na úrovni framů?} 
+Při validaci byla navíc zaznamenávána i přesnost pro nahrávku, kdy byla předpověď pro jednu nahrávku vypočtena zprůměrováním výstupů sítě pro každý vzorek nahrávky.
 
 \chapter{Experimenty} % Grammer checked
 \extend{více uvést, cílem je taky zlepšít výsledky, ne?}
@@ -877,7 +876,10 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 \FloatBarrier
 
 \chapter{Závěr} % Grammer checked
-\extend{obecný závěr... čemu se práce věnovala...}
+V teoretické části byly nejprve uvedeny emoce a hlavní dva modely pro jejich dělení. Byl popsán postup pro vytváření systému pro rozpoznávání emocí z řeči. V současném poznání byly uvedeny používané příznaky a datové sady.
+
+Byly popsány tři hlavní typy datových sad a poskytnut přehled bezplatných datových sad. Podrobněji byly vylíčeny datové sady použité v praktické části práce. Dále byly popsány základní techniky pro zpracování řeči. Bylo uvedeno základní dělení příznaků pro rozpoznávání emocí z řeči a důkladněji popsán postup pro extrakci příznaků MFCC. Další kapitola byla věnována vybraným základům neuronových sítí, kde byly popsány koncepty spojené s učením a tvorbou modelu.
+
 V jazyku Python byl vytvořen balíček pro rozpoznávání emocí. Skládal se z modulů pro převod dat, práci s daty, tvorbu klasifikátoru, práci se soubory, tvorbu datových sad, přípravu datových sad a trénování modelu. Balíček především umožňoval snadné vytvoření, uložení a načtení datových sad pro trénování. Zároveň zprostředkovával jednoduché trénování modelu a uložení výsledků trénování pro zpětnou analýzu.
 
 Z volně dostupných datových sad byly vybrány tři anglické datové sady (RAVDESS, SAVEE, TESS) a jedna italská (EMOVO). Byl sjednocen formát nahrávek a byly získány příznaky MFCC. Pro učení modelu byla data z jednotlivých datových sad rovnoměrně rozdělena do trénovací, validační a testovací sady v poměru \mbox{80 \%}, \mbox{10 \%} a \mbox{10 \%}.
@@ -892,7 +894,6 @@ Pro zlepšení výsledků klasifikace by nejvíce pomohlo rozšíření datové 
 
 \clearpage
 \todo[inline,color=yellow!40]{Obecné poznámky}
-\todo[inline,color=blue!40]{nezapomenout na poděkování, buď napsat nebo smazat...}
 \todo[inline,color=green!40]{doplnit seznam zkratek... máš jich tam hodně, přidal bych to}
 \todo[inline,color=blue!40]{zkratky bys měl definovat jen jednou (při prvním použití) a pak už používat jen zkratku, rozhodně to tak nemáš, ideálně upravit, viz třeba MFCC}
 \todo[inline,color=blue!40]{některé tabulky máš moc namačkaně (vertikálně), možná roztáhnout?}
