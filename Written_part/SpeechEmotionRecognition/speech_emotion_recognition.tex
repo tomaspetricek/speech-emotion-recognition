@@ -679,7 +679,7 @@ Nejlepších a zároveň srovnatelných výsledků dosáhly modely se čtyřmi a
 \caption{Přehled nejlepších výsledků pro různé počty skrytých vrstev}
 \resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c |} 
 \hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
+\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{Počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
 \cline{2-4}
 \multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\
 \hline
@@ -709,10 +709,10 @@ Nejlepších výsledků dosáhl model s velikostí pravého a levého okolí 50 
 
 \begin{table}[htb]
 \centering
-\caption{Přehled nejlepších výsledků pro různé velikosti okolí}
+\caption{Přehled nejlepších výsledků pro různé velikosti vstupního okolí}
 \resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c |} 
 \hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
+\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{Velikost vstupního okolí}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
 \cline{2-4}
 \multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\
 \hline
@@ -739,14 +739,14 @@ Nejlepších výsledků dosáhl model s velikostí pravého a levého okolí 50 
 
 Z grafu pro přesnost pro vzorky (viz obr. \mbox{\ref{fig:training_course-layers}}) lze vyčíst, že přesnost stoupala s zvyšující se šířkou vrstev. Přesnost dosažená na validančí sadě byla výrazně nižší než na sadě trénovací. U modelů se šířkou 256 a 512 neuronů nebyl téměř znatelný rozdíl mezi přesnostmi jako u ostatních modelů. Model se šířkou 16 neuronů se učil výrazně pomaleji než jiné modely. Ztráta modelu klesala se zvyšující se šířkou modelu na trénovací sadě. Na sadě validační nepatrně klesala u modelu s 16 neurony ve skryté vrstvě a byla téměř konstantní u modelu s šířkou 64 neuronů. U ostatních modelů ztráta rostla se zvyšujícím se okolím.
 
-Nejlepších výsledků docílily modely se šířkou skrytých 256 a 512 neuronů. Model s šířkou 256 neuronů dosáhl na validační sadě přesnosti pro vzorky \mbox{61,5 \%} (viz tab. \mbox{\ref{tab:best_results-width}}) a přesnosti pro nahrávky \mbox{89,6 \%}. Pro finální model byla vybrána hodnota 256 pro šířku skrytých vrstev, jelikož se menší model se rychleji učí.
+Nejlepších výsledků docílily modely se šířkou skrytých 256 a 512 neuronů. Model s šířkou 256 neuronů dosáhl na validační sadě přesnosti pro vzorky \mbox{61,5 \%} \mbox{(viz tab. \ref{tab:best_results-width})} a přesnosti pro nahrávky \mbox{89,6 \%}. Pro finální model byla vybrána hodnota 256 pro šířku skrytých vrstev, jelikož se menší model se rychleji učí.
 
 \begin{table}[htb]
 \centering
-\caption{Přehled nejlepších výsledků při použití regularizace}
+\caption{Přehled nejlepších výsledků pro různé šířky skrytých vrstev}
 \resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c |} 
 \hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
+\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{Počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
 \cline{2-4}
 \multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\
 \hline
@@ -770,41 +770,18 @@ Nejlepších výsledků docílily modely se šířkou skrytých 256 a 512 neuron
 
 \section{Omezení počtu emocí} % Grammer checked
 V další řadě experimentů byly měněny počty emocí. \extend{uvést motivaci pro méně emocí}
-Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřila spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach. Z grafů (viz obr. \mbox{\ref{fig:training_course-emotion_reduction}} pro trénovací sadu lze usoudit, že s menším počtem emocí stoupá přesnost a zároveň klesá ztráta modelu. V grafech pro validační sadu lze zpozorovat, že přesnost pro vzorky s ubývajícím počtem emocí roste, ale její průběh je konstantní. Ztráta u jednotlivých modelů lineárně roste.
-\note{co se tady vůbec používá za síť?}
+Při experimentu se čtyřmi emocemi byly sjednoceny emoce hněvu a odporu na hněv, překvapení a spokojenost na spokojenost, smutek a strach na smutek. Se třemi emocemi byly rozlišovány pouze neutrální stav, negativní a pozitivní emoce. Mezi pozitivní emoce patřila spokojenost s překvapením a mezi negativní emoce hněv, odpor, smutek a strach.
 
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
-\caption{Přehled průběhu trénování pro různý počet emocí}
-\label{fig:training_course-emotion_reduction}
-\end{figure}
-\FloatBarrier
+Z grafů (viz obr. \mbox{\ref{fig:training_course-emotion_reduction}} pro přesnost pro vzorek lze vyčíst, že při trénování přesnost rostla a při validaci byla téměř konstantní. Rozdíl mezi nejvyšší přesností na trénovacích a validačních sadách byl znatelný, u všech modelů se pohyboval kolem \mbox{20 \%}. S ubývajícím počtem emocí přesnost rostla. Ztráta na trénovacích datech po celou dobu klesala, avšak na validančích datech lineárně stoupala. S přibývajícím počtem emocí byla ztráta nižší.
 
-Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyřech tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část nahrávek umístěna do negativní třídy (viz obr. \mbox{\ref{fig:3_emotions-conf_matrix-val}}). \note{když se odkazuješ přímo na obrázek, tak je divné, že obsahuje hodnoty i mimo diagonálu}
-
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
-\caption{Matice záměn pro validační data při klasifikaci tří emocí}
-\label{fig:3_emotions-conf_matrix-val}
-\end{figure}
-\FloatBarrier
-
-Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz obr. \ref{fig:4_emotions-conf_matrix-val}). O trochu méně nahrávek bylo umístěno v neutrální třídě.
-\note{to stejné, asi bys měl odkázat na součet v rámci řádků nebo tak něco}
-
-\begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{4_emotions-conf_matrix-val.png}}
-\caption{Matice záměn pro validační data při klasifikaci čtyř emocí}
-\label{fig:4_emotions-conf_matrix-val}
-\end{figure}
-\FloatBarrier
+Při klasifikaci do tří tříd bylo dosaženo přesnosti pro vzorek \mbox{71,3 \%} \mbox{(viz tab. \ref{tab:best_results-emotion_reduction})} a přesnosti pro nahrávku \mbox{90,4 \%}. Při klasifikaci do čtyř tříd bylo dosaženo stejné přesnosti pro nahrávku \mbox{90,4 \%}, ale nižší přesnosti pro vzorek \mbox{65,3 \%}. Na základě vzrůstající ztráty na validační sadě měly všechny modely tendenci se přeučovat na sadě trénovací.
 
 \begin{table}[htb]
 \centering
 \caption{Přehled nejlepších výsledků pro různý počet emocí}
 \resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c |} 
 \hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{počet skrytých vrstev}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
+\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{Počet emocí}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
 \cline{2-4}
 \multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\
 \hline
@@ -813,28 +790,50 @@ Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnomě
 7 (výchozí model) & 82,1 \% & 58,8 \% & 88,5 \% \\
 \hline
 \end{tabular}}
-\label{tab:best_results}
+\label{tab:best_results-emotion_reduction}
 \end{table}
 \FloatBarrier
 
+Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyř tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část, 294 nahrávek, umístěna do negativní třídy (viz obr. \mbox{\ref{fig:3_emotions-conf_matrix-val}}), o něco méně, 147 nahrávek, do pozitivní třídy a nejméně, 90 nahrávek, do třídy neutrální.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační data při klasifikaci tří emocí}
+\label{fig:3_emotions-conf_matrix-val}
+\end{figure}
+\FloatBarrier
+
+Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz obr. \ref{fig:4_emotions-conf_matrix-val}). Počet nahrávek se pohyboval v rozmezí 141\textendash148 nahrávek. Méně, 90 nahrávek, bylo umístěno v neutrální třídě.
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{4_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační data při klasifikaci čtyř emocí}
+\label{fig:4_emotions-conf_matrix-val}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
+\caption{Přehled průběhu trénování pro různý počet emocí}
+\label{fig:training_course-emotion_reduction}
+\end{figure}
+\FloatBarrier
+
 \section{Použití regularizace} % Grammer checked
-Jelikož u předchozích experimentů docházelo přeučování na validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem omezení přeučování. U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dropout s pravděpodobností \mbox{25 \%}, že se výstup vynuluje. Tento model dosahoval nižší přesnosti pro vzorek na trénovacích datech (viz obr. \mbox{\ref{fig:training_course-regularization}}) než výchozí model a ztráta klesala pomaleji. Nicméně na validačních datech měla přesnost pro vzorky tendenci růst a dosáhla vyšší přesnosti než výchozí model. Z grafu pro ztrátu je také vidět, že ztráta v průběhu trénování klesala.
+Jelikož u předchozích experimentů docházelo přeučování na validační sadě, bylo vyzkoušeno několik způsobů regularizace s cílem omezení přeučování. U prvního experimentu byl přidán za aktivační funkce ve skryté vrstvě dropout s pravděpodobností \mbox{25 \%}, že se výstup vynuluje. U dalšího modelu byly přidány za aktivační funkce normalizace dávek. U posledního modelu byly techniky regularizace propojeny a za aktivační funkci byla nejprve umístěna normalizace dávky následovaná dropout.
 
-% Grammer further ahead has not been checked
-Pro další pokus byly skryté vrstvy výchozího modelu rozšířeny o vrstvy s normalizací dávek. Normalizace byly opět umístěny za aktivační funkce. Model dosahoval velice podobných výsledků ztráty a přesnosti na trénovacích datech. Nicméně průběhy trénovaní na validační sadě byly různé. Přesnost modelu dosáhla o \mbox{5 \%} více než na výchozím modelu a po celou dobu trénování rostla. Míra růstu ztráty byla podstatně nižší. 
+Z grafu (viz obr. \mbox{\ref{fig:training_course-regularization}}) přesnosti pro vzorek trénovací sady lze vyčíst, že rozdíl mezi průběhem přesnosti výchozího modelu bez normalizace byl téměř stejný. Modely s dropout dosáhly podobných přesností, ale model s normalizací dosáhl přesnosti o \mbox{4 \%} vyšší. Z grafu pro přesnost pro vzorky validační sady lze vyčíst, že model bez regularizace a model s dropout dosáhly podobných nejlepších výsledků. Průběh trénování modelu bez regularizace byl téměř konstantní, na rozdíl od modelu s dropout, který měl tendenci růst. Modely s normalizací dávek dosáhly lepších a téměř totožných nejlepších přesností. Model s normalizací dávek a dropout se učil pomaleji než model bez dropout. Z grafu ztráty pro trénovací sadu lze usoudit, že ztráta pro modely s dropout klesala výrazně pomaleji než u modelů bez dropout. Z průběhu ztrát na validační sadě lze vyčíst, že u modelů s dropout ztráta klesala a u modelů bez dropout naopak rostla.
 
-U posledního experimentu byla použita kombinace předchozích technik. Za aktivační funkci byla nejdříve umístěna normalizace dávek následovaná dropout. Model dosáhl zatím nejlepších výsledků. Průběhy ztráty a přesnosti byly o trochu lepší než u modelu jenom s dropout. Avšak přesnost pro vzorky na validanční sadě stoupala rychleji a dosáhla stejných konečných výsledků jako model jenom s normalizacemi. Ztráta klesala více než u modelu s dropout. Na základě těchto výsledků byly pro další pokusy použity modely s normalizací dávek a dropout.
-\note{a na jakém nastavení sítě to vlastně běží?}
-\note{zase mi tu chybí ideálně nějaká shrnující tabulka}
+Nejlepší model byl model s normalizací dávek a dropout, který docílil přesnosti pro vzorky \mbox{63,4 \%} \mbox{(viz tab. \ref{tab:best_results-regularization})} a přesnosti pro nahrávku \mbox{86,6 \%}. Výchozí model bez regularizace a model s normalizací dávek dosáhly vyšší přesnosti pro nahrávky, ale měli vyšší tendenci se přeučovat na trénovací sadě.
 
 \begin{table}[htb]
 \centering
 \caption{Přehled nejlepších výsledků při použití regularizace}
 \resizebox{\textwidth}{!}{\begin{tabular}{| c | c | c | c | c | c |} 
 \hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{regularizace}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} & \multicolumn{2}{c|}{\thead{Testovací sada}} \\ 
-\cline{2-6}
-\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\ 
+\multicolumn{1}{|c|}{\multirow{2}{*}{\thead{regularizace}}} & \multicolumn{1}{c|}{\thead{Trénovací sada}} & \multicolumn{2}{c|}{\thead{Validační sada}} \\
+\cline{2-4}
+\multicolumn{1}{|c|}{} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro vzorek}} & \multicolumn{1}{c|}{\thead{Přesnost \\ pro nahrávku}} \\
 \hline
 není (výchozí) & 82,1 \% & 58,8 \% & 88,5 \% \\
 dropout & 62,6 \% & 59,5 \% & 84,6 \% \\
@@ -842,7 +841,7 @@ normalizace dávek & 83,4 \% & 63,9 \% & 91,3 \% \\
 dropout s normalizací dávek & 65,6 \% & 63,4 \% & 86,6 \% \\
 \hline
 \end{tabular}}
-\label{tab:best_results}
+\label{tab:best_results-regularization}
 \end{table}
 \FloatBarrier
 
@@ -853,26 +852,12 @@ dropout s normalizací dávek & 65,6 \% & 63,4 \% & 86,6 \% \\
 \end{figure}
 \FloatBarrier
 
-\note{Brát poslední epochy}
-\note{Natrénovat stejný finální model}
-\note{Finální 10 epoch, 4 vrstvy, okolí 30, 256 neuronů, normalizace dávek}
-\note{Zmínit, jak dlouho se trénoval finální}
-\note{horní tabulky validační a trénovací}
-\note{testovací u posledních}
-\note{Změnit vzorky za nahrávky v grafech}
-\note{}
 \section{Finální modely}
-Jako poslední byly vytvořeny finální modely pro klasifikaci do tří, čtyř a sedmi tříd. Byly použity různé modifikace modelu s normalizací dávek a dropout ve skryté vrstvě. Pro všechny počty emocí byly vyzkoušeny tři modely. Průběhy trénování jsou vykresleny v přehledu \mbox{\ref{fig:training_course-final_more}}.
+Na základě předchozích experimentů byl vytvořen finální model, který měl čtyři skryté vrstvy o šířce 256 neuronů. Ve zrytých vrstvách byla použita regularizace v podobě normalizace dávek a dropout, které byly umístěny za aktivační funkci. Velikost pravého a levého okolí vstupního vzorku byla 50 vzorků. Jako aktivační funkce ve skrytých vrstvách byla použita funkce ReLU. Optimalizační algoritmus byl Adam s mírou učení 0.001. Velikost dávek při trénování byla 256 vzorků. Křížová entropie byla použita jako kriteriální funkce. Model byl natrénován pro klasifikaci do tří, čtyř a sedmi tříd a výsledky byly porovnány s výchozím modelem. Trénování probíhalo po dobu deseti epoch. Modely byly vyhodnoceny i na sadě testovací.
 
-\note{tohle je poprvé, co mluvíme o acc na nahrávky, což je to hlavní, co nás zajímá, protože děláš offline přístup...}
-První model měl tři skryté vrstvy o šířce 64 neuronů a vzorek do sítě vstupoval s velikostí 30 pravého a levého okolí. Tento typ architektury se osvědčil při klasifikaci do tří tříd. Během 26. epochy došlo k získání nejlepších výsledků, kdy model dosáhl přesnosti pro vzorky \mbox{77,4 \%} na trénovací sadě, \mbox{73,4 \%} na validační sadě a \mbox{75,4 \%} na testovací sadě. Byla získána přesnost pro nahrávky \mbox{83,2 \%} na validační sadě a \mbox{84,7 \%} na sadě testovací.
+Z grafů pro přesnost pro vzorek (viz obr. \mbox{\ref{fig:training_course-final_more}}) lze usoudit, že s přibývajícím počtem emocí rostla i přesnost. Rozdíl mezi přesností byl přibližně \mbox{10 \%} mezi trénovací a validační sadou. Přesnost pro vzorky finálního modelu pro klasifikaci sedmi emocí a výchozího modelu byla téměř stejná na trénovací sadě, nicméně na sadě validační dosáhl finální model mnohem lepších výsledků, rozdíl nejlepších přesností byl přibližně \mbox{13 \%}. Rozdíl mezi přesnostmi všech finálních modelů byl přibližně \mbox{4 \%} se snižujícím se počtem emocí. Z grafů ztráty modelů lze vyčíst, že ztráta u finálních modelů téměř vždy klesala. U modelu pro rozpoznávání tří emocí měla ztráta tendenci mírného růstu od čtvrté epochy trénování.
 
-Další model se skládal ze tří skrytých vrstev o šířce 128 neuronů s velikostí 30 pravého a levého okolí. Při klasifikaci do čtyř a sedmi tříd model vykazoval dobré výsledky, které byly překonány posledním modelem. \note{proč tu teda je?}
-
-Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, se skládal ze čtyř skrytých vrstev o šířce 128 neuronů a vzorek do sítě vstupoval s velikostí 50 pravého a levého okolí. Při klasifikaci do čtyř tříd měl průběh trénování větší růst u přesnosti pro vzorky a větší spád ztráty než u předchozího modelu. Nicméně měl větší tendenci se přeučovat a nejlepších výsledků dosáhl na 10. epoše, kdy byly přesnosti pro vzorky na trénovací sadě \mbox{79 \%}, na validační sadě \mbox{73,7 \%} a na testovací sadě \mbox{73,6 \%}. Přesnost pro nahrávky vystoupala u validační sady na \mbox{91,7 \%} a u testovací sady na \mbox{92,3 \%}. Model dosáhl lepších výsledků přesnosti pro nahrávky než při klasifikaci do tří tříd pravděpodobně kvůli rovnoměrnějšímu rozložení nahrávek do jednotlivých tříd. Při klasifikaci do sedmi tříd bylo dosaženo nejlepších výsledků v poslední epoše trénování. Přesnost pro vzorky vystoupala na trénovací sadě na \mbox{75,8 \%}, na sadě validační na \mbox{69,3 \%} a na testovací sadě na \mbox{68 \%}. Bylo dosaženo přesnosti pro nahrávky \mbox{90,4 \%} na sadě validační a \mbox{88,5 \%} na sadě testovací. V tabulce \mbox{\ref{tab:best_results}} jsou vypsány nejlepší výsledky finálních modelů. \note{i tyhle jsou lepší než pro 3}
-\note{ty vybrané modely úplně nekorespondují s těmi předchozími experimenty nebo ano?}
-\note{jak jsi je vlastně zvolil?}
-\note{je trochu nefér porovnávat 3 emoce s mnohem menším modelem s více emocemi s většími modely...}
+Model pro klasifikaci do sedmi tříd dosáhl na testovací sadě nejlepší přesnosti pro vzorky \mbox{71,4 \%} \mbox{(viz tab. \ref{tab:best_results-final})} a přesnosti pro nahrávku \mbox{92,3 \%}. Model pro klasifikaci do čtyř tříd dosáhl přesnosti pro vzorky \mbox{75,7 \%} a přesnosti pro nahrávky \mbox{93,6 \%}. Model pro klasifikaci do tří tříd docílil nejlepší přesnosti pro vzorek \mbox{80,1 \%} a přesnosti pro nahrávku \mbox{94,4 \%}.
 
 \begin{table}[htb]
 \centering
@@ -889,7 +874,7 @@ Model, který se nejvíce osvědčil při klasifikaci do čtyř a sedmi tříd, 
 7 (výchozí model) & 82,1 \% & 58,8 \% & 88,5 \% & 58,5 \% & 87,9 \% \\
 \hline
 \end{tabular}}
-\label{tab:best_results}
+\label{tab:best_results-final}
 \end{table}
 \FloatBarrier
 
