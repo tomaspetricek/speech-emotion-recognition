@@ -106,10 +106,10 @@ backend=biber
 
 \begin{document}
 
-\ThesisStart{male}
-%\ThesisStart{zadani-a-prohlaseni.pdf}
+% \ThesisStart{male}
+\ThesisStart{zadani_a_prohlaseni.pdf}
 
-\clearpage
+\newpage
 
 \begin{abstractCZ}  % Grammer checked
 Bakalářská práce se věnuje rozpoznávání emocí v audio nahrávkách s využitím hlubokých neuronových sítí. V úvodní části je čtenář seznámen s motivací a využitím systému pro rozpoznávání emocí. Na začátku první kapitoly jsou definovány pojmy emoce a rozpoznávání emocí. Navazující podkapitoly jsou zaměřeny na vývoj systému pro rozpoznávání emocí. Další kapitola je věnována seznámení se základy neuronových sítí. Je uveden model používaný v experimentální části práce, vysvětleno trénování a vyhodnocení modelu. V následující části je popsán návrh a práce s balíčkem pro rozpoznávání emocí napsaném v jazyce Python. Poslední kapitola představuje experimenty provedené na datové sadě získané sjednocením datových sad RAVDESS, TESS, SAVEE a EMOVO. Pro klasifikaci byla použita neuronová síť typu MLP. Byla implementována a natrénována pomocí frameworku PyTorch. MFCC příznaky byly zvoleny pro učení modelu. Provedené experimenty byly zdokumentovány a rozebrány. V závěru práce jsou shrnuty výsledky a navrženy metody pro dosažení lepších výsledků. Při klasifikaci sedmi emocí bylo dosaženo přesnosti pro nahrávky \mbox{92,3 \%}.
@@ -458,7 +458,7 @@ Nahrávky byly nejdříve předzpracovány. Byl sjednocen jejich formát a byly 
 Dále byly z nahrávek extrahovány příznaky MFCC. K extrakci byla použita sada nástrojů HTK. Pro extrakci byl použit konfigurační soubor (viz obr. \mbox{\ref{fig:htk_config})}.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[scale=.2,keepaspectratio]{htk_config.png}}
+\centerline{\includegraphics[scale=.22,keepaspectratio]{htk_config.png}}
 \caption{HTK konfigurační soubor}
 \label{fig:htk_config}
 \end{figure}
@@ -467,7 +467,7 @@ Dále byly z nahrávek extrahovány příznaky MFCC. K extrakci byla použita sa
 MFCC formát byl zvolen jako MFCC\_0\_D\_A, jehož cílem bylo získat nulté, delta a akcelerační koeficienty. Dále lze vyčíst, že pro okénkování byla použita Hammingova okénkovací funkce a velikost okénka byla nastavena na 25 ms. Extrakce byla uskutečněna pomocí příkazu \texttt{\mbox{HCOPY}} na obrázku \mbox{\ref{fig:htk}}. Pro každý rámec nahrávky bylo získáno 39 příznaků.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[scale=.2,keepaspectratio]{htk_command.png}}
+\centerline{\includegraphics[scale=.22,keepaspectratio]{htk_command.png}}
 \caption{Příkaz HCopy}
 \label{fig:htk}
 \end{figure}
@@ -522,7 +522,7 @@ Dále byla data rozdělena do trénovacích, validačních a testovacích sad. P
 Jako poslední byly sady uloženy do složky. Každé sadě byla přiřazena vlastní složka, která obsahovala soubory labels.npy, samples.npy a info.txt. V souboru info.txt byly uloženy informace pro načítání datové sady. Struktura složky je znázorněna na obrázku \mbox{\ref{fig:file_structure}}. 
 
 \begin{figure}[ht]
-\centerline{\includegraphics[scale=.2]{dataset_file_structure.png}}
+\centerline{\includegraphics[scale=.22]{dataset_file_structure.png}}
 \caption{Souborová struktura uložené datové sady}
 \label{fig:file_structure}
 \end{figure}
@@ -552,7 +552,7 @@ Písmenem $ S $ jsou označeny jednotlivé vzorky. $ R $ označuje jednotlivé n
 Z třídy \texttt{\mbox{NumpyDataset}} dědí třídy \texttt{\mbox{NumpyFrameDataset}} a \texttt{\mbox{NumpySampleDataset}} (viz obr. \mbox{\ref{fig:numpy_dataset}}), které se liší v implementaci metod \texttt{\_\_len\_\_} a \texttt{\_\_getitem\_\_}. Metoda \texttt{\_\_len\_\_} při zavolání vrací délku datové sady, která u třídy \texttt{\mbox{NumpyFrameDataset}} odpovídá počtu vzorků a u třídy \texttt{\mbox{NumpySampleDataset}} odpovídá počtu nahrávek. Metoda \texttt{\_\_getitem\_\_} vrací jeden prvek z \texttt{\mbox{Dataset}}, u třídy \mbox{NumpySampleDataset} vrací metoda jeden vzorek a třídy \texttt{\mbox{NumpyRecordingDataset}} vrací jednu nahrávku. Třída \texttt{\mbox{NumpyDataset}} je tímto způsobem rozdělena. Důvodem pro rozdělení je, že při načítání dat pro validaci můžeme pomocí třídy \texttt{\mbox{NumpyRecordingDataset}} spočítat přesnost na celou nahrávku. Naopak při trénování je potřeba načítat vzorky po dávkách, které mají fixní délku na rozdíl od nahrávek, u kterých se délka mění. Vzorky se při trénování často míchají, a to je také důvod, proč je lepší mít třídu rozdělenou.
 
 \begin{figure}[ht]
-\centerline{\includegraphics[scale=.185]{datasets.png}}
+\centerline{\includegraphics[scale=.25]{datasets.png}}
 \caption{Třídy NumpyDataset}
 \label{fig:numpy_dataset}
 \end{figure}
@@ -598,7 +598,7 @@ Trénování je zahájeno zavoláním objektu třídy \texttt{\mbox{Trainer}}, k
 \end{figure}
 \FloatBarrier
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centerline{\includegraphics[scale=.3]{train-stats_printer.png}}
 \caption{Třída StatsPrinter}
 \label{fig:printer}
@@ -607,7 +607,7 @@ Trénování je zahájeno zavoláním objektu třídy \texttt{\mbox{Trainer}}, k
 
 Po ukončení trénování lze model uložit do souboru s koncovkou .pt. Statistiky trénování lze uložit do souboru CSV. Ze statistik lze pomocí třídy \texttt{\mbox{Results}} (viz obr. \mbox{\ref{fig:results}}) získat grafy průběhu trénování. Pomocí funkce \texttt{\mbox{plot}} z knihovny \texttt{\mbox{matplolib}} jsou vykresleny grafy průběhu trénování pro přesnosti a ztrátu. Dále jsou vytvořeny pomocí funkce \texttt{\mbox{heatmap}} z knihovny \texttt{\mbox{seaborn}} grafy matice záměn. Grafy lze zobrazit a uložit jako obrázky typu PNG.
 
-\begin{figure}[ht]
+\begin{figure}[hbt!]
 \centerline{\includegraphics[scale=.2]{train-results.png}}
 \caption{Třída Results}
 \label{fig:results}
@@ -863,7 +863,7 @@ dropout s normalizací dávek & 65,6 \% & 63,4 \% & 86,6 \% \\
 \FloatBarrier
 
 \section{Finální modely} % Grammer checked
-Na základě předchozích experimentů byl vytvořen finální model, který měl čtyři skryté vrstvy o šířce 256 neuronů. Ve skrytých vrstvách byla použita regularizace v podobě normalizace dávek a dropout, které byly umístěny za aktivační funkci. Velikost pravého a levého okolí vstupního vzorku byla 50 vzorků. Jako aktivační funkce ve skrytých vrstvách byla použita funkce ReLU. Optimalizační algoritmus byl Adam s mírou učení 0.001. Velikost dávek při trénování byla 256 vzorků. Křížová entropie byla použita jako kriteriální funkce. Model byl natrénován pro klasifikaci do tří, čtyř a sedmi tříd a výsledky byly porovnány s výchozím modelem. Trénování probíhalo po dobu deseti epoch. Modely byly vyhodnoceny i na sadě testovací.
+Na základě předchozích experimentů byl vytvořen finální model, který měl čtyři skryté vrstvy o šířce 256 neuronů. Ve skrytých vrstvách byla použita regularizace v podobě normalizace dávek a dropout, které byly umístěny za aktivační funkci. Velikost pravého a levého okolí vstupního vzorku byla 50 vzorků. Jako aktivační funkce ve skrytých vrstvách byla použita funkce ReLU. Optimalizační algoritmus byl Adam s mírou učení 0.001. Velikost dávek při trénování byla 256 vzorků. Křížová entropie byla použita jako kriteriální funkce. Model byl natrénován pro klasifikaci do tří, čtyř a sedmi tříd a výsledky byly porovnány s výchozím modelem. Trénování probíhalo po dobu deseti epoch. Modely byly vyhodnoceny i na sadě testovací. Na obrázku \ref{fig:final_model_architecture} jsou informace o trénování finálního modelu z logovacího souboru.
 
 Z grafů pro přesnost pro vzorek (viz obr. \mbox{\ref{fig:training_course-final_more}}) lze usoudit, že s přibývajícím počtem emocí rostla i přesnost. Rozdíl mezi přesností trénovací a validační sady byl přibližně \mbox{10 \%}. Přesnost pro vzorky finálního modelu pro klasifikaci sedmi emocí a výchozího modelu byla téměř stejná na trénovací sadě, nicméně na sadě validační dosáhl finální model mnohem lepších výsledků. Rozdíl nejlepších přesností byl přibližně \mbox{13 \%}. Rozdíl mezi přesnostmi všech finálních modelů byl zhruba \mbox{4 \%} se snižujícím se počtem emocí. Z grafů ztráty modelů na validační sadě lze vyčíst, že ztráta u finálních modelů téměř vždy klesala. U modelu pro rozpoznávání tří emocí měla ztráta tendenci mírného růstu od čtvrté epochy trénování.
 
@@ -889,6 +889,13 @@ Model pro klasifikaci do sedmi tříd dosáhl na testovací sadě nejlepší př
 \FloatBarrier
 
 \begin{figure}[!htbp]
+\centerline{\includegraphics[scale=.22]{final_model_architecture.png}}
+\caption{Výpis informací o trénování finálního modelu}
+\label{fig:final_model_architecture}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[!htbp]
 \centerline{\includegraphics[scale=.5]{training_course-final_more.png}}
 \caption{Přehled průběhu trénování finálních modelů}
 \label{fig:training_course-final_more}
@@ -911,9 +918,6 @@ Na základě proběhlých experimentů byly vytvořeny tři finální modely pro
 Pro zlepšení výsledků klasifikace by nejvíce pomohlo rozšíření datové sady pro trénování. Pomocí regularizačních vrstev lze do jisté míry přeučování modelu zabránit, ale míru přesnosti modelu omezuje nízký počet a různorodost dat. Dalším způsobem, jak vylepšit výsledky klasifikace, je vyzkoušet jiné typy neuronových sítí. V úvahu na příklad přicházejí neuronové sítě typu CNN nebo RNN. V obou případech lze téměř bez změn přidat funkcionalitu do balíčku pro rozpoznávání emocí.
 
 \note{Zkratky mít definované jenom jednou}
-\note{Přidat PNG finálního modelu}
-\note{Přidat vygenerované zadání práce ze stagu. Pomocí online nástrojů. PDF splitter a merger. Musí se dát vyhledávat F5.}
-\note{Přidat prázdnou stránku}
 
 \note{Zkrátit závěr}
 

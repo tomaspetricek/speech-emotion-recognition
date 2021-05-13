@@ -1,0 +1,39 @@
+Optimizer:
+Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    weight_decay: 0
+)
+Criterion:
+CrossEntropyLoss()
+Model:
+FeedForwardNet(
+  (layers): ModuleList(
+    (0): Linear(in_features=3939, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=256, bias=True)
+    (3): ReLU()
+    (4): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): Dropout(p=0.25, inplace=False)
+    (6): Linear(in_features=256, out_features=256, bias=True)
+    (7): ReLU()
+    (8): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): Dropout(p=0.25, inplace=False)
+    (10): Linear(in_features=256, out_features=256, bias=True)
+    (11): ReLU()
+    (12): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (13): Dropout(p=0.25, inplace=False)
+    (14): Linear(in_features=256, out_features=256, bias=True)
+    (15): ReLU()
+    (16): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (17): Dropout(p=0.25, inplace=False)
+    (18): Linear(in_features=256, out_features=7, bias=True)
+  )
+)
+N epochs:  10
+Batch size:  256
+Left margin:  50
+Right margin:  50
