@@ -112,7 +112,7 @@ backend=biber
 \newpage
 
 \begin{abstractCZ}  % Grammer checked
-Bakalářská práce se věnuje rozpoznávání emocí v audio nahrávkách s využitím hlubokých neuronových sítí. V úvodní části je čtenář seznámen s motivací a využitím systému pro rozpoznávání emocí. Na začátku první kapitoly jsou definovány pojmy emoce a rozpoznávání emocí. Navazující podkapitoly jsou zaměřeny na vývoj systému pro rozpoznávání emocí. Další kapitola je věnována seznámení se základy neuronových sítí. Je uveden model používaný v experimentální části práce, vysvětleno trénování a vyhodnocení modelu. V následující části je popsán návrh a práce s balíčkem pro rozpoznávání emocí napsaném v jazyce Python. Poslední kapitola představuje experimenty provedené na datové sadě získané sjednocením datových sad RAVDESS, TESS, SAVEE a EMOVO. Pro klasifikaci byla použita neuronová síť typu MLP. Byla implementována a natrénována pomocí frameworku PyTorch. MFCC příznaky byly zvoleny pro učení modelu. Provedené experimenty byly zdokumentovány a rozebrány. V závěru práce jsou shrnuty výsledky a navrženy metody pro dosažení lepších výsledků. Při klasifikaci sedmi emocí bylo dosaženo přesnosti pro nahrávky \mbox{92,3 \%}.
+Bakalářská práce se věnuje rozpoznávání emocí v audio nahrávkách s využitím hlubokých neuronových sítí. V úvodní části je čtenář seznámen s motivací a využitím systému pro rozpoznávání emocí. Na~začátku první kapitoly jsou definovány pojmy emoce a rozpoznávání emocí. Navazující podkapitoly jsou zaměřeny na vývoj systému pro~rozpoznávání emocí. Další kapitola je věnována seznámení se~základy neuronových sítí. Je uveden model používaný v experimentální části práce, vysvětleno trénování a vyhodnocení modelu. V následující části je popsán návrh a práce s balíčkem pro rozpoznávání emocí napsaném v jazyce Python. Poslední kapitola představuje experimenty provedené na datové sadě získané sjednocením datových sad RAVDESS, TESS, SAVEE a EMOVO. Pro~klasifikaci byla použita neuronová síť typu MLP. Byla implementována a natrénována pomocí frameworku PyTorch. MFCC příznaky byly zvoleny pro učení modelu. Provedené experimenty byly zdokumentovány a rozebrány. V závěru práce jsou shrnuty výsledky a navrženy metody pro dosažení lepších výsledků. Při klasifikaci sedmi emocí bylo dosaženo přesnosti pro nahrávky \mbox{92,3 \%}.
 \end{abstractCZ}
 
 \begin{keywordsCZ}
@@ -122,7 +122,7 @@ rozpoznávání emocí z řeči, strojové učení, neuronové sítě, PyTorch, 
 \vspace{2cm}
 
 \begin{abstractEN}
-Bachelor's thesis deals with emotion recognition in audio recordings using deep neural networks. In the introductory part, the reader is familiarized with the motivation and application of speech emotion recognition system. At the beginning of the first chapter, the concepts of emotion and emotion recognition are defined. Subsequent sections are focused on the development of a speech emotion recognition system. Next chapter is devoted to acquaintance with the basics of neural networks. Model used in the experimental part of the work is presented, training and evaluation of the model are explained. The following section describes the design and workflow of emotion recognition package written in Python. The last chapter presents experiments performed on a dataset obtained by unifying the RAVDESS, TESS, SAVEE and EMOVO datasets. An MLP neural network was used for classification. It was implemented and trained using the PyTorch framework. MFCC features were selected for model learning. Performed experiments were documented and analyzed. At the end of the work, the results are summarized and methods for achieving better results are proposed. An accuracy of \mbox{92,3 \%} per recording has been achieved while classifying seven emotions.
+Bachelor's thesis deals with emotion recognition in audio recordings using deep neural networks. In the introductory part, the~reader is familiarized with the motivation and application of speech emotion recognition system. At the beginning of the first chapter, the concepts of emotion and emotion recognition are defined. Subsequent sections are focused on the development of~a speech emotion recognition system. Next chapter is devoted to acquaintance with~the basics of neural networks. Model used in the experimental part of~the work is presented, training and~evaluation of the model are explained. The following section describes the design and workflow of~emotion recognition package written in Python. The last chapter presents experiments performed on a dataset obtained by unifying the RAVDESS, TESS, SAVEE and EMOVO datasets. An MLP neural network was used for classification. It was implemented and trained using the PyTorch framework. MFCC features were selected for model learning. Performed experiments were documented and analyzed. At the end of the work, the results are summarized and methods for achieving better results are proposed. An accuracy of \mbox{92,3 \%} per recording has been achieved while classifying seven emotions.
 \end{abstractEN}
 
 \begin{keywordsEN}
@@ -144,13 +144,39 @@ Nejprve bych chtěl poděkovat vedoucímu této práce panu doktoru Lukáši Mat
 \listoffigures
 \listoftables
 
-% \clearpage
-% \begin{abbrList}
-% \textbf{MFCC} & Melovské frekvenční kepstrální koeficienty
-% \end{abbrList}
+\begin{abbrList}
+\textbf{Adam} & Adaptive Momentum \\
+\textbf{BES} & Berlin Emotional Speech database \\
+\textbf{CNN} & konvoluční neuronová síť \\
+\textbf{DES} & Danish Emotional Speech dataset \\
+\textbf{DFT} & diskrétní Fourierova transformace \\
+\textbf{DNN} & hluboká neuronová síť \\
+\textbf{FFN} & dopředná neuronová síť \\
+\textbf{FFT} & rychlá Fourierova transformace \\
+\textbf{FFmpeg} & Fast Forward MPEG \\
+\textbf{GFCC} & gammatone frekvenční kepstrální koeficienty \\
+\textbf{GMM} & Gaussovské směsné modely \\
+\textbf{HMM} & skryté Markovovy modely \\
+\textbf{HNR} & poměr harmonie k hluku \\
+\textbf{HTK} & Hidden Markov Model Toolkit \\
+\textbf{IDCT} & inverzní diskrétní kosinová transformace \\
+\textbf{LFPC} & logaritmické frekvenční silové koeficienty \\
+\textbf{LPCC} & lineární predikční kepstrální koeficienty \\
+\textbf{MFCC} & Melovské frekvenční kepstrální koeficienty \\
+\textbf{NLP} & vícevrstvý perceptron \\
+\textbf{RAVDESS} & Ryerson Audio-Visual Database of Emotional Speech and Song database \\
+\textbf{RNN} & rekurentní neuronová síť \\
+\textbf{ReLU} & usměrněná lineární aktivační funkce \\
+\textbf{SUSAS} & Speech Under Simulated and Actual Stress database \\
+\textbf{SVM} & metoda podpůrných vektorů \\
+\textbf{SpeechLab} & Laboratoř počítačového zpracování řeči \\
+\textbf{TEO} & příznaky založené na Teagerově energetickém operátoru \\
+\textbf{TIMIT} & Texas Instruments a Massachusetts Institute of Technology \\
+\textbf{ZCR} & metoda průchodu nulovou úrovní \\
+\end{abbrList}
 
 \chapter{Úvod} % Grammer checked
-Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychický stav. Při používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět~\cite{DBLP:journals/speech/AkcayO20}.
+Řeč je naše nejpřirozenější forma komunikace a emoce nám pomáhají si lépe porozumět. Díky emocím můžeme svému okolí ukázat svůj vnitřní psychický stav. Při~používání jiných forem komunikace je těžší vyjádřit své emoce, přesto lidé našli způsoby, jak je do komunikace zapojit. S rozvojem chatovácích platforem byly vyvinuty smajlíky, které reprezentují zjednodušený výraz lidského obličeje. Můžeme, tak ve zprávě poslat úplnější informaci a lépe si porozumět~\cite{DBLP:journals/speech/AkcayO20}.
 
 Nicméně i přesto, že jsme schopni vyjádřit své emoce, tak to neznamená, že se pochopíme. Emoce jsou subjektivní a každý z nás je může vnímat trochu jinak. Tato vlastnost emocí neusnadňuje ani vývoj systémů pro jejich rozpoznávání. Zatím nebyl nalezen způsob, jak emoce měřit. Proto lidé usilují o vyvinutí systémů schopných rozpoznávat emoce bez explicitně zadaných instrukcí.
 
@@ -160,7 +186,7 @@ V posledních letech došlo k rozvoji osobních virtuálních asistentů jako js
 
 Dále může model najít uplatnění pro call centra. Data generovaná call centrem mohou posloužit k vývoji automatické obsluhy zákazníků nebo pro optimalizaci práce v call centru. Dispečerovi můžou být, podle emocionálního stavu zákazníka, nabídnuty scénáře, podle kterých je vhodné v dané situaci postupovat. Model může být využit také k vylepšení systémů doporučující videa nebo podcasty. Uplatnění může najít také při vývoji realističtějších her. Zdroje dat jsou různé. V dnešní době převažují uměle vytvořené datové sady~\cite{konar_chakraborty_2015}.
 
-Práce se zabývá aktuálním tématem a výsledky mohou vést k rozšíření systémů vyvíjených Laboratoří počítačového zpracování řeči (SpeechLab)~\cite{speechlab}. Model by se mohl implementovat na příklad do monitorovacího systému pro přepis TV a radio streamů v různých jazycích.
+Práce se zabývá aktuálním tématem a výsledky mohou vést k rozšíření systémů vyvíjených Laboratoří počítačového zpracování řeči (SpeechLab)~\footnote{https://www.ite.tul.cz/speechlab/}. Model by se mohl implementovat na příklad do monitorovacího systému pro přepis TV a radio streamů v různých jazycích.
 
 \chapter{Základy rozpoznávání emocí}
 
@@ -170,7 +196,7 @@ V současnosti není zvolena jednotná definice emocí. Existuje jich mnoho. Emo
 Emoce můžeme dělit dvěma způsoby podle diskrétního modelu nebo prostorového modelu. Diskrétní model rozděluje emoce do kategorií. Mezi hlavní kategorie patří: smutek, radost, strach, hněv, znechucení a překvapení. Prostorový model dělí emoce do jednotlivých prostorů jako jsou mocenství, vzrušení nebo vliv. Vzrušení udává sílu emoce a má rozsah od znudění k nadšení. Výhodou diskrétního modelu je, že na rozdíl od prostorového modelu je intuitivnější~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Rozpoznávání emocí} % Grammer checked
-Postup vývoje systému pro rozpoznávání emocí z řeči je znázorněn na obrázku \ref{fig:ser_pipeline}. Při vývoji typického systému pro rozpoznávání emocí z řeči je nejprve vybrána anotovaná datová sada. Data ze sady jsou nejdříve předzpracována. Dále jsou z nich vytaženy příznaky pro rozpoznávání a jsou z nich vybrány nejvhodnější pro rozpoznávání. Pomocí anotovaných příznaků lze natrénovat model strojového učení z kategorie učení s učitelem. Výsledný model je buď typu klasifikátor, pokud jsou emoce děleny diskrétně nebo regresor v případě, že jsou děleny prostorově. Výsledkem klasifikace nebo regrese jsou předpovědi~\cite{konar_chakraborty_2015}.
+Při vývoji typického systému pro rozpoznávání emocí z řeči je nejprve vybrána anotovaná datová sada. Data ze sady jsou nejdříve předzpracována. Dále jsou z nich vytaženy příznaky pro rozpoznávání a jsou z nich vybrány nejvhodnější pro rozpoznávání. Pomocí anotovaných příznaků lze natrénovat model strojového učení z kategorie učení s učitelem. Výsledný model je buď typu klasifikátor, pokud jsou emoce děleny diskrétně nebo regresor v případě, že jsou děleny prostorově. Výsledkem klasifikace nebo regrese jsou předpovědi~\cite{konar_chakraborty_2015}. Postup vývoje systému pro rozpoznávání emocí z řeči je znázorněn na obrázku \ref{fig:ser_pipeline}.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{speech_emotion_recognition-pipeline.png}}
@@ -182,15 +208,14 @@ Postup vývoje systému pro rozpoznávání emocí z řeči je znázorněn na ob
 \section{Současné poznání} % Grammer checked
 Při rozpoznávání emocí z řeči není určeno, které emoce rozpoznávat a jestli pro rozpoznávání používat diskrétní nebo prostorový model. Nicméně při použití diskrétního modelu jsou vymezeny takzvané velké n emoce mezi než patří na příklad: hněv, strach, smutek nebo radost~\cite{konar_chakraborty_2015}.
 
-V současné době existuje mnoho datových sad. Datové sady se od sebe liší především vznikem, počtem emocí a jazykem. Podle způsobu vzniku jsou datové sady děleny na předstírané, vybuzené a přirozené. Mezi hojně používané předstírané datové sady patří Danish Emotional Speech dataset (DES)~\cite{DBLP:conf/interspeech/EngbergHAD97}, Berlin Emotional Speech database (BES)~\cite{bes_dataset}, Speech Under Simulated and Actual Stress (SUSAS) database~\cite{DBLP:conf/interspeech/HansenB97} nebo Ryerson Audio-Visual Database of Emotional Speech and Song database (RAVDESS)~\cite{Livingstone2018}. Mezi vybuzené datové sady patří na příklad eNTERFACE~\cite{DBLP:conf/icde/MartinKMP06}. Většina datových sad má do jedné hodiny délky a nahrávky jsou namluveny kolem deseti mluvčích. Nicméně při rozpoznávání řeči je typicky potřeba datová sada s několika sty hodinami nahrávek a větší různorodost mluvčích~\cite{konar_chakraborty_2015}.
+V současné době existuje mnoho datových sad. Datové sady se od sebe liší především vznikem, počtem emocí a jazykem. Podle způsobu vzniku jsou datové sady děleny na předstírané, vybuzené a přirozené. Mezi hojně používané předstírané datové sady patří Danish Emotional Speech dataset (DES)~\cite{DBLP:conf/interspeech/EngbergHAD97}, Berlin Emotional Speech database (BES)~\cite{bes_dataset}, Speech Under Simulated and Actual Stress database  (SUSAS)~\cite{DBLP:conf/interspeech/HansenB97} nebo Ryerson Audio-Visual Database of Emotional Speech and Song database \mbox{(RAVDESS)~\cite{ravdess}}. Mezi vybuzené datové sady patří na příklad \mbox{eNTERFACE~\cite{DBLP:conf/icde/MartinKMP06}}. Většina datových sad má do jedné hodiny délky a nahrávky jsou namluveny kolem deseti mluvčích. Nicméně při rozpoznávání řeči je typicky potřeba datová sada s několika sty hodinami nahrávek a větší různorodost mluvčích~\cite{konar_chakraborty_2015}.
 
-Příznaky používané pro rozpoznávání emocí lze dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Mezi prozodické příznaky patří na příklad intonace nebo rytmus. K příznakům založeným na spektru lze přiřadit Melovské frekvenční kepstrální koeficienty (MFCC), lineární predikční kepstrální koeficienty (LPCC) nebo log-frequency power coeﬀicients (LFPC). Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku~\cite{DBLP:journals/speech/AkcayO20}.
-\note{Sjednotit zkratky}
+Příznaky používané pro rozpoznávání emocí lze dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Mezi prozodické příznaky patří na příklad intonace nebo rytmus. K příznakům založeným na spektru lze přiřadit Melovské frekvenční kepstrální koeficienty (MFCC), lineární predikční kepstrální koeficienty (LPCC) nebo logaritmické frekvenční silové koeficienty (LFPC). Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku~\cite{DBLP:journals/speech/AkcayO20}.
 
 Pro rozpoznávání emocí jsou používány buď klasifikátory nebo regresory, podle toho jestli jsou emoce děleny na základě diskrétního nebo prostorového modelu. Z tradičních modelů strojového učení lze pro klasifikaci použít skryté Markovovy modely (HMM), Gaussovské směsné modely (GMM) nebo metodu podpůrných vektorů (SVM). Z řady klasifikátorů typu hluboká neuronová síť (DNN) lze použít vícevrstvý perceptron (NLP), konvoluční neuronové sítě (CNN) nebo rekurentní neuronové sítě (RNN)~\cite{DBLP:journals/speech/AkcayO20}.
 
 \chapter{Datové sady} % Grammer checked
-K rozpoznávání emocí se používají anotované datové sady. Mohou být děleny podle toho, jak byla data získána na předstírané, vybuzené a přirozené datové sady. Také se mohou lišit tím, kdo je namluvil. Mluvčí mohou být různého věku a pohlaví a mluvit různými jazyky. Datové sady se také odlišují tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé~\cite{DBLP:journals/speech/AkcayO20}. V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad.
+K rozpoznávání emocí se používají anotované datové sady. Mohou být děleny podle toho, jak byla data získána na předstírané, vybuzené a přirozené datové sady. Také se mohou lišit tím, kdo je namluvil. Mluvčí mohou být různého věku, pohlaví a mluvit různými jazyky. Datové sady se také odlišují tvrzeními, která byla vyslovena. Počet a kategorie rozpoznávaných emocí mohou být také různé~\cite{DBLP:journals/speech/AkcayO20}. V tabulce \ref{tab:overview-datasets} je uveden přehled volně dostupných datových sad.
 
 \section{Předstírané datové sady} % Grammer checked
 Data mohla být pořízena předstíráním, kdy herec při nahrávání předstírá, že emoci prožívá. Tento typ datové sady lze získat spoluprací s profesionálními herci nebo z video záznamů filmů a seriálů. Datovou sadu při spolupráci s herci lze relativně snadno sestavit, protože tvůrci mají poměrně velkou kontrolu nad celým procesem. Data získaná tímto způsobem, ale nemusejí odpovídat reálné situaci, a proto existují další dva způsoby získávání datových sad~\cite{konar_chakraborty_2015}.
@@ -234,13 +259,13 @@ BAUM-1 Speech Database & turečtina     & 12  & 31  & obě        & předstíran
 V následujících oddílech jsou podrobněji popsány datové sady použité v praktické části práce. Jsou uvedeny tři anglické datové sady a jedna italská. Všechny sady jsou předstírané.
 
 \subsection{RAVDESS} \label{desc/ravdess} % Grammer checked
-RAVDESS~\cite{Livingstone2018} znamená Ryerson Audio-Visual Database of Emotional Speech and Song a označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z nichž bylo dvanáct žen a dvanáct mužů, což činí datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují osm emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil dvě tvrzení ve dvou úrovních emocionální intezity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440 a mají dobu trvání 1,5 hodiny. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intezitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nahrávek se pohybují kolem třech minut. Datové sada je dostupná buď na webových stránkách smartlaboratory.org nebo na kaggle.com~\cite{smart_lab}.
+RAVDESS~\cite{ravdess} označuje anglickou datovou sadu obsahující nahrávky řeči a písní. Spolu s nahrávkami zvuku byly pořízeny i video záznamy mluvčích. Nahrávky byly namluveny 24 herci, z nichž bylo dvanáct žen a dvanáct mužů, což činí datovou sadu pohlavně vyrovnanou. Mluvčí mluvili severoamerickou angličtinou. Nahrávky řeči zachycují osm emocí: klid, radost, smutek, hněv, strach, překvapení, znechucení a neutrální stav. Každý herec namluvil dvě tvrzení ve dvou úrovních emocionální intenzity, běžnou a silnou, pro všechny emoce. Namluvené výrazy byly „Kids are talking by the door" a „Dogs are sitting by the door". Počet zvukových nahrávek řeči je celkově 1440 a mají dobu trvání 1,5 hodiny. Každá nahrávka v datové sadě má přiřazenou anotaci, která udává druh nahrávky, druh emoce, emocionální intenzitu, tvrzení, číslo opakování a herce, který nahrávku namluvil. Délky nahrávek se pohybují kolem třech minut.
 
 \subsection{SAVEE} \label{desc/savee} % Grammer checked
-Surrey Audio-Visual Expressed Emotion (SAVEE) označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a má celkovou trvání 0,5 hodiny. Rozlišuje sedm emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena čtyřmi mužskými herci mluvícími britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology \mbox{(TIMIT)~\cite{timit}}. Kromě řeči byla při nahrávání zaznamenána i mimika obličeje mluvčích, kteří na něm měli namalovány modré značky~\cite{savee}.
+SAVEE~\cite{savee} označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 480 promluv a má celkovou trvání půl hodiny. Rozlišuje sedm emocí, mezi které patří hněv, znechucení, strach, radost, smutek, překvapení a neutrální stav. Byla namluvena čtyřmi mužskými herci mluvícími britskou angličtinou ve věku mezi 27 až 31 lety. Pro tvorbu datové sady bylo vybráno 15 vět z datové sady Texas Instruments a Massachusetts Institute of Technology \mbox{(TIMIT)~\cite{timit}}. Kromě řeči byla při nahrávání zaznamenána i mimika obličeje mluvčích, kteří na něm měli na obličeji namalovány modré značky.
 
 \subsection{TESS} \label{desc/tess} % Grammer checked
-Zkratka TESS~\cite{SP2/E8H2MF_2020} znamená Toronto emotional speech set a označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny dvěma herečkami ve věku 26 a 64 let. Má celkovou délku trvání 1,6 hodiny. Rozlišuje sedm emocí mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začíná slovy "Say the word" a končí jedním z 200 vybraných slov~\cite{tess}.
+TESS~\cite{SP2/E8H2MF_2020} označuje anglickou datovou sadu pro rozpoznávání emocí. Obsahuje 2800 promluv, které byly namluveny dvěma herečkami ve věku 26 a 64 let. Má celkovou délku trvání 1,6 hodiny. Rozlišuje sedm emocí mezi něž patří hněv, znechucení, strach, radost, překvapení, smutek a neutrální stav. Každá herečka namluvila 200 promluv pro všechny emoce. Promluva vždy začíná slovy "Say the word" a končí jedním z 200 vybraných slov~\cite{tess}.
 
 \subsection{EMOVO} \label{desc/emovo} % Grammer checked
 EMOVO~\cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpoznávání emocí. Zvukové nahrávky byly vytvořeny šesti herci, z nichž tři byli muži a tři ženy. Každý herec vyslovil 14 vět pro každou emoci. Datová sada rozlišuje sedm emocí, mezi něž patří znechucení, strach, hněv, radost, překvapení, smutek a neutrální stav. Skládá se z 588 promluv a má délku trvání půl hodiny~\cite{DBLP:conf/lrec/CostantiniIPT14}.
@@ -249,10 +274,10 @@ EMOVO~\cite{DBLP:conf/lrec/CostantiniIPT14} je italská datová sada pro rozpozn
 Mnoho oblastí použití neuronových sítí vyžaduje důkladné předzpracování dat, jelikož původní podoba dat může být příliš složitá pro interpretaci neuronovou sítí~\cite{goodfellow2016deep}. Při předzpracování řeči mohou být použity techniky pro zvýšení kvality signálu, jako jsou odstranění ticha nebo šumu. Při získávání příznaků z řeči je často používáno rámcování a okénkování \cite{konar_chakraborty_2015}.
 
 \section{Rámcování} % Grammer checked
-Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\textendash30 milisekundami. Často se jednotlivé rámce překrývají z 30\textendash50 \%, aby se zachoval vztah mezi jednotlivými rámci~\cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že emoce zůstane v rámci jednoho úseku stejná~\cite{konar_chakraborty_2015}.
+Rámcování bývá prvním krokem předzpracování dat pro rozpoznávání, kdy je zvukový signál rozdělen na menší časové úseky zvané rámce, které nabývají většinou rozsahu mezi 10\textendash30 milisekundami. Často se jednotlivé rámce překrývají z \mbox{30\textendash50 \%}, aby se zachoval vztah mezi jednotlivými rámci~\cite{DBLP:journals/speech/AkcayO20}. Důvodem rámcování je, že~se emoce v průběhu řeči mohou měnit a rozdělení na menší časové úseky zajistí, že~emoce zůstane v rámci jednoho úseku stejná~\cite{konar_chakraborty_2015}.
 
 \section{Okénkování} % Grammer checked
-Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích, a tím snižuje úniky, ke kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro okénkování lze použít Hammingovu okénkovací funkci~\cite{DBLP:journals/speech/AkcayO20}.
+Po rámcování většinou přichází okénkování, kdy je na jednotlivé rámce použita okénkovácí funkce. Snižuje amplitudu signálu na jeho okrajích, a tím snižuje úniky, ke~kterým může dojít při použití rychlé Fourierovi transformace (FFT). Pro~okénkování lze použít Hammingovu okénkovací funkci~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Odstranění ticha} % Grammer checked
 Dále mohou být použity techniky pro detekci řeči.
@@ -262,15 +287,15 @@ S jejich pomocí lze ze signálu odstranit tichá místa. Mohou být použity me
 Může být použita také normalizace, která zmírňuje rozdíly v řeči mezi mluvčími a zároveň zachová přenášenou informaci. Normalizace může být použita na více úrovních, na úrovni jednotlivých rámců nebo na úrovni celé datové sady. Nejčastěji se pro normalizaci používá z-normalizace~\cite{DBLP:journals/speech/AkcayO20}.
 
 \chapter{Výběr příznaků} % Grammer checked
-Následuje zvolení vhodných příznaků pro rozpoznávání, kdy jsou z mnoha příznaků vybrány pouze nejvhodnější. Je mnoho příznaků, ale nejsou určeny příznaky, které by se hodily přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné, tak lokální příznaky pro rozpoznávání. Mezi souhrnné příznaky patří střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu~\cite{DBLP:journals/speech/AkcayO20}.
+Existuje mnoho příznaků extrahovaných z řeči, ale nejsou určeny příznaky, které by se hodily přímo pro rozpoznávání emocí. Ze signálu lze získat jak souhrnné, tak lokální příznaky pro rozpoznávání. Mezi souhrnné příznaky patří střední hodnota, směrodatná odchylka, minimální nebo maximální hodnota. Lokální příznaky lze získat z jednotlivých rámců a zastupují krátkodobé změny v signálu~\cite{DBLP:journals/speech/AkcayO20}.
 
-Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na Teagerově energetickém operátoru (TEO). Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické a spektrální příznaky~\cite{DBLP:journals/speech/AkcayO20}.
+Příznaky pro rozpoznávání emocí v řeči můžeme dělit na prozodické, spektrální, založené na kvalitě hlasu nebo příznaky založené na TEO. Nejčastěji používané příznaky při rozpoznávání emocí v řeči jsou prozodické a spektrální příznaky~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Prozodické příznaky}  % Grammer checked
 Mezi prozodické příznaky patří na příklad intonace nebo rytmus. Řadí se mezi souhrnné příznaky, protože je lze získat z delších hlasových úseků jako jsou hlásky, slova nebo věty. Mezi používané příznaky patří základní frekvence, energie nebo doba trvání. Energie udává míru změny amplitudy signálu v čase. Emoce jako hněv, štěstí nebo překvapení vykazují zvýšenou energii. Na straně druhé znechucení a smutek vykazují energii nízkou. Základní frekvence se postupně snižuje při projevení hněvu, a naopak stoupá při projevení radosti. Doba trvání potřebná k projevení hněvu je obecně kratší než při projevení smutku~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Příznaky založené na spektru}  % Grammer checked
-Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z oblasti časové do frekvenční. Mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. Melovské frekvenční kepstrální koeficienty (MFCC) jsou založeny na krátkodobém spektru signálu. Mezi další příznaky patří lineární predikční kepstrální koeficienty (LPCC), logaritmické frekvenční silové koeficienty (LFPC) nebo gammatone frekvenční kepstrální koeficienty (GFCC)~\cite{DBLP:journals/speech/AkcayO20}.
+Příznaky založené na spektru jsou získávány pomocí Fourierovy transformace, kdy je signál převeden z oblasti časové do frekvenční. Mohou přinést hlubší porozumění signálu než příznaky prozodické. Příznaky jsou získávány z rámců, na které byla použita okénkovací funkce. MFCC jsou založeny na krátkodobém spektru signálu. Mezi další příznaky patří LPCC, LFPC nebo gammatone frekvenční kepstrální koeficienty (GFCC)~\cite{DBLP:journals/speech/AkcayO20}.
 
 \subsection{Melovské frekvenční kepstrální koeficienty} % Grammer checked
 Melovské frekvenční kepstrální koeficienty (MFCC) jsou příznaky používané pro rozpoznávání řeči. Technika převodu zvukového signálu na příznaky MFCC spočívá v provedení několika kroků zobrazených na obrázku \ref{fig:mfcc_pipeline}. 
@@ -285,24 +310,24 @@ Melovské frekvenční kepstrální koeficienty (MFCC) jsou příznaky používa
 Při rámcování je zvukový signál nejprve rozdělen na jednotlivé posuvné rámce. Dále je podroben okénkování, kdy je amplituda signálu snížena na konci a na začátku rámce. Může k tomu být použito Hammingovo nebo Hanningovo okénko. Poté je signál převeden pomocí diskrétní Fourierovi transformace (DFT) do frekvenční oblasti. Na výsledné amplitudové spektrum je použito Melovské frekvenční ohýbání. K převodu je použita Melovská banka filtrů složená z trojúhelníkových filtrů s měřítkem v Melovské škále, která zohledňuje vnímaní zvukových frekvencí člověkem. Lidé lépe rozlišují mezi nízkými frekvencemi než mezi vysokými. Dále je signál logaritmován a je provedena inverzní diskrétní kosinová transformace (IDCT). Z koeficientů Melovského kepstra, nazývaných také nulté koeficienty, lze získat koeficienty delta a akcelerační koeficienty (delta delta), které jsou získány použitím první a druhé derivace na nulté koeficienty~\cite{mfcc}.
 
 \section{Příznaky založené na kvalitě zvuku}  % Grammer checked
-Chvění, mihotání nebo poměr harmonie k hluku (HNR) jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. Poměr harmonie k hluku udává poměr mezi hlukem a frekvenčním spektrem samohlásek~\cite{DBLP:journals/speech/AkcayO20}.
+Chvění, mihotání nebo HNR jsou příznaky založené na kvalitě zvuku. Chvění je měřeno na základě nestálosti frekvence a mihotání je založeno na nestálosti amplitudy. HNR udává poměr mezi hlukem a frekvenčním spektrem samohlásek~\cite{DBLP:journals/speech/AkcayO20}.
 
 \section{Příznaky založené na Teagerově energetickém operátoru}  % Grammer checked
-Příznaky založené na Teagerově energetickém operátoru jsou používány k detekci stresu. Využívají změny svalového napětí, které při stresové situaci nastává. V této kategorii předstihují příznaky jako jsou MFCC nebo výška tónu~\cite{DBLP:journals/speech/AkcayO20}.
+Příznaky založené na Teagerově energetickém operátoru (TEO) jsou používány k detekci stresu. Využívají změny svalového napětí, které při stresové situaci nastává. V této kategorii předstihují příznaky jako jsou MFCC nebo výška tónu~\cite{DBLP:journals/speech/AkcayO20}.
 
 \chapter{Vybrané základy neuronových sítí}
 
 \section{Způsoby rozpoznávání emocí}  % Grammer checked
-Pro rozpoznávání emocí se používají klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem~\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazenou anotaci udávající třídu, do které patří. V případě klasifikace jsou to diskrétní třídy, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od $-1$ do $+1$~\cite{konar_chakraborty_2015}.
+Pro rozpoznávání emocí jsou používány klasifikátory nebo regresory, které spadají do oblasti strojového učení s učitelem~\cite{DBLP:journals/speech/AkcayO20}. Modely strojové učení s učitelem vyžadují označená data. Každý vzorek musí mít přiřazenou anotaci udávající třídu, do které patří. V případě klasifikace jsou to diskrétní třídy, které odpovídají jednotlivým emocím jako jsou na příklad hněv, radost nebo smutek. V případě regrese jsou to desetinné hodnoty, které označují stupeň mocenství, vzrušení nebo dominance většinou v rozsahu od $-1$ do $+1$~\cite{konar_chakraborty_2015}.
 
 Často se při klasifikaci ke vzorku přidávají i vzorky z okolí pro zvýšení kontextu, který může zlepšit výsledky rozpoznávaní. Důvodem je, že emoce ovlivňují dlouhodobé charakteristiky řeči. Přesný počet rámců, který by se měl vzít není určen. Další způsob, jak klasifikovat emoce je podle statických příznaků jako jsou maximum, minimum nebo časová délka~\cite{konar_chakraborty_2015}.
 
 Při trénování se často používá křížová validace, kdy se mění trénovací a validační sada a je vytvořeno několik modelů, jejichž výsledky jsou zprůměrovány, tím je dosaženo smysluplnějších výsledků. U rozpoznávání emocí je používána především, protože jsou datové sady po většinou menšího rozsahu, a tak má rozdělení do jednotlivých sad větší vliv na výsledek. Jako metrika pro ohodnocení modelu se používá přesnost nebo vážená přesnost, která zohledňuje odlišný počet vzorků pro každou třídu. Přesnost udává pravděpodobnost, že daný vzorek patří do předpovězené třídy~\cite{konar_chakraborty_2015}.
 
 \section{Vícevrstvý perceptron} % Grammer checked
-Vícevrstvý perceptron (MLP) neboli dopředná neuronová síť je složena z více lineárních vrstev. Mezi lineární vrstvy jsou umístěny vrstvy nelineární. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva je tvořena aktivační funkcí~\cite{DBLP:books/lib/Bishop07}.
+Vícevrstvý perceptron (MLP) neboli dopředná neuronová síť (FFN) je složena z více lineárních vrstev. Mezi lineární vrstvy jsou umístěny vrstvy nelineární. Lineární vrstva se skládá z parametrů vah a biasů a nelineární vrstva je tvořena aktivační funkcí~\cite{DBLP:books/lib/Bishop07}.
 
-Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít dvě a více lineárních vrstev. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstvou výstupní. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svoji šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoida a při klasifikaci do dvou a více tříd funkce softmax.
+Aby mohla být neuronová síť označena za hlubokou neuronovou síť, musí mít dvě a více lineární vrstvy. První vrstva modelu se nazývá vstupní vrstvou a poslední vrstvou výstupní. Vrstvy mezi vstupní a výstupní vrstvou jsou označovány jako vrstvy skryté. Každá lineární vrstva má svoji šířku, která určuje počet neuronů ve vrstvě. Při klasifikaci do dvou tříd následuje za výstupní vrstvou funkce sigmoida a při klasifikaci do dvou a více tříd funkce softmax.
 
 Jako aktivační funkce ve skrytých vrstvách jsou pro MLP používány nejčastěji funkce sigmoida a ReLU. Neuronovou síť typu MLP lze použít také pro regresi, kdy jsou jako aktivační funkce v nelineárních vrstvách umístěny identity~\cite{DBLP:books/lib/Bishop07}.
 
@@ -363,7 +388,7 @@ z_i = \frac{x_i - \mu_b}{\sqrt{\sigma^2_b}},
 kde $ z_i $ je normalizovaný vzorek. Hodnota $ \mu_b $ označuje střední hodnotu dávky a $ \sigma^2_b $ znázorňuje rozptyl dávky. Parametr $ x_i $ je jeden vzorek dávky~\cite{burkov2019hundred}.
 
 \section{Hodnocení úspěšnosti modelu} % Grammer checked 
-Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikaci lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad správnost, přesnost, úplnost nebo matici záměn~\cite{burkov2019hundred}.
+Model lze hodnotit podle průběhu ztráty modelu na datových sadách. Pokud ztráta klesá u všech sad, tak je předpoklad, že se model učí správně. Při klasifikaci lze použít více metrik a nástrojů pro vyhodnocení modelu. Lze počítat na příklad přesnost (accuracy), precisnost (precision), úplnost (recall) nebo matici záměn~\cite{burkov2019hundred}.
 
 \subsection{Přesnost} % Grammer checked
 Přesnost udává počet všech správně klasifikovaných vzorků vůči počtu všech vzorků. Často se hodnota násobí stem, aby výsledek vyšel v procentech~\cite{burkov2019hundred}. Přesnost lze znázornit následujícím vzorcem:
@@ -379,7 +404,7 @@ kde $ ACC $ je přesnost. $ H $ je počet správně klasifikovaných vzorků a $
 Během epochy trénování jsou vzorky dávky podrobeny dopřednému průchodu sítí. Z výstupu neuronové sítě jsou získány předpovědi, které jsou porovnány s anotacemi a jsou zjištěny počty správně klasifikovaných vzorků. Na konci epochy je spočítána přesnost pro vzorek pomocí následujícího vzorce:
 
 \begin{equation}
-\label{eqn:accuracy}
+\label{eqn:accuracy_samples}
 ACC_S = \frac{H_S}{N_S},
 \end{equation}
 
@@ -389,7 +414,7 @@ kde $ ACC_S $ je přesnost pro vzorky. $ H_S $ je počet správně klasifikovan�
 Při testování a validaci modelu se velikost dávky mění a odpovídá velikosti nahrávky. Během epochy jsou vzorky nahrávky podrobeny dopřednému průchodu sítí. Výstup neuronové sítě je průměrován a je získán výstup pro celou nahrávku, z kterého je zjištěna předpověď pro nahrávku. Předpověď je porovnána s anotací nahrávky. Pokud byla předpověď správná zvýší se počet správně klasifikovaných nahrávek o jedna. Na konci epochy je spočítána přesnost pro nahrávku pomocí vzorce:
 
 \begin{equation}
-\label{eqn:accuracy}
+\label{eqn:accuracy_recordings}
 ACC_R = \frac{H_R}{N_R},
 \end{equation}
 
@@ -420,7 +445,7 @@ l = -{\sum_{c}^{C}t_{c}\log p_{c}},
 
 kde $ l $ je výsledná ztráta. Index $ c $ odpovídá klasifikovaným třídám a $ C $ je počet tříd. Proměnná $ p $ značí vstupní pravděpodobnosti pro jednotlivé třídy, které dosahují hodnot od nuly do jedné. $ t $ zastupuje skutečné třídy. Minimalizací křížové entropie minimalizujeme rozdíl mezi pravděpodobnostním rozdělením trénovacích dat a pravděpodobnostním rozdělením předpovídaných hodnot~\cite{brownlee_2020}.
 
-\subsection{ReLU} % Grammer checked
+\subsection{Usměrněná lineární aktivační funkce} % Grammer checked
 Usměrněná lineární aktivační funkce (ReLU) je aktivační funkce, jejíž výstupem je buď nula, pokud je vstup záporný nebo se hodnota vstupu nezmění, pokud je kladný. Lze ji vyjádřit:
 
 \begin{equation}
@@ -441,7 +466,7 @@ p_i = \frac{e^{s_i}}{\sum_{c}^{C}e^{s_c}},
 kde $ p_i $ je hodnota výstupní pravděpodobnosti. Proměnná $ s $ odpovídá skóre výstupní vrstvy neuronové sítě. Index $ i $ odpovídá třídě výstupní pravděpodobnosti a index $ c $ třídám skóre. Hodnota $ C $ je rovna počtu klasifikovaných tříd. Součet všech výsledných pravděpodobností je roven jedné. Funkce se používá při klasifikaci do více tříd a stojí na konci klasifikátoru. Každá výstupní pravděpodobnost odpovídá jednotlivé třídě datové sady~\cite{brownlee_2020_Softmax}.
 
 \chapter{Vývoj balíčku pro rozpoznávání emocí} % Grammer checked
-Byl vytvořen balíček s moduly pro rozpoznávání emocí. Hlavní motivací pro vznik byla snadná práce s daty, trénování a vyhodnocení úspěšnosti modelu. Balíček je napsán v jazyku \texttt{\mbox{Python}}\footnote{https://www.python.org/} verze 3. Mezi vytvořené moduly patří: \texttt{\mbox{convertors}} pro převod dat, data pro práci s daty, \texttt{\mbox{classifiers}} na tvorbu klasifikátoru, \texttt{\mbox{files}} na práci se soubory, \texttt{\mbox{datasets}} k tvorbě datových sad, \texttt{\mbox{prepare}} pro přípravu datových sad a \texttt{\mbox{train}} sloužící k trénování modelu. Moduly jsou psány objektově. Byly použity knihovny a frameworky: \texttt{\mbox{PyTorch}}\footnote{https://pytorch.org} 1.6 pro tvorbu a trénování modelu, \texttt{\mbox{seaborn}} 0.11 a \texttt{\mbox{matplotlib}} 3.3 pro vytvoření grafů, \texttt{\mbox{logging}} 0.4 pro logování při trénování modelu, \texttt{\mbox{scikit-learn}} 0.23 pro rozdělení dat na datové sady, \texttt{\mbox{pandas}} 1.1 a \texttt{\mbox{numpy}} 1.18 pro ukládání a práci s daty, \texttt{\mbox{os}} a \texttt{\mbox{sys}} pro práci s operačním systémem, \texttt{\mbox{re}} pro parsování anotací, \texttt{\mbox{subprocess}} pro spouštění příkazů z příkazové řádky, \texttt{\mbox{PyHTK}}\footnote{https://github.com/danijel3/PyHTK} pro načítání souborů vytvořených pomocí sady nástrojů Hidden Markov Model Toolkit (\texttt{\mbox{HTK}})\footnote{https://htk.eng.cam.ac.uk}.
+Byl vytvořen balíček s moduly pro rozpoznávání emocí. Hlavní motivací pro vznik byla snadná práce s daty, trénování a vyhodnocení úspěšnosti modelu. Balíček je napsán v jazyku \texttt{\mbox{Python}}\footnote{https://www.python.org/} verze 3. Mezi vytvořené moduly patří: \texttt{\mbox{convertors}} pro převod dat, \texttt{\mbox{data}} pro práci s daty, \texttt{\mbox{classifiers}} na tvorbu klasifikátoru, \texttt{\mbox{files}} na práci se soubory, \texttt{\mbox{datasets}} k tvorbě datových sad, \texttt{\mbox{prepare}} pro přípravu datových sad a \texttt{\mbox{train}} sloužící k trénování modelu. Moduly jsou psány objektově. Byly použity knihovny a frameworky: \texttt{\mbox{PyTorch}}\footnote{https://pytorch.org} 1.6 pro tvorbu a trénování modelu, \texttt{\mbox{seaborn}}~0.11 a \texttt{\mbox{matplotlib}} 3.3 pro vytvoření grafů, \texttt{\mbox{logging}} 0.4 pro logování při trénování modelu, \texttt{\mbox{scikit-learn}} 0.23 pro rozdělení dat na datové sady, \texttt{\mbox{pandas}} 1.1 a \texttt{\mbox{numpy}}~1.18 pro ukládání a práci s daty, \texttt{\mbox{os}} a \texttt{\mbox{sys}} pro práci s operačním systémem, \texttt{\mbox{re}} pro parsování anotací, \texttt{\mbox{subprocess}} pro spouštění příkazů z příkazové řádky, \texttt{\mbox{PyHTK}}\footnote{https://github.com/danijel3/PyHTK} pro načítání souborů vytvořených pomocí sady nástrojů Hidden Markov Model Toolkit(\texttt{\mbox{HTK}})\footnote{https://htk.eng.cam.ac.uk}.
 
 Následující podkapitoly se věnují jednotlivým krokům, které byly provedeny při vývoji systému pro rozpoznávání emocí z řeči. U jednotlivých kroků je vždy popsána práce s vytvořenými moduly z balíčku pro rozpoznávání emocí.
 
@@ -807,8 +832,8 @@ Při klasifikaci do tří tříd bylo dosaženo přesnosti pro vzorek \mbox{71,3
 Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifikaci do čtyř tříd oproti klasifikaci do tří tříd. Při sloučení tříd pro klasifikaci do tří tříd byla největší část, 294 nahrávek, umístěna do negativní třídy (viz obr. \mbox{\ref{fig:3_emotions-conf_matrix-val}}), o něco méně, 147 nahrávek, do pozitivní třídy a nejméně, 90 nahrávek, do třídy neutrální.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{3_emotions-conf_matrix-val.png}}
-\caption{Matice záměn pro validační data při klasifikaci tří emocí}
+\centerline{\includegraphics[scale=.6]{3_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační sadu při klasifikaci tří emocí}
 \label{fig:3_emotions-conf_matrix-val}
 \end{figure}
 \FloatBarrier
@@ -816,14 +841,14 @@ Počet nahrávek pro jednotlivé třídy je mnohem vyrovnanější při klasifik
 Při klasifikaci do čtyřech tříd byly nahrávky rozděleny téměř rovnoměrně do tříd hněvu, spokojenosti a smutku (viz obr. \ref{fig:4_emotions-conf_matrix-val}). Počet nahrávek se pohyboval v rozmezí 141\textendash148 nahrávek. Méně, 90 nahrávek, bylo umístěno v neutrální třídě.
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{4_emotions-conf_matrix-val.png}}
-\caption{Matice záměn pro validační data při klasifikaci čtyř emocí}
+\centerline{\includegraphics[scale=.6]{4_emotions-conf_matrix-val.png}}
+\caption{Matice záměn pro validační sadu při klasifikaci čtyř emocí}
 \label{fig:4_emotions-conf_matrix-val}
 \end{figure}
 \FloatBarrier
 
 \begin{figure}[!htbp]
-\centerline{\includegraphics[scale=.5]{training_course-emotion_reduction.png}}
+\centerline{\includegraphics[scale=.6]{training_course-emotion_reduction.png}}
 \caption{Přehled průběhu trénování pro různý počet emocí}
 \label{fig:training_course-emotion_reduction}
 \end{figure}
@@ -916,10 +941,6 @@ Jako klasifikátor byla zvolena neuronová síť typu MLP. Model byl vytvořen a
 Na základě proběhlých experimentů byly vytvořeny tři finální modely pro různý počet emocí. Model pro klasifikaci tří emocí dosáhl na testovací sadě přesnosti pro vzorky \mbox{80,1 \%} a přesnosti pro nahrávky \mbox{94,4 \%}. Při klasifikaci do čtyř tříd dosáhl model na testovací sadě přesnosti pro vzorky \mbox{75,7 \%} a \mbox{93,6 \%} přesnosti pro nahrávky. Klasifikátor do sedmi tříd dosáhl na testovací sadě přesnosti pro vzorky \mbox{71,4 \%} a přesnosti pro nahrávky \mbox{92,3 \%}.
 
 Pro zlepšení výsledků klasifikace by nejvíce pomohlo rozšíření datové sady pro trénování. Pomocí regularizačních vrstev lze do jisté míry přeučování modelu zabránit, ale míru přesnosti modelu omezuje nízký počet a různorodost dat. Dalším způsobem, jak vylepšit výsledky klasifikace, je vyzkoušet jiné typy neuronových sítí. V úvahu na příklad přicházejí neuronové sítě typu CNN nebo RNN. V obou případech lze téměř bez změn přidat funkcionalitu do balíčku pro rozpoznávání emocí.
-
-\note{Zkratky mít definované jenom jednou}
-
-\note{Zkrátit závěr}
 
 \nocite{*}
 \printbibliography[title={Použitá literatura}] % sazba seznamu citací
