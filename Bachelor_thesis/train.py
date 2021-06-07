@@ -406,6 +406,7 @@ def main(result_dir):
 
     n_epochs = 10
 
+    print("Device: ", device)
     print("Optimizer:")
     print(optimizer)
     print("Criterion:")
