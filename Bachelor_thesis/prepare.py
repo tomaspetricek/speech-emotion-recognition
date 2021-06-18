@@ -59,7 +59,8 @@ class Preparer:
 
         self.labels = converted_labels
 
-    def split_data(self, frames, labels, test_size):
+    @staticmethod
+    def split_data(frames, labels, test_size):
         """
         Splits th data into train. validation and test set.
         """
@@ -76,7 +77,8 @@ class Preparer:
 
         return X_train, y_train, X_test, y_test
 
-    def save_set(self, samples, labels, root_dirname, set_dir):
+    @staticmethod
+    def save_set(samples, labels, root_dirname, set_dir):
         set_dirname = os.path.join(root_dirname, set_dir)
         os.mkdir(set_dirname)
 

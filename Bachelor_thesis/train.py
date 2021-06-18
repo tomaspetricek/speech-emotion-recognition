@@ -7,38 +7,16 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
 from collections import defaultdict
 from classifiers import FeedForwardNet
+from plot import plot_conf_matrix, plot_lines
 
-from classifiers import Sequential
 from datasets import NumpyRecordingDataset, NumpySampleDataset
 from files import DatasetInfoFile, SetInfoFile
 from data import FOUR_EMOTIONS_VERBOSE, THREE_EMOTIONS_VERBOSE, ALL_EMOTIONS_VERBOSE
 
 MODEL_DIR = "models/pytorch"
-
-
-def create_model(input_size, hidden_sizes, output_size):
-    input_layer = [
-        nn.Linear(input_size, hidden_sizes[0]),
-        nn.ReLU()
-    ]
-
-    output_layer = [nn.Linear(hidden_sizes[-1], output_size)]
-
-    hidden_layers = []
-    for i in range(len(hidden_sizes) - 1):
-        hidden_layers.append(nn.Linear(hidden_sizes[i], hidden_sizes[i + 1]))
-        hidden_layers.append(nn.ReLU())
-
-    layers = tuple(input_layer + hidden_layers + output_layer)
-
-    model = Sequential(*layers)
-    setattr(model, "n_classes", output_size)  # should be in Sequential constructor
-
-    return model
 
 
 class Stats:
@@ -85,17 +63,18 @@ class Stats:
 
 
 class StatsPrinter:
+    HEADER = f"{'epoch':^16}|{'name':^16}|{'loss':^16}|{'acc_frames':^16}|{'acc_samples':^16}"
+    DIVIDER = "-" * len(HEADER)
+
     def __init__(self, stats):
         self.stats = stats
-        self.header = f"{'epoch':^16}|{'name':^16}|{'loss':^16}|{'acc_frames':^16}|{'acc_samples':^16}"
-        self.divider = "-" * len(self.header)
         self.header_printed = False
 
     def print_last_epoch(self):
         if not self.header_printed:
-            print(self.divider)
-            print(self.header)
-            print(self.divider)
+            print(self.DIVIDER)
+            print(self.HEADER)
+            print(self.DIVIDER)
             self.header_printed = True
 
         for dataset_name in self.stats.dataset_names:
@@ -111,7 +90,7 @@ class StatsPrinter:
             else:
                 print()
 
-        print(self.divider)
+        print(self.DIVIDER)
 
 
 class Results:
@@ -122,7 +101,7 @@ class Results:
         self.classes_verbose = classes_verbose
 
         self.frame_acc_fig, frame_acc_ax = plt.subplots()
-        self._plot(
+        plot_lines(
             frame_acc_ax,
             items=self.stats.frame_accuracies,
             title="Přesnost modelu pro vzorky",
@@ -131,7 +110,7 @@ class Results:
         )
 
         self.sample_acc_fig, sample_acc_ax = plt.subplots()
-        self._plot(
+        plot_lines(
             sample_acc_ax,
             items=self.stats.sample_accuracies,
             title="Přesnost modelu pro náhrávky",
@@ -140,7 +119,7 @@ class Results:
         )
 
         self.loss_fig, loss_ax = plt.subplots()
-        self._plot(
+        plot_lines(
             loss_ax,
             items=self.stats.losses,
             title="Ztráta modelu",
@@ -150,9 +129,10 @@ class Results:
 
         self.conf_matrices_figs = []
         for label, conf_matrix in self.stats.conf_matrices.items():
+            conf_matrix = pd.DataFrame(conf_matrix, self.classes_verbose, self.classes_verbose)
             title = "Matice záměn pro {}".format(label)
             fig, ax = plt.subplots()
-            self._plot_conf_matrix(
+            plot_conf_matrix(
                 ax,
                 conf_matrix,
                 title=title,
@@ -166,33 +146,6 @@ class Results:
 
         for plot in figs:
             plot.show()
-
-    def _plot(self, ax, items, title, y_label, x_label):
-
-        labels = list()
-        n_epochs = None
-        for label, item in items.items():
-            if item:
-                ax.plot(item)
-                labels.append(label)
-                n_epochs = len(item)
-
-        ax.set_title(title)
-        ax.set_xlabel(y_label)
-        ax.set_ylabel(x_label)
-        ax.legend(labels, loc='upper left')
-        plt.xticks(np.arange(n_epochs), np.arange(1, n_epochs + 1))
-
-    def _plot_conf_matrix(self, ax, conf_matrix, title, y_label, x_label):
-        classes = self.classes_verbose
-        df_cm = pd.DataFrame(conf_matrix, classes, classes)
-
-        sns.heatmap(df_cm, ax=ax, annot=True, fmt='g')
-
-        ax.set_title(title)
-        ax.set_xlabel(y_label)
-        ax.set_ylabel(x_label)
-        plt.tight_layout()
 
     def save(self, dirname):
         figs = [self.frame_acc_fig, self.sample_acc_fig, self.loss_fig] + self.conf_matrices_figs
@@ -404,7 +357,7 @@ def main(result_dir):
     log_filename = os.path.join(result_dirname, "train.log")
     begin_logging(log_filename)
 
-    n_epochs = 10
+    n_epochs = 1
 
     print("Device: ", device)
     print("Optimizer:")
@@ -433,5 +386,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "inter-80-10-10/exp_41-3_emotions-50_margin-cpu"
+    experiment_id = "inter-80-10-10/exp_42-remove"
     main(experiment_id)
