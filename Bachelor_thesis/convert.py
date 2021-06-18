@@ -1,4 +1,4 @@
-from processing.convertors import AudioFormatConverter, MFCCConverter
+from convertors import MFCCConverter
 from os import walk
 import os
 

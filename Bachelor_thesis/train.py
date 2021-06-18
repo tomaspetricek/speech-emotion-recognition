@@ -433,5 +433,5 @@ def main(result_dir):
 
 
 if __name__ == "__main__":
-    experiment_id = "inter-80-10-10/exp_39-3_emotions-50_margin"
+    experiment_id = "inter-80-10-10/exp_41-3_emotions-50_margin-cpu"
     main(experiment_id)
